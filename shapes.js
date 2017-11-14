@@ -83,13 +83,20 @@ function composeExpressor() {
 	var shape = Shape();
 	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
 	addShape( shape, slot.vert_tab, {x:-consts.vtab_width,y:0,z:consts.swell_pad} );
-	addShape( shape, hbar_swell.upper, {x:consts.swell_pad*2,y:0,z:0}, 2 );
-	addShape( shape, hbar_swell.lower, {x:consts.swell_pad*2,y:0,z:consts.swell_pad+consts.vtab_height}, 2 );
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, 2 );
+	addShape( shape, hbar_swell.lower, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height}, 2 );
 	addShape( shape, corner.outer1, {x:2+consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
 
-	addShape( shape, corner.outer2, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
+	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
+
+	addShape( shape, tween.top_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
+	addShape( shape, tween.bot_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
 
 	addShape( shape, slot.vert_tab, {x:consts.swell_pad+2,y:0,z:consts.swell_pad} );
+
+	addShape( shape, slot.horiz_tab, {x:consts.swell_pad,y:0,z:consts.swell_pad + 0.6} );
+	//addShape( shape, slot.horiz_slot, {x:consts.swell_pad,y:0,z:consts.swell_pad - 1} );
+
 	addShape( shape, corner.outer3, {x:2+consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
 	moveShape( shape, {x:consts.vtab_width, y:0, z:0 } );
 	return shape;

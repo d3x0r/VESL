@@ -78,19 +78,19 @@ var status_line;
 		//geometryShader = new THREE.MeshBasicMaterial();
 
 		 // for phong hello world test....
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 10000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
  		light.position.set( 0, -500, 100 );
  		scene.add( light );
 
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 10000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
  		light.position.set( 0, 500, 100 );
  		scene.add( light );
 
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 10000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
  		light.position.set( 0, -500, -100 );
  		scene.add( light );
 
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 10000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
  		light.position.set( 0, 500, -100 );
  		scene.add( light );
 		/* INIT GOES HERE? */
@@ -144,7 +144,7 @@ function animate() {
 		//var unit = Math.PI/2; //worst case visible
 
 	renderer.clear();
-	console.log( "camera matrix:", JSON.stringify( camera.matrix ) );
+	//console.log( "camera matrix:", JSON.stringify( camera.matrix ) );
 	renderer.render( scene, camera );
 
 }

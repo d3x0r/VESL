@@ -52,27 +52,32 @@ top_hbar:{
 verts : [ { x:0        , y:c.peice_depth    , z:0 }, { x:c.unit_length, y:c.peice_depth    , z:0 }
 	, { x:0        , y:c.peice_depth, z:c.top_hbar_height        }, { x:c.unit_length, y:c.peice_depth, z:c.top_hbar_height  }
         ],
-norms : [ { x:0, y : 1, z: -0.1 }
-	, { x:0, y : 1, z: 0.1 }
+norms : [ { x:0.1, y : 1, z: 0.1 }
+	, { x:0.1, y : 1, z: -0.1 }
+        , { x:-0.1, y : 1, z: 0.1 }
+	, { x:-0.1, y : 1, z: -0.1 }
         ],
-pairs : [ [0,0], [1,0]
-	, [2, 1], [3, 1]
+pairs : [ [0,0], [1,2]
+	, [2, 1], [3, 3]
         ],
 faces : [ [ 0, 2,1 ], [2, 3, 1] ],
 scaledVert(n,scale) { let v = this.verts[n]; return {x:v.x*scale,y:v.y,z:v.z}; }
 },
 
 bot_hbar:{
-verts : [ { x:0        , y:c.peice_depth    , z:0 }, { x:c.unit_length, y:c.peice_depth    , z:0 }
-	, { x:0        , y:c.peice_depth, z:c.bot_hbar_height        }, { x:c.unit_length, y:c.peice_depth, z:c.bot_hbar_height  }
+verts : [ { x:0        , y:0  , z:0 }, { x:c.unit_length, y:0    , z:0 }
+	, { x:0        , y:0, z:c.top_hbar_height        }, { x:c.unit_length, y:0, z:c.top_hbar_height  }
         ],
-norms : [ { x:0, y : 1, z: -0.1 }
-	, { x:0, y : 1, z: 0.1 }
+norms : [ { x:0.3, y : -1, z: -0.3 }
+	, { x:0.3, y : -1, z: 0.3 }
+        , { x:-0.3, y : -1, z: -0.3 }
+	, { x:-0.3, y : -1, z: 0.3 }
+        
         ],
-pairs : [ [0,0], [1,0]
-	, [2, 1], [3, 1]
+pairs : [ [0,0], [1,2]
+	, [2, 1], [3, 3]
         ],
-faces : [ [ 0, 2,1 ], [2, 3, 1] ],
+faces : [ [ 0, 1,2 ], [2, 1, 3] ],
 scaledVert(n,scale) { let v = this.verts[n]; return {x:v.x*scale,y:v.y,z:v.z}; }
 },
 

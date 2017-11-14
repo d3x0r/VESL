@@ -40,7 +40,7 @@ const c = {
 	htab_height : 0.2,    // height of horizontal tab/slot
 	htab_tip_width : 0.2,
 	vtab_height : 0.5,    // height of vertical tab (should match top_hbar_height
-	vtab_width : 0.25,    // width of vertical tab
+	vtab_width : 0.15,    // width of vertical tab
 	vtab_base_width : 0.25, 
 	vtab_tip_width : 0.10,
 

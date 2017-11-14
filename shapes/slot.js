@@ -61,8 +61,7 @@ norms : [ { x:0, y : 1, z: 0.2 }, { x:-0.1, y : 1, z: 0.2 }, { x:-0.2, y : 1, z:
 
 
         ],
-pairs : [ 
-	, [2,5],[5,6],[6,7],[1,8],[3,9] // 0-4
+pairs : [ [2,5],[5,6],[6,7],[1,8],[3,9] // 0-4
 	, [0,0],[1,1],[5,2],[6,3],[3,4],[4,0] //5-10
 	, [7,10],[8,11],[9,12],[10,13],[11,14],[12,10] // 11-16
 	, [13,10],[14,11],[15,12],[16,13],[17,14],[18,10] // 17-22
@@ -94,12 +93,12 @@ verts : [ { x: 0, y:c.peice_depth, z: c.htab_height+c.swell_pad }
 
 	// 9-14
 	, { x:0, y:c.peice_depth*3/4, z:0 }, { x:c.htab_width/2-c.htab_base_width - swell_x_offset, y:c.peice_depth*3/4, z:0 }
-	, { x:c.htab_width/2-c.htab_tip_width/2  - swell_x_offset, y:c.peice_depth*3/4, z:c.htab_height }, { x:c.htab_width/2+c.htab_tip_width/2  + swell_x_offset, y:c.peice_depth*3/4, z:c.htab_height }, 
+	, { x:c.htab_width/2-c.htab_tip_width/2  - swell_x_offset, y:c.peice_depth*3/4, z:c.htab_height }, { x:c.htab_width/2+c.htab_tip_width/2  + swell_x_offset, y:c.peice_depth*3/4, z:c.htab_height }
 	, { x:c.htab_width/2+c.htab_base_width/2 + swell_x_offset, y:c.peice_depth*3/4, z:0 }, { x:c.htab_width, y:c.peice_depth*3/4, z:0 }
 
 	// 15-20
 	, { x:0, y:c.peice_depth*1/4, z:0 }, { x:c.htab_width/2-c.htab_base_width - swell_x_offset, y:c.peice_depth*1/4, z:0 }
-	, { x:c.htab_width/2-c.htab_tip_width/2  - swell_x_offset, y:c.peice_depth*1/4, z:c.htab_height }, { x:c.htab_width/2+c.htab_tip_width/2  + swell_x_offset, y:c.peice_depth*1/4, z:c.htab_height }, 
+	, { x:c.htab_width/2-c.htab_tip_width/2  - swell_x_offset, y:c.peice_depth*1/4, z:c.htab_height }, { x:c.htab_width/2+c.htab_tip_width/2  + swell_x_offset, y:c.peice_depth*1/4, z:c.htab_height } 
 	, { x:c.htab_width/2+c.htab_base_width/2 + swell_x_offset, y:c.peice_depth*1/4, z:0 }, { x:c.htab_width, y:c.peice_depth*1/4, z:0 }
 
 	// 21-24
@@ -249,7 +248,7 @@ verts : [ { z: 0, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)- c.vtab_width+c.
 	, { z: ( c.vtab_height/2+c.vtab_tip_width/2 ) + (2*swell_y_offset),  y:0, x:(c.vtab_width+c.swell_pad)- c.vtab_width+c.swell_pad }
         , { z: c.vtab_height, y:0, x:(c.vtab_width+c.swell_pad)- c.vtab_width+c.swell_pad }
 	],
-norms : [ { z: 0, y:1,x:0.1}
+norms : [ { z: 0, y:0.9,x:0.1}
 	, { z:0,y:1,x:-0.2 }, { z: 0.1, y:1, x:-0.2 }, { z:0.3,y:1, x:-0.2}, { z:-0.3,y:1,x:-0.2}, {z:-0.1,y:1,x:-0.2}
 	// 5-9
 	, { z:0, y:0, x:-1 }, { z: 0.1, y:0, x:-1}, { z:0.4, y:0, x:-0.5 }, { z:-0.4, y:0, x:-0.5 }, { z:-0.1, y:0, x:-1 }
@@ -291,11 +290,11 @@ function swapVertFaces() {
 	// because the vertical versions were auto-replaced from horizontals, and then mirrored left-to-right need to reverse faces
         var faces = shape.vert_tab.faces;
         var n;
-        for( n = 0; n < faces.length; n++ ) {
-        	let t = faces[n][1];
-                faces[n][1] = faces[n][2];
-                faces[n][2] = t;
-        }
+        //for( n = 0; n < faces.length; n++ ) {
+        //	let t = faces[n][1];
+        //        faces[n][1] = faces[n][2];
+        //        faces[n][2] = t;
+        //}
         var faces = shape.vert_slot.faces;
         for( n = 0; n < faces.length; n++ ) {
         	let t = faces[n][1];
