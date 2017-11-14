@@ -5,6 +5,8 @@
  * @author WestLangley / http://github.com/WestLangley
  * @contributor d3x0r / http://github.com/d3x0r  - add enable/disable to allow disconnecting these events
  */
+//var THREE = window.THREE;
+
 
 THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
 	// mode 1, is limited

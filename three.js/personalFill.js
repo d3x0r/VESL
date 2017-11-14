@@ -1,5 +1,4 @@
-const THREE = require( "three" );
-
+//const THREE = window.THREE;
 
 if( !THREE.REVISION.includes( "d3x0r" ) ) {
 

@@ -1,8 +1,6 @@
 "use strict";
 
-module.exports = exports = function(window,document,THREE) {
-
-console.log( "WINDOW:" + window.THREE + "THREE:"+ THREE + ' doc:' + document.getElementById( "controls1") );
+module.exports = exports = function() {
 
 var controlNatural;
 var controlOrbit;

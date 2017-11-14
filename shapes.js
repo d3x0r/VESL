@@ -1,5 +1,5 @@
 
-const THREE = require( "three" );
+//const _THREE = window.THREE;
 const consts = require( "./shapes/consts.js" );
 const tween = require( "./shapes/tween.js" );
 const inset = require( "./shapes/inset.js" );
