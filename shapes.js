@@ -81,21 +81,26 @@ function moveShape( dest, offset ) {
   
 function composeExpressor() {
 	var shape = Shape();
+	addShape( shape, inset.inset_left, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
+	addShape( shape, inset.inset_right, {x:consts.swell_pad + consts.inset+consts.inset_pad*2 +.5,y:0,z:consts.swell_pad}, 2 );
+	addShape( shape, inset.inset_fill, {x:consts.swell_pad + consts.inset+consts.inset_pad*2,y:0,z:consts.swell_pad}, .5 );
+	addShape( shape, inset.inset_background, {x:consts.swell_pad + consts.inset+consts.inset_pad*2 - (consts.inset+consts.inset_pad),y:0,z:consts.swell_pad}, .5 + (2*consts.inset_pad + 2*consts.inset) );
+	addShape( shape, inset.inset_label, {x:consts.swell_pad + consts.inset+consts.inset_pad*2 - (consts.inset+consts.inset_pad),y:0,z:consts.swell_pad}, .5 + (2*consts.inset_pad + 2*consts.inset) );
+	addShape( shape, slot.horiz_slot, {x:consts.swell_pad,y:0,z:-consts.htab_height} );
 	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
 	addShape( shape, slot.vert_tab, {x:-consts.vtab_width,y:0,z:consts.swell_pad} );
 	addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, 2 );
 	addShape( shape, hbar_swell.lower, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height}, 2 );
-	addShape( shape, corner.outer1, {x:2+consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
+	addShape( shape, corner.outer1, {x:2+consts.swell_pad,y:0,z:0} );
 
 	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
 
-	addShape( shape, tween.top_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
+	//addShape( shape, tween.top_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
 	addShape( shape, tween.bot_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
 
-	addShape( shape, slot.vert_tab, {x:consts.swell_pad+2,y:0,z:consts.swell_pad} );
+	addShape( shape, slot.vert_slot, {x:-consts.swell_pad-consts.vtab_width-0.05,y:0,z:consts.swell_pad} );
 
 	addShape( shape, slot.horiz_tab, {x:consts.swell_pad,y:0,z:consts.swell_pad + 0.6} );
-	//addShape( shape, slot.horiz_slot, {x:consts.swell_pad,y:0,z:consts.swell_pad - 1} );
 
 	addShape( shape, corner.outer3, {x:2+consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
 	moveShape( shape, {x:consts.vtab_width, y:0, z:0 } );
@@ -126,12 +131,12 @@ function createMesh( shape ) {
 	//create a new face using vertices 0, 1, 2
 	var pairs = shape.pairs;
 	for( n = 0; n < shape.faces.length; n++ ) {
-		var face = shape.faces[n];
-		console.log( "face:" + face );		
-		var face = new THREE.Face3( pairs[face[0]][0], pairs[face[1]][0], pairs[face[2]][0]
-				, [new THREE.Vector3().copy( shape.norms[pairs[face[0]][1]] )
-				, new THREE.Vector3().copy( shape.norms[pairs[face[1]][1]] )
-				, new THREE.Vector3().copy( shape.norms[pairs[face[2]][1]] )
+		var faces = shape.faces[n];
+		//console.log( "face:" + face );		
+		var face = new THREE.Face3( pairs[faces[0]][0], pairs[faces[1]][0], pairs[faces[2]][0]
+				, [new THREE.Vector3().copy( shape.norms[pairs[faces[0]][1]] )
+				, new THREE.Vector3().copy( shape.norms[pairs[faces[1]][1]] )
+				, new THREE.Vector3().copy( shape.norms[pairs[faces[2]][1]] )
 				 ], color );
 		geometry.faces.push( face );
 	}

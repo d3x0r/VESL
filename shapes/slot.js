@@ -1,9 +1,10 @@
 
 const c = require( "./consts.js" );
 
-const swell_x_offset = (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad;
-const swell_y_offset = (c.vtab_height / (c.vtab_width-c.vtab_tip_width) ) * c.swell_pad;
+const swell_x_offset = (c.htab_height / ((c.htab_base_width-c.htab_tip_width)/2) ) * c.swell_pad;
+const swell_y_offset = (c.vtab_width / ((c.vtab_base_width-c.vtab_tip_width)/2) ) * c.swell_pad;
 
+console.log( "swell tab offsets:" + swell_x_offset + " , " + swell_y_offset );
 const shape = {
 horiz_tab : {
 verts : [ { x:0, y:c.peice_depth, z:0 }, { x:(c.htab_width/2)-c.htab_base_width/2, y : c.peice_depth, z:0 } // 0-1
@@ -15,22 +16,22 @@ verts : [ { x:0, y:c.peice_depth, z:0 }, { x:(c.htab_width/2)-c.htab_base_width/
 	, { x:c.htab_width/2 + c.htab_tip_width/2,y:c.peice_depth,z:c.htab_height } //6
 
 	, { x:0,y:(c.peice_depth*3/4),z:c.swell_pad} // 7
-	, { x: c.htab_width/2 - c.htab_base_width/2 - (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad, y:c.peice_depth*3/4, z:c.swell_pad }
+	, { x: c.htab_width/2 - c.htab_base_width/2 - swell_x_offset, y:c.peice_depth*3/4, z:c.swell_pad }
 
-	, { x: c.htab_width/2 - c.htab_tip_width/2 - (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad, y:c.peice_depth*3/4, z:c.swell_pad }
-	, { x: c.htab_width/2 + c.htab_tip_width/2 - (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad, y:c.peice_depth*3/4, z:c.swell_pad }
+	, { x: c.htab_width/2 - c.htab_tip_width/2 - swell_x_offset, y:c.peice_depth*3/4, z:c.swell_pad }
+	, { x: c.htab_width/2 + c.htab_tip_width/2 - swell_x_offset, y:c.peice_depth*3/4, z:c.swell_pad }
 
-	, { x: c.htab_width/2 + c.htab_base_width/2 + (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad, y:c.peice_depth*3/4, z:c.swell_pad }
+	, { x: c.htab_width/2 + c.htab_base_width/2 + swell_x_offset, y:c.peice_depth*3/4, z:c.swell_pad }
 	, { x:c.htab_width,y:(c.peice_depth*3/4),z:c.swell_pad} //12
 
 
 	, { x:0,y:(c.peice_depth*1/4),z:c.swell_pad}
-	, { x: c.htab_width/2 - c.htab_base_width/2 - (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad, y:c.peice_depth*1/4, z:c.swell_pad }
+	, { x: c.htab_width/2 - c.htab_base_width/2 - swell_x_offset, y:c.peice_depth*1/4, z:c.swell_pad }
 
-	, { x: c.htab_width/2 - c.htab_tip_width/2 - (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad, y:c.peice_depth*1/4, z:c.swell_pad }
-	, { x: c.htab_width/2 + c.htab_tip_width/2 - (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad, y:c.peice_depth*1/4, z:c.swell_pad }
+	, { x: c.htab_width/2 - c.htab_tip_width/2 - swell_x_offset, y:c.peice_depth*1/4, z:c.swell_pad }
+	, { x: c.htab_width/2 + c.htab_tip_width/2 - swell_x_offset, y:c.peice_depth*1/4, z:c.swell_pad }
 
-	, { x: c.htab_width/2 + c.htab_base_width/2 + (c.htab_height / (c.htab_width-c.htab_tip_width) ) * c.swell_pad, y:c.peice_depth*1/4, z:c.swell_pad }
+	, { x: c.htab_width/2 + c.htab_base_width/2 + swell_x_offset, y:c.peice_depth*1/4, z:c.swell_pad }
 	, { x:c.htab_width,y:(c.peice_depth*1/4),z:c.swell_pad} //18
 
 	
@@ -81,7 +82,7 @@ scaledVert(n,scale) { return this.verts[n]; }
 horiz_slot : {
 verts : [ { x: 0, y:c.peice_depth, z: c.htab_height+c.swell_pad }
 	, { x: ( c.htab_width/2-c.htab_tip_width/2 ) - (2*swell_x_offset),  y:c.peice_depth, z: c.htab_height+c.swell_pad }
-        , { x: c.htab_width/2, y:c.peice_dpeth, z:c.htab_height+c.swell_pad}
+        , { x: c.htab_width/2, y:c.peice_depth, z:c.htab_height+c.swell_pad}
 	, { x: ( c.htab_width/2+c.htab_tip_width/2 ) + (2*swell_x_offset),  y:c.peice_depth, z: c.htab_height+c.swell_pad }
         , { x: c.htab_width, y:c.peice_depth, z: c.htab_height+c.swell_pad }
 
@@ -92,14 +93,20 @@ verts : [ { x: 0, y:c.peice_depth, z: c.htab_height+c.swell_pad }
 	, { x:c.htab_width, y:c.peice_depth, z:c.swell_pad }
 
 	// 9-14
-	, { x:0, y:c.peice_depth*3/4, z:0 }, { x:c.htab_width/2-c.htab_base_width - swell_x_offset, y:c.peice_depth*3/4, z:0 }
-	, { x:c.htab_width/2-c.htab_tip_width/2  - swell_x_offset, y:c.peice_depth*3/4, z:c.htab_height }, { x:c.htab_width/2+c.htab_tip_width/2  + swell_x_offset, y:c.peice_depth*3/4, z:c.htab_height }
-	, { x:c.htab_width/2+c.htab_base_width/2 + swell_x_offset, y:c.peice_depth*3/4, z:0 }, { x:c.htab_width, y:c.peice_depth*3/4, z:0 }
+	, { x:0, y:c.peice_depth*3/4, z:0 }
+	, { x:c.htab_width/2-c.htab_base_width - swell_x_offset, y:c.peice_depth*3/4, z:0 }
+	, { x:c.htab_width/2-c.htab_tip_width/2  - swell_x_offset, y:c.peice_depth*3/4, z:c.htab_height }
+	, { x:c.htab_width/2+c.htab_tip_width/2  + swell_x_offset, y:c.peice_depth*3/4, z:c.htab_height }
+	, { x:c.htab_width/2+c.htab_base_width/2 + swell_x_offset, y:c.peice_depth*3/4, z:0 }
+	, { x:c.htab_width, y:c.peice_depth*3/4, z:0 }
 
 	// 15-20
-	, { x:0, y:c.peice_depth*1/4, z:0 }, { x:c.htab_width/2-c.htab_base_width - swell_x_offset, y:c.peice_depth*1/4, z:0 }
-	, { x:c.htab_width/2-c.htab_tip_width/2  - swell_x_offset, y:c.peice_depth*1/4, z:c.htab_height }, { x:c.htab_width/2+c.htab_tip_width/2  + swell_x_offset, y:c.peice_depth*1/4, z:c.htab_height } 
-	, { x:c.htab_width/2+c.htab_base_width/2 + swell_x_offset, y:c.peice_depth*1/4, z:0 }, { x:c.htab_width, y:c.peice_depth*1/4, z:0 }
+	, { x:0, y:c.peice_depth*1/4, z:0 }
+	, { x:c.htab_width/2-c.htab_base_width - swell_x_offset, y:c.peice_depth*1/4, z:0 }
+	, { x:c.htab_width/2-c.htab_tip_width/2  - swell_x_offset, y:c.peice_depth*1/4, z:c.htab_height }
+	, { x:c.htab_width/2+c.htab_tip_width/2  + swell_x_offset, y:c.peice_depth*1/4, z:c.htab_height } 
+	, { x:c.htab_width/2+c.htab_base_width/2 + swell_x_offset, y:c.peice_depth*1/4, z:0 }
+	, { x:c.htab_width, y:c.peice_depth*1/4, z:0 }
 
 	// 21-24
 	, { x:0, y:0, z:c.swell_pad }
@@ -140,40 +147,43 @@ scaledVert(n,scale) { return this.verts[n]; }
 },
 
 vert_tab : {
-verts : [ { z:0, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-0 }, { z:(c.vtab_height/2)-c.vtab_base_width/2, y : c.peice_depth, x:(c.vtab_width+c.swell_pad)-0 } // 0-1
+verts : [ { z:0, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:(c.vtab_height/2)-c.vtab_base_width/2, y : c.peice_depth, x:(c.vtab_width+c.swell_pad)-0 } // 0-1
 	, { z:c.vtab_height/2, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-0} // unused; but kept because numbers were calculated from this
         , { z:(c.vtab_height/2)+c.vtab_base_width/2, y:c.peice_depth,x:(c.vtab_width+c.swell_pad)-0} //3
-	, {z:c.vtab_height,y:c.peice_depth,x:(c.vtab_width+c.swell_pad)-0} //4
+	, { z:c.vtab_height,y:c.peice_depth,x:(c.vtab_width+c.swell_pad)-0} //4
 
 	, { z:c.vtab_height/2 - c.vtab_tip_width/2,y:c.peice_depth,x:(c.vtab_width+c.swell_pad)-c.vtab_width } //5
 	, { z:c.vtab_height/2 + c.vtab_tip_width/2,y:c.peice_depth,x:(c.vtab_width+c.swell_pad)-c.vtab_width } //6
 
 	, { z:0,y:(c.peice_depth*3/4),x:(c.vtab_width+c.swell_pad)-c.swell_pad} // 7
-	, { z: c.vtab_height/2 - c.vtab_base_width/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad } //8
+	, { z: c.vtab_height/2 - c.vtab_base_width/2 - swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad } //8
 
-	, { z: c.vtab_height/2 - c.vtab_tip_width/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
-	, { z: c.vtab_height/2 + c.vtab_tip_width/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z: c.vtab_height/2 - c.vtab_tip_width/2 - swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z: c.vtab_height/2 + c.vtab_tip_width/2 - swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 
-	, { z: c.vtab_height/2 + c.vtab_base_width/2 + (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z: c.vtab_height/2 + c.vtab_base_width/2 + swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 	, { z:c.vtab_height,y:(c.peice_depth*3/4),x:(c.vtab_width+c.swell_pad)-c.swell_pad} //12
 
 
 	, { z:0,y:(c.peice_depth*1/4),x:(c.vtab_width+c.swell_pad)-c.swell_pad}
-	, { z: c.vtab_height/2 - c.vtab_base_width/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z: c.vtab_height/2 - c.vtab_base_width/2 - swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 
-	, { z: c.vtab_height/2 - c.vtab_tip_width/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
-	, { z: c.vtab_height/2 + c.vtab_tip_width/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z: c.vtab_height/2 - c.vtab_tip_width/2 - swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z: c.vtab_height/2 + c.vtab_tip_width/2 - swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 
-	, { z: c.vtab_height/2 + c.vtab_base_width/2 + (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z: c.vtab_height/2 + c.vtab_base_width/2 + swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 	, { z:c.vtab_height,y:(c.peice_depth*1/4),x:(c.vtab_width+c.swell_pad)-c.swell_pad} //18
 
 	
 	, { z:c.vtab_height/2 - c.vtab_tip_width/2,y:0,x:(c.vtab_width+c.swell_pad)-c.vtab_width } //19
 	, { z:c.vtab_height/2 + c.vtab_tip_width/2,y:0,x:(c.vtab_width+c.swell_pad)-c.vtab_width } //20
 
-        , { z:0, y:0, x:(c.vtab_width+c.swell_pad)-0 }, { z:(c.vtab_height/2)-c.vtab_base_width/2, y : 0, x:(c.vtab_width+c.swell_pad)-0 }
-	, { z:c.vtab_height/2, y:0, x:(c.vtab_width+c.swell_pad)-0}, { z:(c.vtab_height/2)+c.vtab_base_width/2, y:0,x:(c.vtab_width+c.swell_pad)-0}
-	, {z:c.vtab_height,y:0,x:(c.vtab_width+c.swell_pad)-0} //25
+        , { z:0, y:0, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:(c.vtab_height/2)-c.vtab_base_width/2, y : 0, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:c.vtab_height/2, y:0, x:(c.vtab_width+c.swell_pad)-0}
+	, { z:(c.vtab_height/2)+c.vtab_base_width/2, y:0,x:(c.vtab_width+c.swell_pad)-0}
+	, { z:c.vtab_height,y:0,x:(c.vtab_width+c.swell_pad)-0} //25
 
 
         ],
@@ -216,29 +226,35 @@ scaledVert(n,scale) { return this.verts[n]; }
 vert_slot : {
 verts : [ { z: 0, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)- c.vtab_width+c.swell_pad }
 	, { z: ( c.vtab_height/2-c.vtab_tip_width/2 ) - (2*swell_y_offset),  y:c.peice_depth, x:(c.vtab_width+c.swell_pad)- c.vtab_width+c.swell_pad }
-        , { z: c.vtab_height/2, y:c.peice_dpeth, x:(c.vtab_width+c.swell_pad)-c.vtab_width+c.swell_pad}
+        , { z: c.vtab_height/2, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-c.vtab_width+c.swell_pad}
 	, { z: ( c.vtab_height/2+c.vtab_tip_width/2 ) + (2*swell_y_offset),  y:c.peice_depth, x:(c.vtab_width+c.swell_pad)- c.vtab_width+c.swell_pad }
         , { z: c.vtab_height, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)- c.vtab_width+c.swell_pad }
 
 	// 5-8
 	, { z:0, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
-	, { z:c.vtab_height/2-c.vtab_base_width - 2*swell_y_offset, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z:c.vtab_height/2-c.vtab_base_width/2 - 2*swell_y_offset, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 	, { z:c.vtab_height/2+c.vtab_base_width/2 + 2*swell_y_offset, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 	, { z:c.vtab_height, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 
 	// 9-14
-	, { z:0, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-0 }, { z:c.vtab_height/2-c.vtab_base_width - swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-0 }
-	, { z:c.vtab_height/2-c.vtab_tip_width/2  - swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.vtab_width }, { z:c.vtab_height/2+c.vtab_tip_width/2  + swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.vtab_width }, 
-	, { z:c.vtab_height/2+c.vtab_base_width/2 + swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-0 }, { z:c.vtab_height, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:0, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:c.vtab_height/2-c.vtab_base_width - swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:c.vtab_height/2-c.vtab_tip_width/2  - swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.vtab_width }
+	, { z:c.vtab_height/2+c.vtab_tip_width/2  + swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-c.vtab_width } 
+	, { z:c.vtab_height/2+c.vtab_base_width/2 + swell_y_offset, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:c.vtab_height, y:c.peice_depth*3/4, x:(c.vtab_width+c.swell_pad)-0 }
 
 	// 15-20
-	, { z:0, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-0 }, { z:c.vtab_height/2-c.vtab_base_width - swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-0 }
-	, { z:c.vtab_height/2-c.vtab_tip_width/2  - swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.vtab_width }, { z:c.vtab_height/2+c.vtab_tip_width/2  + swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.vtab_width }, 
-	, { z:c.vtab_height/2+c.vtab_base_width/2 + swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-0 }, { z:c.vtab_height, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:0, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:c.vtab_height/2-c.vtab_base_width - swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:c.vtab_height/2-c.vtab_tip_width/2  - swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.vtab_width }
+	, { z:c.vtab_height/2+c.vtab_tip_width/2  + swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-c.vtab_width }
+	, { z:c.vtab_height/2+c.vtab_base_width/2 + swell_y_offset, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-0 }
+	, { z:c.vtab_height, y:c.peice_depth*1/4, x:(c.vtab_width+c.swell_pad)-0 }
 
 	// 21-24
 	, { z:0, y:0, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
-	, { z:c.vtab_height/2-c.vtab_base_width - 2*swell_y_offset, y:0, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
+	, { z:c.vtab_height/2-c.vtab_base_width/2 - 2*swell_y_offset, y:0, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 	, { z:c.vtab_height/2+c.vtab_base_width/2 + 2*swell_y_offset, y:0, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 	, { z:c.vtab_height, y:0, x:(c.vtab_width+c.swell_pad)-c.swell_pad }
 	
@@ -275,16 +291,6 @@ scaledVert(n,scale) { return this.verts[n]; }
 },
 
 }
-
-console.log( c.vtab_height/2 - c.vtab_base_width/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad );
-console.log( c.vtab_base_width/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad );
-console.log( c.vtab_height/2 - (c.vtab_width / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad );
-console.log( c.vtab_height/2 - c.vtab_base_width/2 - (1 / (c.vtab_height-c.vtab_tip_width) ) * c.swell_pad );
-console.log( c.vtab_height/2 - c.vtab_base_width/2 - (c.vtab_width / (-c.vtab_tip_width) ) * c.swell_pad );
-console.log( c.swell_pad );
-
-console.log( "vTab:" + JSON.stringify( shape.vert_tab.verts[8] ) );
-
 
 function swapVertFaces() {
 	// because the vertical versions were auto-replaced from horizontals, and then mirrored left-to-right need to reverse faces

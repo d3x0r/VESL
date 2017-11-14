@@ -40,9 +40,9 @@ const c = {
 	htab_height : 0.2,    // height of horizontal tab/slot
 	htab_tip_width : 0.2,
 	vtab_height : 0.5,    // height of vertical tab (should match top_hbar_height
-	vtab_width : 0.15,    // width of vertical tab
+	vtab_width : 0.10,    // width of vertical tab
 	vtab_base_width : 0.25, 
-	vtab_tip_width : 0.10,
+	vtab_tip_width : 0.05,
 
 	top_hbar_height : 0.5,
 	top_hbar_blend_width : 0.5,  // a square on the left/right that merges the normal shading between the center and the edges
@@ -54,12 +54,12 @@ const c = {
 
 	peice_depth : 0.20,    // how thick peices are.
 
-	inset : 0.05,   // outer width of inset
-        inset_pad : 0.025, // inner bevel width
+	inset : 0.025,   // outer width of inset
+        inset_pad : 0.01, // inner bevel width
         inset_depth : 0.025, // depth of inset
         
 	
-	swell_pad : 0.05,  // how much swell is on the sides of peices
+	swell_pad : 0.025,  // how much swell is on the sides of peices
         swell_depth : 0.25,  // percentage of peice_depth that is the slope of the swell... (replace 3/4, 1/4 multiplier constants)
         
         lValue : 0x01,  // has an input
@@ -233,8 +233,9 @@ function _deepFreeze(o, exceptions, level) {
 	
 		nextkey: for( n = 0; n < keys.length; n++ ) {
 			if( level == 0 ) {
+				o.name = keys[n];
 				console.log( "Sealing : " + level + " " + keys[n] );
-				console.log( "something:" + JSON.stringify( o[keys[n]] ) );
+				//console.log( "something:" + JSON.stringify( o[keys[n]] ) );
 			}
 			let m;
 			if( exceptions ) for( m = 0; m < exceptions.length; m++ )
@@ -250,7 +251,7 @@ function deepFreeze(o, exceptions) {
 	_deepFreeze(o, exceptions, 0 );
 }
 
-deepFreeze( c, [c.groups.variables[1].user] );
+_deepFreeze( c, [c.groups.variables[1].user], 1 );
 
 module.exports = exports = c;
 

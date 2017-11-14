@@ -138,7 +138,7 @@ THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
 		}
 
 		scale *= zoomScale;
-
+		
 	};
 
 	this.pan = function ( distance ) {
@@ -207,7 +207,7 @@ THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
 		}
 		thetaDelta = 0;
 		phiDelta = 0;
-		scale = 1;
+		//scale = 1;
 
 		if ( lastPosition.distanceTo( this.object.position ) > 0 ) {
 
@@ -308,6 +308,14 @@ THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
 
 			zoomStart.copy( zoomEnd );
 
+			var position = scope.object.position;
+			var offset = position.clone().sub( scope.center );
+
+			var tmp = scope.center.clone().addScaledVector( scope.object.matrix.backward, offset.length() *(scale) );
+			scope.object.matrix.origin.copy( tmp );
+
+		        scope.object.matrixWorldNeedsUpdate = true;
+
 		} else if ( state === STATE.PAN ) {
 
 			var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
@@ -355,7 +363,6 @@ THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
 		} else {
 
 			scope.zoomIn();
-
 		}
 
 	}
