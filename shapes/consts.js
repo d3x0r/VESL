@@ -36,9 +36,9 @@ const c = {
 	unit_length : 1,   // how long a '1' unit of a scalalbe is
 
 	htab_width : 1,       // width of horizontal tab/slot
-	htab_base_width : 0.35, 
-	htab_height : 0.2,    // height of horizontal tab/slot
-	htab_tip_width : 0.2,
+	htab_base_width : 0.45, 
+	htab_height : 0.15,    // height of horizontal tab/slot
+	htab_tip_width : 0.1,
 	vtab_height : 0.5,    // height of vertical tab (should match top_hbar_height
 	vtab_width : 0.10,    // width of vertical tab
 	vtab_base_width : 0.25, 

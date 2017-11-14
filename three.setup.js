@@ -91,7 +91,7 @@ var status_line;
  		scene.add( light );
 
  		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
- 		light.position.set( 0, 500, -100 );
+ 		light.position.set( -500, 500, 1 );
  		scene.add( light );
 		/* INIT GOES HERE? */
 
