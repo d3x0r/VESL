@@ -66,11 +66,9 @@ casting.addRef = function updateCastMesh( currentRef) {
 
 
 
-THREE.GameMouse = function ( object, domElement ) {
-    this.object = object;
-	this.domElement = ( domElement !== undefined ) ? domElement : document;
+THREE.GameMouse = function ( camera, domElement ) {
+    this.domElement = ( domElement !== undefined ) ? domElement : document;
     this.casting = casting;
-  this.camera = null;
   var scope = this;
   this.mode = 0;
   this.voxelSelector = null;
@@ -78,7 +76,6 @@ THREE.GameMouse = function ( object, domElement ) {
   this.mouseRay = { n : THREE.Vector3Zero.clone(), o: new THREE.Vector3().delete() }
   this.mouseClock = new THREE.Clock();
   this.mouseEvents = [];
-  this.currentAddType = Voxelarium.Voxels.types[2];
 
   var mouseButtonCount = 0;
   var mouseScrollX = 0;
@@ -140,14 +137,6 @@ THREE.GameMouse = function ( object, domElement ) {
             var o = scope.mouseRay.o;
             var result;
             result = rayCast( cluster, scope.mouseRay.o, scope.mouseRay.n )
-
-            if( Voxelarium.selector.currentVoxel )
-              Voxelarium.selector.currentVoxel.delete();
-
-            if( result ) {
-                Voxelarium.selector.currentAddVoxel = cluster.getVoxelRef( false, result.PredPointedVoxel.x, result.PredPointedVoxel.y, result.PredPointedVoxel.z )
-              Voxelarium.selector.currentVoxel = result.ref;
-          }
           /* this was another way of getting voxels... raycast is the routine for this now?
             rayCast projects a line through each plane going going out, and is more accurate than this.
             Plus rayCast can return the side of detection. */
@@ -155,14 +144,7 @@ THREE.GameMouse = function ( object, domElement ) {
 
                 var vox = o.clone().addScaledVector( scope.mouseRay.n, cursorDistance ).delete()
 
-                var vrTo = Voxelarium.VoxelRef( cluster, null
-                    , Math.floor(vox.x/cluster.voxelUnitSize)
-                    , Math.floor(vox.y/cluster.voxelUnitSize)
-                    , Math.floor(vox.z/cluster.voxelUnitSize) );
-                var vrFrom = Voxelarium.VoxelRef( cluster, null
-                        , Math.floor(o.x/cluster.voxelUnitSize)
-                        , Math.floor(o.y/cluster.voxelUnitSize)
-                        , Math.floor(o.z/cluster.voxelUnitSize) );
+                
                 //console.log( "things are ", vrTo, vrFrom )
                 //this.casting.reset();
                 //console.log( "---------- new set ----------- ")
@@ -177,11 +159,6 @@ THREE.GameMouse = function ( object, domElement ) {
                 //    this.casting.geometry.computeBoundingSphere();
                 //    this.casting.geometry.setDrawRange( 0, (this.casting.cubes-1)*24 );
                 //}
-                if( ref ) {
-                  Voxelarium.selector.currentVoxel = ref;
-                } else {
-                  Voxelarium.selector.currentVoxel = cluster.getVoxelRef( true, vox.x, vox.y, vox.z );
-                }
                 vrTo.delete();
                 vrFrom.delete();
             }
@@ -192,25 +169,9 @@ THREE.GameMouse = function ( object, domElement ) {
             if( mEvent ) {
                 if( mEvent.down ) {
                     if( mEvent.button === 0 ) { // left
-                        var ref = Voxelarium.selector.currentAddVoxel;
-                        if( ref && ref.sector ){
-                            ref.sector.setCube( ref.x, ref.y, ref.z, scope.currentAddType )
-                            ref.cluster.mesher.SectorUpdateFaceCulling( ref.sector, true )
-                            //basicMesher.SectorUpdateFaceCulling_Partial( cluster, sector, Voxelarium.FACEDRAW_Operations.ALL, true )
-                            ref.cluster.mesher.MakeSectorRenderingData( ref.sector );
-                            Voxelarium.db.world.storeSector( ref.sector );
-                        }
 
                     }
                     if( mEvent.button === 2 ) { // right
-                        var ref = Voxelarium.selector.currentVoxel;
-                        if( ref && ref.sector ){
-                            ref.sector.setCube( ref.x, ref.y, ref.z, Voxelarium.Voxels.Void )
-                            ref.cluster.mesher.SectorUpdateFaceCulling( ref.sector, true )
-                            //basicMesher.SectorUpdateFaceCulling_Partial( cluster, sector, Voxelarium.FACEDRAW_Operations.ALL, true )
-                            ref.cluster.mesher.MakeSectorRenderingData( ref.sector );
-                            Voxelarium.db.world.storeSector( ref.sector );
-                        }
                     }
                 }
             }

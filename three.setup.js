@@ -6,6 +6,7 @@ console.log( "WINDOW:" + window.THREE + "THREE:"+ THREE + ' doc:' + document.get
 
 var controlNatural;
 var controlOrbit;
+var controlGame;
 var controls;
 
 	var scene;
@@ -71,17 +72,27 @@ var status_line;
 		camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.001, 10000 );
 
 		camera.matrixAutoUpdate = false;
-		camera.position.z = 1500;
+		camera.position.z = 25;
 		camera.matrixWorldNeedsUpdate = true;
 
 		//geometryShader = new THREE.MeshBasicMaterial();
 
 		 // for phong hello world test....
  		var light = new THREE.PointLight( 0xffFFFF, 1, 10000 );
- 		light.position.set( 0, 0, 1000 );
+ 		light.position.set( 0, -500, 100 );
  		scene.add( light );
 
+ 		var light = new THREE.PointLight( 0xffFFFF, 1, 10000 );
+ 		light.position.set( 0, 500, 100 );
+ 		scene.add( light );
 
+ 		var light = new THREE.PointLight( 0xffFFFF, 1, 10000 );
+ 		light.position.set( 0, -500, -100 );
+ 		scene.add( light );
+
+ 		var light = new THREE.PointLight( 0xffFFFF, 1, 10000 );
+ 		light.position.set( 0, 500, -100 );
+ 		scene.add( light );
 		/* INIT GOES HERE? */
 
 		renderer = new THREE.WebGLRenderer();
@@ -102,6 +113,9 @@ var status_line;
 
 		controlOrbit = new THREE.OrbitControls( camera, renderer.domElement );
 		controlOrbit.enable();
+
+		controlGame = new THREE.GameMouse( camera, renderer.domElement );
+		controlGame.enable();
 
 		controls = controlOrbit;
 
@@ -130,11 +144,14 @@ function animate() {
 		//var unit = Math.PI/2; //worst case visible
 
 	renderer.clear();
-	renderer.render();
+	console.log( "camera matrix:", JSON.stringify( camera.matrix ) );
+	renderer.render( scene, camera );
 
 }
 
 
 init();
 animate();
+
+return scene;
 }

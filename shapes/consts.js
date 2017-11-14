@@ -205,7 +205,7 @@ function normalizeNorms( shape ) {
 	for( n = 0; n < keys.length; n++ ) {
 		let frag = shape[keys[n]].norms;
 		if( !frag ) return;
-		console.log( keys[n], frag );
+		//console.log( keys[n], frag );
 		for( let m = 0; m < frag.length; m++ ) {
 			let norm = frag[m];
 			let l = Math.sqrt( ( norm.x * norm.x ) + ( norm.y * norm.y ) + ( norm.z * norm.z ) );
@@ -213,16 +213,17 @@ function normalizeNorms( shape ) {
 			norm.y /= l;
 			norm.z /= l;
 		}
-		console.log( keys[n], frag );
+		//console.log( keys[n], frag );
 	}
 }
 
-function deepFreeze(o, exceptions) {
+function _deepFreeze(o, exceptions, level) {
+		
 	//console.log( "TYPEOF O : ", typeof o, o instanceof Array );
 	if( o instanceof Array ) {
 		let n;
 		for( n = 0; n < o.length; n++ ) {
-			deepFreeze( o[n], exceptions );
+			_deepFreeze( o[n], exceptions, level+1 );
 		}
 		Object.freeze( o );
 	} else if( typeof o === "object" && o ) {
@@ -231,15 +232,22 @@ function deepFreeze(o, exceptions) {
 		let n;
 	
 		nextkey: for( n = 0; n < keys.length; n++ ) {
-			//console.log( "Sealing : ", keys[n] );
+			if( level == 0 ) {
+				console.log( "Sealing : " + level + " " + keys[n] );
+				console.log( "something:" + JSON.stringify( o[keys[n]] ) );
+			}
 			let m;
 			if( exceptions ) for( m = 0; m < exceptions.length; m++ )
 				if( exceptions[m] === o[keys[n]] )
 					continue nextkey;
-			deepFreeze( o[keys[n]], exceptions );
+			_deepFreeze( o[keys[n]], exceptions, level+1 );
 		}
 		Object.freeze(o);
 	}
+}
+
+function deepFreeze(o, exceptions) {
+	_deepFreeze(o, exceptions, 0 );
 }
 
 deepFreeze( c, [c.groups.variables[1].user] );

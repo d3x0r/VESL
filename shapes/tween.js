@@ -59,7 +59,7 @@ pairs : [ [0,0], [1,0]
 	, [2, 1], [3, 1]
         ],
 faces : [ [ 0, 2,1 ], [2, 3, 1] ],
-scaledVert(n,scale) { let v = this.verts[n] return {x:v.x*scale,y:v.y,z:v.z}; }
+scaledVert(n,scale) { let v = this.verts[n]; return {x:v.x*scale,y:v.y,z:v.z}; }
 },
 
 bot_hbar:{
@@ -73,7 +73,7 @@ pairs : [ [0,0], [1,0]
 	, [2, 1], [3, 1]
         ],
 faces : [ [ 0, 2,1 ], [2, 3, 1] ],
-scaledVert(n,scale) { let v = this.verts[n] return {x:v.x*scale,y:v.y,z:v.z}; }
+scaledVert(n,scale) { let v = this.verts[n]; return {x:v.x*scale,y:v.y,z:v.z}; }
 },
 
 hbar_top_left:{
@@ -166,7 +166,7 @@ pairs : [ [0,0], [1,1]
 	, [2, 0], [3, 1]
         ],
 faces : [ [ 0, 2,1 ], [2, 3, 1] ],
-scaledVert(n,scale) { let v = this.verts[n] return {x:v.x,y:v.y,z:v.z*scale}; }
+scaledVert(n,scale) { let v = this.verts[n]; return {x:v.x,y:v.y,z:v.z*scale}; }
 },
 
 lower_corner_fill_back: {
@@ -228,7 +228,7 @@ pairs : [ [0,0], [1,0]
 	, [2, 1], [3, 1]
         ],
 faces : [ [ 0, 1,2 ], [2, 1, 3] ],
-scaledVert(n,scale) { let v = this.verts[n] return {x:v.x*scale,y:v.y,z:v.z}; }
+scaledVert(n,scale) { let v = this.verts[n]; return {x:v.x*scale,y:v.y,z:v.z}; }
 },
 
 bot_hbar_back:{
@@ -242,7 +242,7 @@ pairs : [ [0,0], [1,0]
 	, [2, 1], [3, 1]
         ],
 faces : [ [ 0, 1,2 ], [2, 1, 3] ],
-scaledVert(n,scale) { let v = this.verts[n] return {x:v.x*scale,y:v.y,z:v.z}; }
+scaledVert(n,scale) { let v = this.verts[n]; return {x:v.x*scale,y:v.y,z:v.z}; }
 },
 
 hbar_top_left_back:{
@@ -336,7 +336,7 @@ pairs : [ [0,0], [1,1]
 	, [2, 0], [3, 1]
         ],
 faces : [ [ 0, 1,2 ], [2, 1, 3] ],
-scaledVert(n,scale) { let v = this.verts[n] return {x:v.x,y:v.y,z:v.z*scale}; }
+scaledVert(n,scale) { let v = this.verts[n]; return {x:v.x,y:v.y,z:v.z*scale}; }
 }
 
 
