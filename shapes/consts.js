@@ -56,7 +56,7 @@ const c = {
 
 	inset : 0.025,   // outer width of inset
         inset_pad : 0.01, // inner bevel width
-        inset_depth : 0.025, // depth of inset
+        inset_depth : 0.005, // depth of inset
         
 	
 	swell_pad : 0.025,  // how much swell is on the sides of peices
@@ -82,7 +82,7 @@ const c = {
         	//'else'     :{text:"ELSE",   icon:null},  // NO right hand expression
         	//'elseif'   :{text:"ELSEIF", icon:null}, // needs expression
         	'switch'   :{text:"switch", icon:null,inputs:m(varSyms,unarySyms)}, // switch
-        	//'case'     :{text:"CASE",   icon:null},  // value in a switch
+        	'case'     :{text:"CASE",   icon:null,inputs:m(valSyms,varSyms,unarySyms)},  // value in a switch
         	'for'      :{text:"FOR",    icon:null,input1:m(varSyms),input2:m(varSyms,unarySyms),input3:m(varSyms)},   // for loop (non-standard parameter interface)
         	'while'    :{text:"WHILE",  icon:null,input:m(varSyms,unarySyms),children:m(varSyms,funcSyms,flowSyms) },  // while loop
         	'dowhile'  :{text:"DOWHILE",icon:null,input:m(varSyms,unarySyms),children:m(varSyms,funcSyms,flowSyms)}, // UNTIL( !n )

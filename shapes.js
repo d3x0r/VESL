@@ -19,12 +19,18 @@ const shapes = {
 	},
 	expressor : null,
 	
+	createGeometry : createGeometry,
 	createMesh : createMesh,
+	makeText : makeText,
+	keywords : {
+		
+	}
 }
 
 function Shape(name) {
 	return {
-		verts: [], norms:[], pairs:[], faces:[] 
+		verts: [], norms:[], pairs:[], faces:[],
+		label: {x:0,y:0, z:0}
 	};
 }
       
@@ -79,36 +85,50 @@ function moveShape( dest, offset ) {
 }
 
   
-function composeExpressor() {
+function composeExpressor( variable ) {
 	var shape = Shape();
-
-	if( 1 ) {
+		shape.size = { width : consts.vtab_width + 2*consts.swell_pad + consts.top_hbar_height, height : consts.top_hbar_height + 2*consts.swell_pad };
+		shape.label = {
+			size : { width : consts.top_hbar_height - (consts.inset * 2 + consts.inset ), height: consts.top_hbar_height 
+					- (consts.inset * 2 + consts.inset_pad ) 
+			},
+			pos: new THREE.Vector3( consts.swell_pad + consts.vtab_width + consts.inset + consts.inset_pad/2,
+				consts.peice_depth - consts.inset_depth/2 ,
+				consts.swell_pad + consts.inset+ consts.inset_pad/2
+			) 
+		};
+	if( variable ) {
 		addShape( shape, inset.inset_left, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
-		addShape( shape, inset.inset_right, {x:consts.swell_pad + consts.inset+consts.inset_pad*2 +.5,y:0,z:consts.swell_pad}, 2 );
-		addShape( shape, inset.inset_fill, {x:consts.swell_pad + consts.inset+consts.inset_pad*2,y:0,z:consts.swell_pad}, .5 );
-		addShape( shape, inset.inset_background, {x:consts.swell_pad + consts.inset+consts.inset_pad*2 + consts.inset_pad/2 - (consts.inset+consts.inset_pad),y:0,z:consts.swell_pad}, .5 + (2*consts.inset_pad + 2*consts.inset) + consts.inset_pad/2);
-		addShape( shape, inset.inset_label, {x:consts.swell_pad + consts.inset+consts.inset_pad*2 + consts.inset_pad/2 - (consts.inset+consts.inset_pad),y:0,z:consts.swell_pad}, .5 + (2*consts.inset_pad + 2*consts.inset) + consts.inset_pad/2 );
+		addShape( shape, inset.inset_right, {x:consts.swell_pad + consts.inset+consts.inset_pad +shape.label.size.width  - consts.inset_pad*2,y:0,z:consts.swell_pad}, 2 );
+		addShape( shape, inset.inset_fill, {x:consts.swell_pad + consts.inset+consts.inset_pad*2,y:0,z:consts.swell_pad}, shape.label.size.width - consts.inset_pad*3 );
+		addShape( shape, inset.inset_background, {x:consts.swell_pad + consts.inset+consts.inset_pad*2 + consts.inset_pad/2 - (consts.inset+consts.inset_pad),y:0,z:consts.swell_pad}
+			, shape.label.size.width + consts.inset_pad
+		);
+		//addShape( shape, inset.inset_label, {x:consts.swell_pad + consts.inset+consts.inset_pad*2 + consts.inset_pad/2 - (consts.inset+consts.inset_pad),y:0,z:consts.swell_pad}, .5 + (2*consts.inset_pad + 2*consts.inset) + consts.inset_pad/2 );
+	} else {
+		shape.label.pos.y = consts.peice_depth + consts.inset_depth / 2
+		addShape( shape, tween.top_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, shape.label.size.width + consts.inset*2 + consts.inset_pad );
 	}
 
-	addShape( shape, slot.horiz_slot, {x:consts.swell_pad,y:0,z:-consts.htab_height} );
-	addShape( shape, slot.horiz_tab, {x:consts.swell_pad,y:0,z:-consts.swell_pad  -consts.htab_height } );
+	//addShape( shape, slot.horiz_slot, {x:consts.swell_pad,y:0,z:-consts.htab_height} );
+	//addShape( shape, slot.horiz_tab, {x:consts.swell_pad,y:0,z:-consts.swell_pad  -consts.htab_height } );
 
-	addShape( shape, slot.vert_tab, {x:-consts.vtab_width,y:0,z:consts.swell_pad} );
-	addShape( shape, slot.vert_slot, {x:-consts.swell_pad-consts.vtab_width,y:0,z:consts.swell_pad} );
+	addShape( shape, slot.vert_tab, {x:-(consts.vtab_width),y:0,z:consts.swell_pad} );
+	addShape( shape, slot.vert_slot, {x:shape.label.size.width + consts.inset*3 + consts.inset_pad,y:0,z:consts.swell_pad} );
 
 	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
-	addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, 2 );
-	addShape( shape, hbar_swell.lower, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height}, 2 );
-	addShape( shape, corner.outer1, {x:2+consts.swell_pad,y:0,z:0} );
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, shape.label.size.width + consts.inset_pad + consts.inset*2 + consts.vtab_width  );
+	addShape( shape, hbar_swell.lower, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height}, shape.label.size.width  + consts.inset_pad + consts.inset*2 + consts.vtab_width );
+	addShape( shape, corner.outer1, {x:shape.label.size.width+ consts.vtab_width  + consts.inset*2 + consts.swell_pad + consts.inset_pad,y:0,z:0} );
 
 	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
 
 	//addShape( shape, tween.top_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
-	addShape( shape, tween.bot_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
+	addShape( shape, tween.bot_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, shape.label.size.width + consts.inset*2 + consts.inset_pad );
 
 
 
-	addShape( shape, corner.outer3, {x:2+consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
+	addShape( shape, corner.outer3, {x:shape.label.size.width+ consts.vtab_width  + consts.inset*2 + consts.swell_pad + consts.inset_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
 	moveShape( shape, {x:consts.vtab_width, y:0, z:0 } );
 	return shape;
 }
@@ -119,13 +139,70 @@ function composeCBeam() {
 		
 }
 
-function createMesh( shape ) {
+function makeText( parent, t, color, v )
+{
+	let canvas1 = document.createElement('canvas');
+	let context1 = canvas1.getContext('2d');
+
+	let sw = v.size.width;
+	let sh = v.size.height;//metrics.emHeightAscent - metrics.emHeightDescent
+
+	let w = 40;//metrics.width 
+	let h = 40;//metrics.emHeightAscent - metrics.emHeightDescent
+	canvas1.height = 40;//consts.top_hbar_height - ( consts.inset*2 +consts.inset_pad );
+	canvas1.width = w;//consts.top_hbar_height - ( consts.inset*2 +consts.inset_pad );
+	let bl = ( ( canvas1.height / 2 ) + h/2 ) + 0;//metrics.emHeightDescent;
+
+	context1.textBaseLine = bl;
+
+
+	context1.font = "Bold 30px Arial";
+	let metrics = context1.measureText( t );
+	w = canvas1.width = metrics.width + 20;
+	context1.font = "Bold 30px Arial";
+
+	//context1.fillStyle = "rgba(0,0,255,0.3)";
+	//context1.fillRect( 0, 0, w, h ); 
+
+	context1.fillStyle = color;//"black";
+	context1.fillText(t, canvas1.width/2-metrics.width/2, 30);
+
+	window.document.body.appendChild( canvas1 );
+	// canvas contents will be used for a texture
+	let texture1 = new THREE.Texture(canvas1)
+	texture1.needsUpdate = true;
+	// default is currently THREE.MipMapNearestFilter
+	texture1.minFilter = THREE.NearestFilter;
+
+	let material1 = new THREE.MeshBasicMaterial( {map: texture1
+		//, side:THREE.DoubleSide
+		, transparent:true
+		} );
+
+	//material1.transparent = true;
+	//material1.depthWrite = false;
+
+	var mesh1 = new THREE.Mesh(
+		new THREE.PlaneGeometry(sw, sh),
+		material1
+	);
+	if( v )
+		mesh1.position.set( v.pos.x + sw/2, v.pos.y, v.pos.z+sh/2 );
+	else
+		mesh1.position.set(0,1,0);
+	mesh1.rotateX( -Math.PI/2 );
+	if( parent )
+		parent.add( mesh1 );
+	return mesh1;
+}
+
+
+function createGeometry( shape ) {
 
 	var color = new THREE.Color( 0xffaa00 ); //optional
 	//var materialIndex = 0; //optional
 
 	var geometry = new THREE.Geometry();
-	var material = new THREE.MeshStandardMaterial( { color: 0xAAAAAA, roughness:0.17, metalness:0.24  } );
 
 	var n;
 	for( n = 0; n < shape.verts.length; n++ ) {
@@ -148,14 +225,40 @@ function createMesh( shape ) {
 	}
 
 	geometry.computeBoundingSphere();
+	geometry.shape = shape;
+	return geometry;
+}
 
-	return new THREE.Mesh( geometry, material );
-
+function createMesh( geometry ) {
+	if( !shapes.defaultMaterial )
+		shapes.defaultMaterial = new THREE.MeshStandardMaterial( { color: 0xAAAAAA, roughness:0.17, metalness:0.24  } );
+	var mesh = new THREE.Mesh( geometry, shapes.defaultMaterial );
+	return mesh;
 }
 
 function init() {
-	shapes.expressor = composeExpressor();
+	
+	shapes.expressorConst = composeExpressor(0);
+	shapes.expressor = composeExpressor(1);
+	shapes.expressorConstGeometry = createGeometry( shapes.expressorConst );
+	shapes.expressorGeometry = createGeometry( shapes.expressor );
+	shapes.expressorConstMesh = createMesh( shapes.expressorConstGeometry );
+	shapes.expressorMesh = createMesh( shapes.expressorGeometry );
+	
 	shapes.CBeam = composeCBeam();
+		
+	var keys = Object.keys( consts.keywords );
+	var n;
+	var keywordColor = "rgba( 255,255,255,1.0 )";
+	for( n = 0; n < keys.length; n++ ) {
+		shapes.keywords[keys[n]] = { label : makeText( null, consts.keywords[keys[n]].text, keywordColor, shapes.expressorConst.label )
+				, mesh : null }
+	}
+	for( n = 0; n < keys.length; n++ ) {
+		var o = ( shapes.keywords[keys[n]].mesh = new THREE.Object3D() );
+		o.add( shapes.keywords[keys[n]].label );
+		o.add( shapes.expressorConstMesh.clone() );
+	}
 }
 
 init();

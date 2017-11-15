@@ -70,7 +70,7 @@ var status_line;
 		camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.001, 10000 );
 
 		camera.matrixAutoUpdate = false;
-		camera.position.z = 1;
+		camera.position.z = 5;
 		camera.matrixWorldNeedsUpdate = true;
 
 		//geometryShader = new THREE.MeshBasicMaterial();

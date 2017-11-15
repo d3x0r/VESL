@@ -59,7 +59,7 @@ THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
 
 	var phiDelta = 0;
 	var thetaDelta = 0;
-	var scale = 1;
+	var scale = 3;
 
 	var lastPosition = new THREE.Vector3();
 
