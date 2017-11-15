@@ -51,8 +51,9 @@ const c = {
 	bot_hbar_blend_width : 0.1,  // a square on the left/right that merges the normal shading between the center and the edges
 	vbar_width : 0.2,
 	vbar_blend_height : 0.1,  // a square on the top/bottom that merges the normal shading between the center and the edges
-
 	peice_depth : 0.20,    // how thick peices are.
+
+	key_unit : 0.5,
 
 	inset : 0.025,   // outer width of inset
         inset_pad : 0.01, // inner bevel width
