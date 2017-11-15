@@ -23,11 +23,13 @@ function loadSomeShapes(scene) {
 	//shapes.makeText( mesh, "IF", "rgba(255, 255, 255, 1)", mesh.geometry.shape.label );
 	//scene.add( mesh );
 
-	//var keypad = keyboard.composeKeypad();
+	var keypad = keyboard.composeKeypad();
+	keypad.mesh.position.set( -6, 0, 2 );
+	scene.add( keypad.mesh );
 	var keypad = keyboard.composeKeyboard();
+	keypad.mesh.position.set( 0, 0, 2 );
 	scene.add( keypad.mesh );
 
-	return;
 
 	var m;
 	var p = new THREE.Vector3( -1, 0, -1 );
