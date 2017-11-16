@@ -373,7 +373,7 @@ THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
 
 		if ( scope.enabled === false ) return;
 		if ( scope.userPan === false ) return;
-
+		event.preventDefault();
 		switch ( event.keyCode ) {
 
 			/*case scope.keys.UP:
@@ -410,6 +410,7 @@ THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
 			case scope.keys.ROTATE:
 			case scope.keys.ZOOM:
 			case scope.keys.PAN:
+				event.preventDefault();
 				state = STATE.NONE;
 				break;
 		}
@@ -567,6 +568,10 @@ THREE.OrbitControls = function ( object, clusterLookAt, domElement ) {
     }
 
     this.enable = function(camera) {
+	var inst = document.getElementById( "controlInstruct" );
+	if( inst ) {
+		inst.innerHTML = "click drag to rotate; S to set zoom mode";
+	}
     	scope.domElement.addEventListener( 'contextmenu', ignore, false );
 			scope.domElement.addEventListener( 'touchstart', onTouchDown, false );
 	    scope.domElement.addEventListener( 'touchend', onTouchUp, false );

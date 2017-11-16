@@ -170,7 +170,7 @@ THREE.NaturalControls = function ( object, domElement ) {
 
 		if ( scope.enabled === false ) return;
 		if ( scope.userPan === false ) return;
-    
+    		event.preventDefault();
 		switch ( event.keyCode ) {
 	    case scope.keys.SPACE:
 		scope.object.matrix.motion.speed.y = self.moveSpeed;
@@ -196,6 +196,7 @@ THREE.NaturalControls = function ( object, domElement ) {
 
 	function onKeyUp( event ) {
 
+    		event.preventDefault();
 	switch ( event.keyCode ) {
 	    case scope.keys.SPACE:
 		scope.object.matrix.motion.speed.y = 0;
@@ -296,6 +297,10 @@ function onTouchEnd( e ) {
     }
 
     this.enable = function() {
+	var inst = document.getElementById( "controlInstruct" );
+	if( inst ) {
+		inst.innerHTML = " A S D W C <space>  to move ... click drag to rotate";
+	}
     	scope.domElement.addEventListener( 'contextmenu', ignore, false );
     	scope.domElement.addEventListener( 'mousedown', onMouseDown, false );
     	scope.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
