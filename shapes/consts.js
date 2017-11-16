@@ -43,6 +43,7 @@ const c = {
 	vtab_width : 0.10,    // width of vertical tab
 	vtab_base_width : 0.25, 
 	vtab_tip_width : 0.05,
+	text_pixels_square_per_hbar_height : 40,
 
 	top_hbar_height : 0.5,
 	top_hbar_blend_width : 0.5,  // a square on the left/right that merges the normal shading between the center and the edges
@@ -235,7 +236,7 @@ function _deepFreeze(o, exceptions, level) {
 		nextkey: for( n = 0; n < keys.length; n++ ) {
 			if( level == 0 ) {
 				o.name = keys[n];
-				console.log( "Sealing : " + level + " " + keys[n] );
+				//console.log( "Sealing : " + level + " " + keys[n] );
 				//console.log( "something:" + JSON.stringify( o[keys[n]] ) );
 			}
 			let m;

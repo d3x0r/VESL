@@ -16,6 +16,7 @@ const shapes = {
 	createGeometry : createGeometry,
 	createMesh : createMesh,
 	makeText : makeText,
+	expressorParts : null,
 	keywords : {
 		
 	}
@@ -25,7 +26,8 @@ function Shape(name) {
 	return {
 		verts: [], norms:[], pairs:[], faces:[],
 		size : { width:0, height:0 },
-		label: { pos:new THREE.Vector3(), size:{ width:0, height:0 } }
+		label: { pos:new THREE.Vector3(), size:{ width:0, height:0 } },
+		resize : null
 	};
 }
       
@@ -77,14 +79,22 @@ function moveShape( dest, offset ) {
 
   
 function composeExpressor( variable ) {
+
 	var parts = {
 		left : null,
 		leftTab : null,
 		right: null,
 		rightTab : null,
+		leftVar : null,
+		leftVarTab : null,
+		rightVar: null,
+		rightVarTab : null,
 		middleFill : null,
+		middleVarFill : null,
+		middleConstVar : null,
 	};
 
+	//-------- LEFT TAB
 	var shape = parts.leftTab = Shape();
 	shape.size.width = consts.vtab_width + consts.swell_pad;
 	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
@@ -93,6 +103,7 @@ function composeExpressor( variable ) {
 	addShape( shape, slot.vert_tab, {x:-(consts.vtab_width),y:0,z:consts.swell_pad} );
 	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
 	
+	//-------- LEFT
 	var shape = parts.left = Shape();
 	shape.size.width = consts.swell_pad;
 	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
@@ -101,6 +112,7 @@ function composeExpressor( variable ) {
 	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad}, consts.vtab_height );
 	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
 
+	//-------- RIGHT
 	var shape = parts.right = Shape();
 	shape.size.width = consts.swell_pad;
 	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
@@ -109,20 +121,101 @@ function composeExpressor( variable ) {
 	addShape( shape, vbar_swell.right, {x:0,y:0,z:consts.swell_pad}, consts.vtab_height );
 	addShape( shape, corner.outer3, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
 
+	//-------- RIGHT TAB
 	var shape = parts.rightTab = Shape();
 	shape.size.width = consts.vtab_width + consts.swell_pad;
 	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
 
-	addShape( shape, corner.outer1, {x:0,y:0,z:0} );
+	addShape( shape, corner.outer1, {x:consts.vtab_width,y:0,z:0} );
 	addShape( shape, slot.vert_slot, {x:0,y:0,z:consts.swell_pad}, consts.vtab_height );
-	addShape( shape, corner.outer3, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
+	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.vtab_width );
+	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.vtab_width );
+	addShape( shape, corner.outer3, {x:consts.vtab_width,y:0,z:consts.swell_pad+consts.vtab_height} );
 
-	var shape = parts.middleFill = Shape();
-	shape.size.width = consts.top_hbar_width;
+	//-------- LEFT VAR TAB
+	var shape = parts.leftVarTab = Shape();
+	shape.size.width = consts.vtab_width + consts.swell_pad;
 	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
-	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.top_hbar_height );
-	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.top_hbar_height );
 
+	addShape( shape, corner.outer0, {x:(consts.vtab_width),y:0,z:0} );
+	addShape( shape, slot.vert_tab, {x:0,y:0,z:consts.swell_pad} );
+	addShape( shape, corner.outer2, {x:(consts.vtab_width),y:0,z:consts.swell_pad+consts.vtab_height} );
+	addShape( shape, inset.inset_left, {x:consts.swell_pad+consts.vtab_width,y:0,z:consts.swell_pad} );
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad+consts.vtab_width,y:0,z:0}, consts.inset+consts.inset_pad *2 );
+	addShape( shape, hbar_swell.lower, {x:consts.swell_pad+consts.vtab_width,y:0,z:consts.swell_pad+consts.vtab_height}, consts.inset+consts.inset_pad *2 );
+	addShape( shape, tween.top_hbar_back, {x:consts.swell_pad+consts.vtab_width,y:0,z:consts.swell_pad}, consts.inset+consts.inset_pad*2 );
+	
+	//-------- LEFT VAR
+	var shape = parts.leftVar = Shape();
+	shape.size.width = consts.swell_pad;
+	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
+
+	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad}, consts.vtab_height );
+	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
+	addShape( shape, inset.inset_left, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, consts.inset +consts.inset_pad *2 );
+	addShape( shape, hbar_swell.lower, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.vtab_height}, consts.inset + consts.inset_pad *2 );
+	addShape( shape, tween.top_hbar_back, {x:consts.swell_pad,y:0,z:consts.swell_pad}, consts.inset+consts.inset_pad*2 );
+
+	//-------- RIGHT VAR
+	var shape = parts.rightVar = Shape();
+	shape.size.width = consts.swell_pad;
+	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
+
+	addShape( shape, corner.outer1, {x:consts.inset+consts.inset_pad*2,y:0,z:0} );
+	addShape( shape, vbar_swell.right, {x:consts.inset+consts.inset_pad*2,y:0,z:consts.swell_pad}, consts.vtab_height );
+	addShape( shape, corner.outer3, {x:consts.inset+consts.inset_pad*2,y:0,z:consts.swell_pad+consts.vtab_height} );
+	addShape( shape, inset.inset_right, {x:0,y:0,z:consts.swell_pad} );
+	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.inset+consts.inset_pad*2 );
+	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.inset+consts.inset_pad*2 );
+	addShape( shape, tween.top_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.inset+consts.inset_pad*2 );
+
+	//-------- RIGHT VAR TAB
+	var shape = parts.rightVarTab = Shape();
+	shape.size.width = consts.vtab_width + consts.swell_pad;
+	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
+
+	addShape( shape, corner.outer1, {x:consts.vtab_width + consts.inset+consts.inset_pad*2,y:0,z:0} );
+	addShape( shape, slot.vert_slot, {x:consts.inset+consts.inset_pad*2,y:0,z:consts.swell_pad} );
+	addShape( shape, corner.outer3, {x:consts.vtab_width+ consts.inset+consts.inset_pad*2,y:0,z:consts.swell_pad+consts.vtab_height } );
+	addShape( shape, inset.inset_right, {x:0 ,y:0,z:consts.swell_pad } );
+	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.vtab_width + consts.inset+consts.inset_pad*2 );
+	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.vtab_width + consts.inset+consts.inset_pad*2 );
+	addShape( shape, tween.top_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.inset+consts.inset_pad*2 );
+
+	//-------- MIDDLE FILL
+	var shape = parts.middleFill = Shape();
+	shape.size.width = consts.unit_length;
+	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
+	addShape( shape, tween.top_hbar, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
+	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.unit_length );
+	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.unit_length );
+	addShape( shape, tween.top_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
+
+	//-------- MIDDLE VAR FILL
+	var shape = parts.middleVarFill = Shape();
+	shape.size.width = consts.unit_length;
+	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
+	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.unit_length );
+	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.unit_length );
+	addShape( shape, inset.inset_fill, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
+	addShape( shape, tween.top_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
+
+
+	//-------- CONST = VAR
+	var shape = parts.middleConstVar = Shape();
+	shape.size.width = consts.inset + consts.inset_pad*2;
+	shape.size.height = consts.top_hbar_height + 2*consts.swell_pad;
+
+	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.inset +consts.inset_pad *2 );
+	addShape( shape, inset.inset_left, {x:0,y:0,z:consts.swell_pad} );
+	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.inset + consts.inset_pad *2 );
+	addShape( shape, tween.top_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.inset + consts.inset_pad *2 );
+
+
+	shapes.expressorParts = parts;
 
 	var shape = Shape();
 	shape.size.width = consts.vtab_width + 2*consts.swell_pad + consts.top_hbar_height;
@@ -161,12 +254,18 @@ function composeExpressor( variable ) {
 
 	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.vtab_height} );
 
-	//addShape( shape, tween.top_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, 2 );
+	addShape( shape, corner.outer3, {x:shape.label.size.width+ consts.vtab_width  + consts.inset*2 + consts.swell_pad + consts.inset_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
+
 	addShape( shape, tween.bot_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, shape.label.size.width + consts.inset*2 + consts.inset_pad );
 
+	if( variable ) 
+	{
+		shape.resize = function( size ) {
+			
+		}				
+		
+	}
 
-
-	addShape( shape, corner.outer3, {x:shape.label.size.width+ consts.vtab_width  + consts.inset*2 + consts.swell_pad + consts.inset_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
 	moveShape( shape, {x:consts.vtab_width, y:0, z:0 } );
 	return shape;
 }
@@ -272,6 +371,7 @@ function composeCBeam( input, output ) {
 
 function makeText( parent, t, color, v )
 {
+
 	let canvas1 = document.createElement('canvas');
 	let context1 = canvas1.getContext('2d');
 
@@ -289,7 +389,8 @@ function makeText( parent, t, color, v )
 
 	context1.font = "Bold 30px Arial";
 	let metrics = context1.measureText( t );
-	w = canvas1.width = metrics.width + 20;
+	console.log( "width of text is:", metrics.width, t );
+	w = canvas1.width = 60;//metrics.width + 20;
 	context1.font = "Bold 30px Arial";
 
 	//context1.fillStyle = "rgba(0,0,255,0.3)";
@@ -328,6 +429,119 @@ function makeText( parent, t, color, v )
 	return mesh1;
 }
 
+function recomputeText( t ) {
+
+	let metrics = canvas.ctx.measureText( t.text );
+	let w, h;
+	w = t.canvas.width = metrics.width + 20;
+
+	t.ctx.font = "Bold 30px Arial";
+	
+
+	t.texture.needsUpdate = true;
+	
+}
+
+function addVarText( t, char ) {
+	var sourceChar = char;
+
+	if( char == '\b' ) {
+		if( t.text.length > 0 ) 
+			t.text = t.text.substr( 0, t.text.length-1 );
+	} else if( char === ' ' ){
+		if( isString )
+			t.text += ' ';
+		else
+			t.shift_toggle = true;
+	} else if( Array.isArray( char ) ) {
+		if( t.shift_toggle )
+			t.text += sourceChar[1];
+		else
+			t.text += sourceChar[0];
+	} else
+		t.text += char;
+	recomputeText( t );
+}
+
+function makeVarText( parent, color, v, isString )
+{
+	let canvas = {
+		canvas : document.createElement('canvas'),
+		ctx : null,
+		text : "",
+		shift_toggle : false,
+		isString : isString,
+		color : color,
+		texture : null,
+		material : null,
+		mesh : null,
+		parentShape : null,
+		label : v		
+	}	
+	canvas.ctx = canvas.canvas.getContext('2d' );
+
+	let sw = v.size.width;
+	let sh = v.size.height;//metrics.emHeightAscent - metrics.emHeightDescent
+
+	let w = 40;//metrics.width 
+	let h = 40;//metrics.emHeightAscent - metrics.emHeightDescent
+	canvas.canvas.height = 40;//consts.top_hbar_height - ( consts.inset*2 +consts.inset_pad );
+	canvas.canvas.width = w;//consts.top_hbar_height - ( consts.inset*2 +consts.inset_pad );
+	let bl = ( ( canvas.canvas.height / 2 ) + h/2 ) + 0;//metrics.emHeightDescent;
+
+	canvas.ctx.textBaseLine = bl;
+
+	canvas.ctx.font = "Bold 30px Arial";
+	let metrics = canvas.ctx.measureText( t );
+	console.log( "width of text is:", metrics.width, t );
+	w = canvas.canvas.width = metrics.width + 20;
+	canvas.ctx.font = "Bold 30px Arial";
+
+	//canvas.ctx.fillStyle = "rgba(0,0,255,0.3)";
+	//canvas.ctx.fillRect( 0, 0, w, h ); 
+
+	canvas.ctx.fillStyle = color;//"black";
+	canvas.ctx.fillText(t, canvas.canvas.width/2-metrics.width/2, 30);
+
+	//window.document.body.appendChild( canvas.canvas );
+
+	// canvas contents will be used for a texture
+	canvas.texture = new THREE.Texture(canvas.canvas)
+	canvas.texture.needsUpdate = true;
+	// default is currently THREE.MipMapNearestFilter
+	canvas.texture.minFilter = THREE.NearestFilter;
+
+	canvas.material = new THREE.MeshBasicMaterial( {map: canvas.texture
+		//, side:THREE.DoubleSide
+		, transparent:true
+		} );
+
+	//material1.transparent = true;
+	//material1.depthWrite = false;
+
+	canvas.mesh = new THREE.Mesh(
+		new THREE.PlaneGeometry(sw, sh),
+		canvas.material
+	);
+	if( v )
+		canvas.mesh.position.set( v.pos.x + sw/2, v.pos.y, v.pos.z+sh/2 );
+	else
+		canvas.mesh.position.set(0,1,0);
+	canvas.mesh.rotateX( -Math.PI/2 );
+	if( parent )
+		parent.add( canvas.mesh );
+	return canvas;
+}
+
+function updateGeometry( geometry ) {
+	let verts = geometry.vertices;
+	let srcverts = geometry.shape.verts;
+	for( n = 0; n < verts.length; n++ ) {
+		vertes[n].copy( srcverts[n] );
+	}
+	geometry.verticesNeedUpdate = true;
+	geometry.computeBoundingSphere();
+}
 
 function createGeometry( shape ) {
 

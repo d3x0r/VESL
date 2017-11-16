@@ -4,7 +4,6 @@ const c = require( "./consts.js" );
 const swell_x_offset = (  ((c.htab_base_width-c.htab_tip_width)/2) /c.htab_height) * c.swell_pad;
 const swell_y_offset = ( ((c.vtab_base_width-c.vtab_tip_width)/2)/ (c.vtab_width) ) * c.swell_pad;
 
-console.log( "swell tab offsets:" + swell_x_offset + " , " + swell_y_offset );
 const shape = {
 horiz_tab : {
 verts : [ { x:0, y:c.peice_depth, z:0 }, { x:(c.htab_width/2)-c.htab_base_width/2, y : c.peice_depth, z:0 } // 0-1
@@ -191,20 +190,20 @@ verts : [ { z:0, y:c.peice_depth, x:(c.vtab_width+c.swell_pad)-0 }
 
 
         ],
-norms : [ { z:0, y : 1, x: 0.2 }, { z:-0.1, y : 1, x: 0.2 }, { z:-0.2, y : 1, x: 0.2 }, { z:0.2, y : 1, x:0.2 }, { z:0.1, y : 1, x: 0.2 }
+norms : [ { z:0, y : 1, x: 0 }, { z:-0.1, y : 1, x: -0.2 }, { z:-0.2, y : 1, x: -0.2 }, { z:0.2, y : 1, x:-0.2 }, { z:0.1, y : 1, x: -0.2 }
 	, { z:0, y : 1, x: -0.2 }
 	, { z:0.1, y : 1, x: -0.2 }
 	, { z:-0.1, y : 1, x: -0.2 }
 	, { z:0.1, y: 1, x:-0.2 } // 8
 	, { z:-0.1, y:1, x:-0.2 } // 9
 
-	, { z:0, y:0, x:1 } // 10
-	, { z:-0.1, y:0, x:1 } // 11
-	, { z:-0.4, y:0, x:1 } //12
-	, { z:0.4, y:0, x:1 }  //13
-	, { z:0.1, y:0, x:1 }  //14
+	, { z:0, y:0, x:-1 } // 10
+	, { z:-0.1, y:0, x:-1 } // 11
+	, { z:-0.4, y:0, x:-1 } //12
+	, { z:0.4, y:0, x:-1 }  //13
+	, { z:0.1, y:0, x:-1 }  //14
 	
-	, { z: 0,y:-1,x:0.2}, {z:-0.1, y:-1, x:0.2}, {z:-0.2,y:-1,x:0.2}, {z:0.2, y:-1, x:0.2}, {z:0.1, y:-1, x:0.2} // 15-19
+	, { z: 0,y:-1,x:-0.2}, {z:-0.1, y:-1, x:-0.2}, {z:-0.2,y:-1,x:-0.2}, {z:0.2, y:-1, x:-0.2}, {z:0.1, y:-1, x:-0.2} // 15-19
 	, { z: 0,y:-1,x:0} //20
 
 
@@ -268,12 +267,12 @@ verts : [ { z: 0, y:c.peice_depth, x:0 }
 	, { z: ( c.vtab_height/2+c.vtab_tip_width/2 ) + (2*swell_y_offset),  y:0, x:0 }
         , { z: c.vtab_height, y:0, x:0 }
 	],
-norms : [ { z: 0, y:0.9,x:0.1}
-	, { z:0,y:1,x:-0.2 }, { z: 0.1, y:1, x:-0.2 }, { z:0.3,y:1, x:-0.2}, { z:-0.3,y:1,x:-0.2}, {z:-0.1,y:1,x:-0.2}
+norms : [ { z: 0, y:1,x:0}
+	, { z:0,y:1,x:0.2 }, { z: -0.1, y:1, x:0.2 }, { z:-0.3,y:1, x:0.2}, { z:0.3,y:1,x:0.2}, {z:0.1,y:1,x:0.2}
 	// 5-9
-	, { z:0, y:0, x:-1 }, { z: 0.1, y:0, x:-1}, { z:0.4, y:0, x:-0.5 }, { z:-0.4, y:0, x:-0.5 }, { z:-0.1, y:0, x:-1 }
+	, { z:0, y:0, x:1 }, { z: -0.1, y:0, x:1}, { z:-0.4, y:0, x:0.5 }, { z:0.4, y:0, x:0.5 }, { z:0.1, y:0, x:1 }
 	// 10-14
-	, { z:0,y:-1,x:-0.2 }, { z: 0.1, y:-1, x:-0.2 }, { z:0.3,y:-1, x:-0.2}, { z:-0.3,y:-1,x:-0.2}, {z:-0.1,y:-1,x:-0.2}
+	, { z:0,y:-1,x:0.2 }, { z: -0.1, y:-1, x:0.2 }, { z:-0.3,y:-1, x:0.2}, { z:0.3,y:-1,x:0.2}, {z:0.1,y:-1,x:0.2}
 	// 15
         , { z:0, y:-1,x:0 }
 	
