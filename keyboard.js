@@ -20,6 +20,9 @@ const numSyms = [ '7','8','9','e'
 		,'1','2','3','-'
 		,'0','x','b','o' ];
 
+var keyboard = null;
+var keypad = null;
+
 function composeKey( s1, s2 ) {
 	var shape = shapes.Shape();
 	shapes.addShape( shape, corner.outer0, { x: 0, y:0, z:0 } );
@@ -51,6 +54,7 @@ function composeKey( s1, s2 ) {
 }
 
 function composeKeyboard() {
+	if( keyboard ) return keyboard;
 	var key = composeKey(1,1);
         var spaceKey = composeKey(6.75,1);
         var shiftKey = composeKey(2,1);
@@ -92,11 +96,12 @@ function composeKeyboard() {
 	pad_frame.mesh.add( kinst = shiftKey.mesh.clone() );
 	shapes.makeText( kinst, "Shift", color, shiftKey.shape.label );
 	kinst.position.set( 14 * size.width, consts.peice_depth/2, ((1.1*3)+0.1) * size.height );
-
+	keyboard = pad_frame;
 	return pad_frame;
 }
 
 function composeKeypad() {
+	if( keypad ) return keypad;
 	var key = composeKey(1,1);
 	var label = key.shape.label;
 	var size = key.shape.size;
@@ -169,6 +174,7 @@ function composeKeypad() {
 	pad_frame.mesh.add( kinst = key.mesh.clone() );
 	shapes.makeText( kinst, numSyms[15], color, label );
 	kinst.position.set( 3.4 * size.width, consts.peice_depth/2, 3.4 * size.height );
+	keypad = pad_frame;
 	
 	return pad_frame;
 }
