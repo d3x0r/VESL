@@ -32,6 +32,9 @@ THREE.Vector3.prototype.clone = function() {
     let vector;
     if( !vector3Pool.length ) vector = new THREE.Vector3();
     else vector = vector3Pool.shift();
+    vector.x = this.x;
+    vector.y = this.y;
+    vector.z = this.z;
     return vector;
 }
 
@@ -64,6 +67,10 @@ THREE.Vector4.prototype.clone = function() {
     let vector;
     if( !vector4Pool.length ) vector = new THREE.Vector4();
     else vector = vector4Pool.shift();
+    vector.x = this.x;
+    vector.y = this.y;
+    vector.z = this.z;
+    vector.w = this.w;
     return vector;
 }
 
@@ -143,9 +150,11 @@ THREE.Matrix4.prototype.__defineGetter__( "motion", function(){
 					m.origin.addScaledVector( m.left, del.x );
 
 					this.rotation.addScaledVector( this.torque, delta );
-					var this_move = this.rotation.clone().multiplyScalar( delta )
-					m.rotateRelative( this_move.x, this_move.y, this_move.z );
-					this_move.delete();
+					if( this.rotation.x || this.rotation.y || this.rotation.z ) {
+						var this_move = this.rotation.clone().multiplyScalar( delta )
+						m.rotateRelative( this_move.x, this_move.y, this_move.z );
+						this_move.delete();
+					}
 					del.delete();
 				},
 				rotate : function( m, delta ) {
