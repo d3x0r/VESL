@@ -2,6 +2,8 @@
  * @author d3x0r / https://github.com/d3x0r
  */
 
+const forwardSpeed = 
+
 THREE.NaturalControls = function ( object, domElement ) {
 	var self = this;
 	this.object = object;
@@ -11,10 +13,10 @@ THREE.NaturalControls = function ( object, domElement ) {
 
 	// 65 /*A*/, 83 /*S*/, 68 /*D*/
 	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40
-        , A:65, S:83, D:68, W:87, SPACE:32, C:67 };
+	, A:65, S:83, D:68, W:87, SPACE:32, C:67 };
 
 	// internals
-	this.moveSpeed = 12 * 0.0254;
+	this.moveSpeed = 10* 12 * 0.0254;
 	var scope = this;
 
 	var rotateStart = new THREE.Vector2();
@@ -79,17 +81,17 @@ THREE.NaturalControls = function ( object, domElement ) {
 
 	this.update = function ( tick ) {
 
-    touchUpdate();
+		touchUpdate();
 
-    scope.object.matrix.motion.rotation.x = -phiDelta;
-    scope.object.matrix.motion.rotation.y = thetaDelta;
-    scope.object.matrix.move( tick );
-    scope.object.matrix.rotateRelative( 0, 0, -scope.object.matrix.roll );
+		scope.object.matrix.motion.rotation.x = -phiDelta;
+		scope.object.matrix.motion.rotation.y = thetaDelta;
+		scope.object.matrix.move( tick );
+		scope.object.matrix.rotateRelative( 0, 0, -scope.object.matrix.roll );
 
-    scope.object.matrixWorldNeedsUpdate = true;
+		scope.object.matrixWorldNeedsUpdate = true;
 
-    thetaDelta = 0;
-    phiDelta = 0;
+		thetaDelta = 0;
+		phiDelta = 0;
 	};
 
 
@@ -112,12 +114,11 @@ THREE.NaturalControls = function ( object, domElement ) {
 
 		event.preventDefault();
 
-    rotateEnd.set( event.clientX, event.clientY );
+		rotateEnd.set( event.clientX, event.clientY );
 		rotateDelta.subVectors( rotateEnd, rotateStart );
 
-        rotateDelta.x = 32 * (rotateDelta.x / window.innerWidth)
-        rotateDelta.y = 32 * (rotateDelta.y / window.innerHeight)
-
+		rotateDelta.x = 32 * (rotateDelta.x / window.innerWidth)
+		rotateDelta.y = 32 * (rotateDelta.y / window.innerHeight)
 		scope.rotateLeft( 2 * Math.PI * rotateDelta.x  );
 		scope.rotateUp( 2 * Math.PI * rotateDelta.y );
 
@@ -171,11 +172,11 @@ THREE.NaturalControls = function ( object, domElement ) {
 		if ( scope.userPan === false ) return;
     
 		switch ( event.keyCode ) {
-            case scope.keys.SPACE:
-                scope.object.matrix.motion.speed.y = self.moveSpeed;
-                break;
-            case scope.keys.C:
-                scope.object.matrix.motion.speed.y = -self.moveSpeed;
+	    case scope.keys.SPACE:
+		scope.object.matrix.motion.speed.y = self.moveSpeed;
+		break;
+	    case scope.keys.C:
+		scope.object.matrix.motion.speed.y = -self.moveSpeed;
 				break;
 			case scope.keys.A:
 				scope.object.matrix.motion.speed.x = -self.moveSpeed;
@@ -195,27 +196,27 @@ THREE.NaturalControls = function ( object, domElement ) {
 
 	function onKeyUp( event ) {
 
-        switch ( event.keyCode ) {
-            case scope.keys.SPACE:
-                scope.object.matrix.motion.speed.y = 0;
-                break;
-            case scope.keys.C:
-                scope.object.matrix.motion.speed.y = 0;
-                break;
+	switch ( event.keyCode ) {
+	    case scope.keys.SPACE:
+		scope.object.matrix.motion.speed.y = 0;
+		break;
+	    case scope.keys.C:
+		scope.object.matrix.motion.speed.y = 0;
+		break;
 
-            case scope.keys.A:
-                scope.object.matrix.motion.speed.x = 0;
+	    case scope.keys.A:
+		scope.object.matrix.motion.speed.x = 0;
 				break;
 			case scope.keys.W:
-                scope.object.matrix.motion.speed.z = 0;
+		scope.object.matrix.motion.speed.z = 0;
 				break;
 			case scope.keys.S:
-                scope.object.matrix.motion.speed.z = 0;
+		scope.object.matrix.motion.speed.z = 0;
 				break;
 			case scope.keys.D:
-                scope.object.matrix.motion.speed.x = 0;
+		scope.object.matrix.motion.speed.x = 0;
 				break;
-        }
+	}
 		//switch ( event.keyCode ) {
 
 		//		break;
@@ -237,14 +238,14 @@ function touchUpdate() {
     }
     else {
 
-            rotateEnd.set( t.x, t.y );
+	    rotateEnd.set( t.x, t.y );
       		rotateDelta.subVectors( rotateEnd, rotateStart );
 
-            rotateDelta.x = -2 * (rotateDelta.x / window.innerWidth)
-            rotateDelta.y = - 2 * (rotateDelta.y / window.innerHeight)
+	    rotateDelta.x = -2 * (rotateDelta.x / window.innerWidth)
+	    rotateDelta.y = - 2 * (rotateDelta.y / window.innerHeight)
       		scope.rotateLeft( Math.PI/2 * rotateDelta.x   );
       		scope.rotateUp( Math.PI/2 * rotateDelta.y );
-            //console.log( rotateDelta )
+	    //console.log( rotateDelta )
       		rotateStart.copy( rotateEnd );
 
     }
@@ -283,7 +284,7 @@ function onTouchEnd( e ) {
 }
 
     function ignore(event) {
-        event.preventDefault();
+	event.preventDefault();
     }
     this.disable = function() {
     	scope.domElement.removeEventListener( 'contextmenu', ignore, false );
