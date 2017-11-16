@@ -17,6 +17,11 @@ const shapes = {
 	createMesh : createMesh,
 	makeText : makeText,
 	expressorParts : null,
+	statementParts : null,
+	CBeam : null,
+	makeCallBlock : makeCallBlock,
+	makeSwitchBlock : makeSwitchBlock,
+	makeObjectBlock : makeObjectBlock,
 	keywords : {
 		
 	}
@@ -27,7 +32,8 @@ function Shape(name) {
 		verts: [], norms:[], pairs:[], faces:[],
 		size : { width:0, height:0 },
 		label: { pos:new THREE.Vector3(), size:{ width:0, height:0 } },
-		resize : null
+		resize : null,
+		scaledVert(n,scale) { return this.verts[n]; }
 	};
 }
       
@@ -193,6 +199,7 @@ function composeExpressor( variable ) {
 	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.unit_length );
 	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.unit_length );
 	addShape( shape, tween.top_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
+	shape.scaledVert = function (n,scale) { return { x: this.verts[n].x * scale, y:this.verts[n].y, z:this.verts[n].z } }
 
 	//-------- MIDDLE VAR FILL
 	var shape = parts.middleVarFill = Shape();
@@ -202,6 +209,7 @@ function composeExpressor( variable ) {
 	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.vtab_height}, consts.unit_length );
 	addShape( shape, inset.inset_fill, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
 	addShape( shape, tween.top_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
+	shape.scaledVert = function (n,scale) { return { x: this.verts[n].x * scale, y:this.verts[n].y, z:this.verts[n].z } }
 
 
 	//-------- CONST = VAR
@@ -256,7 +264,7 @@ function composeExpressor( variable ) {
 
 	addShape( shape, corner.outer3, {x:shape.label.size.width+ consts.vtab_width  + consts.inset*2 + consts.swell_pad + consts.inset_pad,y:0,z:consts.swell_pad+consts.vtab_height} );
 
-	addShape( shape, tween.bot_hbar, {x:consts.swell_pad,y:0,z:consts.swell_pad}, shape.label.size.width + consts.inset*2 + consts.inset_pad );
+	addShape( shape, tween.top_hbar_back, {x:consts.swell_pad,y:0,z:consts.swell_pad}, shape.label.size.width + consts.inset*2 + consts.inset_pad );
 
 	if( variable ) 
 	{
@@ -270,6 +278,39 @@ function composeExpressor( variable ) {
 	return shape;
 }
 
+function composeStatements( input, output ) {
+	var shape;
+	var parts = {
+		forkBegin : { shape:Shape(), geometry:null, mesh: null },
+		'continue' : { shape:Shape(), geometry:null, mesh: null },
+	}
+	
+	shape = parts.forkBegin.shape;	
+	shape.size.width = consts.swell_pad + consts.htab_width;
+	shape.size.height = consts.swell_pad*2 + consts.top_hbar_height;
+
+	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.swell_pad*2 + consts.htab_width );
+	//addShape( shape, vbar_swell.left, {x:consts.swell_pad,y:0,z:0}, consts.swell_pad*2 + consts.htab_width );
+	addShape( shape, hbar_swell.lower_inner_tab, {x:0,y:0,z:consts.swell_pad+consts.top_hbar_height} );
+
+	addShape( shape, slot.horiz_tab, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.top_hbar_height} );
+
+	addShape( shape, tween.top_hbar, {x:0,y:0,z:consts.swell_pad}, consts.htab_width + consts.swell_pad );
+	addShape( shape, tween.top_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.htab_width + consts.swell_pad );
+
+	shape = parts['continue'].shape;	
+	shape.size.width = consts.swell_pad + consts.htab_width;
+	shape.size.height = consts.swell_pad*2 + consts.top_hbar_height;
+	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
+	addShape( shape, slot.horiz_slot, {x:consts.swell_pad,y:0,z:0} );
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad}, consts.htab_height );
+	addShape( shape, slot.horiz_tab, {x:consts.swell_pad+consts.top_hbar_height,y:0,z:0} );
+	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.top_hbar_height} );
+	addShape( shape, tween.hbar_tab, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.hbar_height}, consts.htab_width + consts.swell_pad );
+	addShape( shape, tween.hbar_tab_back, {x:consts.swell_pad,y:0,z:consts.swell_pad}, consts.htab_width + consts.swell_pad );
+	return parts;
+}
+
 function composeCBeam( input, output ) {
 	var shape;
 	var parts = {
@@ -278,57 +319,219 @@ function composeCBeam( input, output ) {
 		// outputs always have value not command....
 		ulCornerOutput : { shape:Shape(), geometry:null, mesh: null },
 		ulCornerBlock : { shape:Shape(), geometry:null, mesh: null },
-		hBarTopExtension : { shape:Shape(), geometry:null, mesh: null },
-		hBarBottomExtension : { shape:Shape(), geometry:null, mesh: null },
-		hBarTopEnd : { shape:Shape(), geometry:null, mesh: null },
-		hBarBottomEnd : { shape:Shape(), geometry:null, mesh: null },
+		vBarFork : { shape:Shape(), geometry:null, mesh: null },
+		vBarTab : { shape:Shape(), geometry:null, mesh: null },
+		hBarBottomExtension: { shape:Shape(), geometry:null, mesh: null },
 		lowerBar : { shape:Shape(), geometry:null, mesh: null },
 		lowerBarCommand : { shape:Shape(), geometry:null, mesh: null },
 		lowerBarEnd : { shape:Shape(), geometry:null, mesh: null },
 		vBarExtension : { shape:Shape(), geometry:null, mesh: null },
 	}
 
+	// --------- CALLABLE -------------
 	shape = parts.ulCornerCallable.shape;	
+
+	shape.size.width = consts.swell_pad*2 + consts.vbar_width + consts.htab_width;
+	shape.size.height = consts.swell_pad*2 + consts.htab_height + consts.top_hbar_height;
+
 	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
-	addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, consts.vbar_width + consts.vtab_width + consts.swell_pad );
-	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad}, consts.top_hbar_height );
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, consts.vbar_width + consts.htab_width + consts.swell_pad*2 );
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad}, consts.top_hbar_height + consts.htab_height + consts.swell_pad );
 	addShape( shape, slot.horiz_tab, {x:consts.swell_pad*3 + consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
 	addShape( shape, corner.inner0, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
 	addShape( shape, hbar_swell.lower_inner_tab, {x:consts.swell_pad*2 + consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
-	addShape( shape, vbar_swell.right, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad*2 + consts.top_hbar_height} );
+	addShape( shape, vbar_swell.right, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.htab_height + consts.swell_pad );
+	addShape( shape, tween.top_hbar, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad}, consts.htab_width + consts.swell_pad*2 );
+	addShape( shape, tween.top_hbar_back, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad}, consts.htab_width + consts.swell_pad*2 );
+	addShape( shape, tween.upper_corner_fill_notab, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+	addShape( shape, tween.upper_corner_fill_notab_back, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.htab_height + consts.swell_pad );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.htab_height + consts.swell_pad );
 	
 	
+	// --------- CALL -------------
 	shape = parts.ulCornerCall.shape;
+	shape.size.width = consts.swell_pad + consts.htab_width;
+	shape.size.height = consts.swell_pad*2 + consts.top_hbar_height;
 	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
 	addShape( shape, slot.horiz_slot, {x:consts.swell_pad,y:0,z:0} );
-	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad} );
+	addShape( shape, corner.outer1, {x:consts.swell_pad+consts.htab_width,y:0,z:0} );
+
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad}, consts.top_hbar_height + consts.swell_pad );
+	addShape( shape, corner.inner0, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
+
+	addShape( shape, hbar_swell.lower, {x:consts.swell_pad*2+consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height}, consts.htab_width - (consts.vbar_width +consts.swell_pad ) );
+
+	addShape( shape, tween.upper_corner_fill, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.htab_height} );
+	addShape( shape, tween.upper_corner_fill_back, {x:consts.swell_pad,y:0,z:consts.swell_pad+ consts.htab_height} );
+
+	addShape( shape, tween.hbar_tab, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad +consts.htab_height}, consts.htab_width );
+	addShape( shape, tween.hbar_tab_back, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad+consts.htab_height}, consts.htab_width );
+
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.swell_pad  );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.swell_pad );
+
+	// --------- BLOCK  -----------
+	shape = parts.ulCornerBlock.shape;
+
+	shape.size.width = consts.swell_pad*2 + consts.vbar_width + consts.htab_width;
+	shape.size.height = consts.swell_pad*2 + consts.htab_height + consts.top_hbar_height;
+
+	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
+	addShape( shape, slot.horiz_slot, {x:consts.swell_pad,y:0,z:0} );
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad+consts.htab_width,y:0,z:0}, consts.vbar_width + consts.swell_pad );
+
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad}, consts.top_hbar_height + consts.swell_pad + consts.htab_height );
 	addShape( shape, corner.inner0, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
 	addShape( shape, corner.inner1, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad*2+consts.top_hbar_height} );
-	addShape( shape, hbar_swell.upper, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad*2+consts.top_hbar_height} );
-	addShape( shape, slot.vert_slot, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad*3+consts.top_hbar_height} );
 
-	shape = parts.ulCornerBlock.shape;
-	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
-	addShape( shape, hbar_swell.lower_inner_tab, {x:consts.swell_pad*2+consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
+	addShape( shape, slot.horiz_tab, {x:consts.swell_pad*2+consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
+	addShape( shape, vbar_swell.right, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad*2+consts.top_hbar_height}, consts.htab_height );
+
+
+	addShape( shape, tween.upper_corner_fill, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.htab_height} );
+	addShape( shape, tween.upper_corner_fill_back, {x:consts.swell_pad,y:0,z:consts.swell_pad+ consts.htab_height} );
+
+	addShape( shape, tween.hbar_tab, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad +consts.htab_height}, consts.htab_width );
+	addShape( shape, tween.hbar_tab_back, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad+consts.htab_height}, consts.htab_width );
+
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.htab_height + consts.swell_pad  );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.vtab_height + consts.swell_pad * 3 );
+
+	addShape( shape, tween.top_hbar, {x:consts.swell_pad +consts.htab_width,y:0,z:consts.swell_pad}, consts.vbar_width +consts.swell_pad);
+	addShape( shape, tween.top_hbar_back, {x:consts.swell_pad +consts.htab_width,y:0,z:consts.swell_pad}, consts.vbar_width+consts.swell_pad );
 	
+
+	// --------- OUTPUT (COMBINED EXPRESSION) -------------
 	shape = parts.ulCornerOutput.shape;
+
+	shape.size.width = consts.swell_pad*2 + consts.vbar_width;// + consts.vtab_width;
+	shape.size.height = consts.swell_pad*2 + consts.top_hbar_height;
+
 	addShape( shape, corner.outer0, {x:0,y:0,z:0} );
-	addShape( shape, hbar_swell.lower_inner_tab, {x:consts.swell_pad*2+consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, consts.vbar_width + consts.swell_pad );
+	addShape( shape, slot.vert_tab, {x:-consts.vtab_width,y:0,z:consts.swell_pad}, consts.top_hbar_height + consts.htab_height + consts.swell_pad );
+
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:consts.swell_pad + consts.vtab_height}, consts.swell_pad );
+
+	addShape( shape, corner.inner0, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad+consts.top_hbar_height} );
+
+	addShape( shape, tween.top_hbar, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad}, consts.swell_pad );
+	addShape( shape, tween.top_hbar_back, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad}, consts.swell_pad );
+
+	addShape( shape, tween.upper_corner_fill_notab, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+	addShape( shape, tween.upper_corner_fill_notab_back, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.swell_pad  );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:consts.swell_pad + consts.top_hbar_height}, consts.swell_pad );
+
+	//moveShape( shape, {x:consts.vtab_width, y:0, z:0 } );
 	
+	// --------- VERTICAL BAR INPUT TAB -------------
+	shape = parts.vBarTab.shape;
+	shape.size.width = consts.swell_pad*2 + consts.vbar_width + consts.vtab_width;
+	shape.size.height = consts.swell_pad*2 + consts.vtab_height;
+
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:0}, consts.vtab_height + consts.swell_pad*2 );
+
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:0}, consts.vtab_height + consts.swell_pad*2  );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:0}, consts.vtab_height + consts.swell_pad*2 );
+	
+	addShape( shape, corner.inner1, {x:consts.swell_pad+consts.vbar_width,y:0,z:0} );
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad*2+consts.vbar_width,y:0,z:0}, consts.vtab_width - consts.swell_pad );
+	addShape( shape, corner.outer1, {x:consts.swell_pad+consts.vbar_width + consts.vtab_width,y:0,z:0} );
+	addShape( shape, corner.outer3, {x:consts.swell_pad+consts.vbar_width + consts.vtab_width,y:0,z:consts.vtab_height + consts.swell_pad} );
+	addShape( shape, slot.vert_slot, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad} );
+	addShape( shape, hbar_swell.lower, {x:consts.swell_pad*2+consts.vbar_width,y:0,z: consts.swell_pad+consts.top_hbar_height}, consts.vtab_width - consts.swell_pad );
+	addShape( shape, corner.inner0, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.vtab_height + consts.swell_pad} );
+
+	// --------- VERTICAL BAR FORK -------------
+	shape = parts.vBarFork.shape;
+	shape.size.width = consts.swell_pad*2 + consts.vbar_width;
+	shape.size.height = consts.swell_pad*2 + consts.vtab_height;
+
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:0}, consts.vtab_height + consts.swell_pad*2 );
+
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:0}, consts.vtab_height + consts.swell_pad*2  );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:0}, consts.vtab_height + consts.swell_pad*2 );
+
+	addShape( shape, tween.top_hbar, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad}, consts.swell_pad  );
+	addShape( shape, tween.top_hbar_back, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad}, consts.swell_pad );
+	
+	addShape( shape, corner.inner1, {x:consts.swell_pad+consts.vbar_width,y:0,z:0} );
+	//addShape( shape, hbar_swell.upper, {x:consts.swell_pad*2+consts.vbar_width,y:0,z:0}, consts.vtab_width - consts.swell_pad );
+	//addShape( shape, corner.outer1, {x:consts.swell_pad+consts.vbar_width + consts.vtab_width,y:0,z:0} );
+	//addShape( shape, corner.outer3, {x:consts.swell_pad+consts.vbar_width + consts.vtab_width,y:0,z:consts.vtab_height + consts.swell_pad} );
+	//addShape( shape, slot.vert_slot, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.swell_pad} );
+	//addShape( shape, hbar_swell.lower, {x:consts.swell_pad*2+consts.vbar_width,y:0,z: consts.swell_pad+consts.top_hbar_height}, consts.vtab_width - consts.swell_pad );
+	addShape( shape, corner.inner0, {x:consts.swell_pad+consts.vbar_width,y:0,z:consts.vtab_height + consts.swell_pad} );
+
+	
+	// --------- LOWER BAR CORNER -------------
 	shape = parts.lowerBar.shape;
+	shape.size.width = consts.swell_pad*2 + consts.vbar_width;
+	shape.size.height = consts.swell_pad*2 + consts.bot_hbar_height;
 	addShape( shape, vbar_swell.left, {x:0,y:0,z:0}, consts.swell_pad+consts.bot_hbar_height);
+	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.bot_hbar_height} );
+	addShape( shape, corner.inner1, {x:consts.swell_pad+consts.vbar_width,y:0,z:0} );
+	//addShape( shape, hbar_swell.upper, {x:consts.swell_pad,y:0,z:0}, consts. );
+	addShape( shape, hbar_swell.lower, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.bot_hbar_height}, consts.vbar_width + consts.swell_pad );
+
+	addShape( shape, tween.lower_corner_fill, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+	addShape( shape, tween.lower_corner_fill_back, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+	addShape( shape, tween.bot_hbar, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad}, consts.swell_pad );
+	addShape( shape, tween.bot_hbar_back, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad}, consts.swell_pad );
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:0}, consts.swell_pad );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:0}, consts.swell_pad );
+
+	// --------- LOWER BAR COMMAND -------------
+	shape = parts.lowerBarCommand.shape;
+	shape.size.width = consts.swell_pad + consts.htab_width;
+	shape.size.height = consts.swell_pad*2 + consts.bot_hbar_height + consts.htab_height;
+	addShape( shape, corner.inner1, {x:consts.swell_pad+consts.vbar_width,y:0,z:0} );
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:0}, consts.swell_pad+consts.bot_hbar_height);
+	addShape( shape, hbar_swell.upper, {x:consts.swell_pad*2+consts.vbar_width,y:0,z:0}, consts.htab_width - ( consts.swell_pad + consts.vbar_width ) );
 	addShape( shape, corner.outer2, {x:0,y:0,z:consts.swell_pad+consts.bot_hbar_height} );
 	addShape( shape, slot.horiz_tab, {x:consts.swell_pad,y:0,z:consts.swell_pad+consts.bot_hbar_height} );
 
-	shape = parts.lowerBarEnd.shape;
-	addShape( shape, corner.outer1, {x:consts.top_hbar_height + consts.swell_pad*2,y:0,z:0} );
-	addShape( shape, vbar_swell.right, {x:consts.top_hbar_height + consts.swell_pad*2,y:0,z:consts.swell_pad}, consts.bot_hbar_height );
-	addShape( shape, corner.outer3, {x:consts.top_hbar_height + consts.swell_pad*2,y:0,z:consts.bot_hbar_height+consts.swell_pad} );
+	addShape( shape, tween.lower_corner_fill, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+	addShape( shape, tween.lower_corner_fill_back, {x:consts.swell_pad,y:0,z:consts.swell_pad} );
+	addShape( shape, tween.bot_hbar, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad}, consts.htab_width - consts.vbar_width );
+	addShape( shape, tween.bot_hbar_back, {x:consts.swell_pad + consts.vbar_width,y:0,z:consts.swell_pad}, consts.htab_width - consts.vbar_width );
 
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:0}, consts.swell_pad );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:0}, consts.swell_pad );
+
+	// --------- LOWER BAR END -------------
+	shape = parts.lowerBarEnd.shape;
+	shape.size.width = consts.swell_pad;
+	shape.size.height = consts.swell_pad*2 + consts.bot_hbar_height;
+	addShape( shape, corner.outer1, {x:0,y:0,z:0} );
+	addShape( shape, vbar_swell.right, {x:0,y:0,z:consts.swell_pad}, consts.bot_hbar_height );
+	addShape( shape, corner.outer3, {x:0,y:0,z:consts.bot_hbar_height+consts.swell_pad} );
+
+	// --------- VERT BAR TWEEN -------------
 	shape = parts.vBarExtension.shape;
-	addShape( shape, vbar_swell.left, {x:0,y:0,z:0}, consts.top_hbar_height + consts.swell_pad*2 );
-	//addShape( shape, tween.vbar , {x:consts.swell_pad,y:0,z:0}, consts.top_hbar_height );
-	addShape( shape, corner.outer1, {x:consts.top_hbar_height + consts.swell_pad*2,y:0,z:0} );
+	shape.size.width = consts.vbar_width + 2*consts.swell_pad;
+	shape.size.height = consts.unit_length;
+	addShape( shape, vbar_swell.left, {x:0,y:0,z:0}, consts.unit_length );
+	addShape( shape, vbar_swell.right, {x:consts.swell_pad+consts.vbar_width,y:0,z:0}, consts.unit_length );
+	addShape( shape, tween.vbar, {x:consts.swell_pad,y:0,z:0}, consts.unit_length  );
+	addShape( shape, tween.vbar_back, {x:consts.swell_pad,y:0,z:0}, consts.unit_length );
+
+	shape.scaledVert = function (n,scale) { return { x: this.verts[n].x, y:this.verts[n].y, z:this.verts[n].z * scale } }
+
+	// --------- HOR BAR BOTTOM TWEEN -------------
+	shape = parts.hBarBottomExtension.shape;
+	shape.size.width = consts.unit_length;
+	shape.size.height = consts.bot_hbar_height + 2*consts.swell_pad;
+
+	addShape( shape, tween.bot_hbar, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
+	addShape( shape, hbar_swell.upper, {x:0,y:0,z:0}, consts.unit_length );
+	addShape( shape, hbar_swell.lower, {x:0,y:0,z:consts.swell_pad+consts.bot_hbar_height}, consts.unit_length );
+	addShape( shape, tween.bot_hbar_back, {x:0,y:0,z:consts.swell_pad}, consts.unit_length );
+	shape.scaledVert = function (n,scale) { return { x: this.verts[n].x * scale, y:this.verts[n].y, z:this.verts[n].z } }
+
+
 
 
 	parts.ulCornerCallable.geometry = createGeometry(  parts.ulCornerCallable.shape );
@@ -342,17 +545,15 @@ function composeCBeam( input, output ) {
 	parts.ulCornerBlock.geometry = createGeometry(  parts.ulCornerBlock.shape );
 	parts.ulCornerBlock.mesh = createMesh(  parts.ulCornerBlock.geometry );
 
-	parts.hBarTopExtension.geometry = createGeometry(  parts.hBarTopExtension.shape );
-	parts.hBarTopExtension.mesh = createMesh(  parts.hBarTopExtension.geometry );
+	parts.vBarFork.geometry = createGeometry(  parts.vBarFork.shape );
+	parts.vBarFork.mesh = createMesh(  parts.vBarFork.geometry );
+
+	parts.vBarTab.geometry = createGeometry(  parts.vBarTab.shape );
+	parts.vBarTab.mesh = createMesh(  parts.vBarTab.geometry );
+
 
 	parts.hBarBottomExtension.geometry = createGeometry(  parts.hBarBottomExtension.shape );
 	parts.hBarBottomExtension.mesh = createMesh(  parts.hBarBottomExtension.geometry );
-
-	parts.hBarTopEnd.geometry = createGeometry(  parts.hBarTopEnd.shape );
-	parts.hBarTopEnd.mesh = createMesh(  parts.hBarTopEnd.geometry );
-
-	parts.hBarBottomEnd.geometry = createGeometry(  parts.hBarBottomEnd.shape );
-	parts.hBarBottomEnd.mesh = createMesh(  parts.hBarBottomEnd.geometry );
 
 	parts.lowerBar.geometry = createGeometry(  parts.lowerBar.shape );
 	parts.lowerBar.mesh = createMesh(  parts.lowerBar.geometry );
@@ -368,6 +569,100 @@ function composeCBeam( input, output ) {
 	
 	return parts;		
 }
+
+function makeCallBlock( ) {
+	// --------- A WHOLE CALLABLE BLOCK -------------
+	var shape = Shape();
+
+	//addShape( shape, shapes.expressorParts.middleConstVar, {x:shapes.CBeam.ulCornerCall.shape.size.width,y:0,z:0}, 2 );
+	//addShape( shape, shapes.expressorParts.middleVarFill, {x:shapes.CBeam.ulCornerCall.shape.size.width,y:0,z:0}, 2 );
+	//addShape( shape, shapes.expressorParts.rightVar, {x:shapes.CBeam.ulCornerCall.shape.size.width + 2,y:0,z:0} );
+
+
+	addShape( shape, shapes.expressorParts.middleFill, {x:shapes.CBeam.ulCornerCall.shape.size.width,y:0,z:0}, 2 );
+	addShape( shape, shapes.expressorParts.right, {x:shapes.CBeam.ulCornerCall.shape.size.width + 2,y:0,z:0} );
+
+	addShape( shape, shapes.CBeam.ulCornerCall.shape, {x:0,y:0,z:0} );
+	addShape( shape, shapes.CBeam.vBarTab.shape, {x:0,y:0,z:shapes.CBeam.ulCornerCall.shape.size.height} );
+
+	addShape( shape, shapes.CBeam.lowerBarCommand.shape, {x:0,y:0,z:shapes.CBeam.ulCornerCall.shape.size.height + shapes.CBeam.vBarFork.shape.size.height } );
+	addShape( shape, shapes.CBeam.hBarBottomExtension.shape, {x:shapes.CBeam.lowerBarCommand.shape.size.width,y:0,z:shapes.CBeam.ulCornerCall.shape.size.height + shapes.CBeam.vBarFork.shape.size.height }, 2 );
+	addShape( shape, shapes.CBeam.lowerBarEnd.shape, {x:shapes.CBeam.lowerBarCommand.shape.size.width + 2,y:0,z:shapes.CBeam.ulCornerCall.shape.size.height + shapes.CBeam.vBarFork.shape.size.height } );
+	return shape;		
+}
+
+function makeSwitchBlock( ) {
+	// --------- A WHOLE CALLABLE BLOCK -------------
+	var shape = Shape();
+
+	//addShape( shape, shapes.expressorParts.middleConstVar, {x:shapes.CBeam.ulCornerBlock.shape.size.width,y:0,z:0}, 2 );
+	//addShape( shape, shapes.expressorParts.middleVarFill, {x:shapes.CBeam.ulCornerBlock.shape.size.width,y:0,z:0}, 2 );
+	//addShape( shape, shapes.expressorParts.rightVar, {x:shapes.CBeam.ulCornerBlock.shape.size.width + 2,y:0,z:0} );
+
+	var cursor = { x:0, y:0 };
+	addShape( shape, shapes.expressorParts.middleFill, {x:shapes.CBeam.ulCornerBlock.shape.size.width,y:0,z:0}, 2 );
+	addShape( shape, shapes.expressorParts.rightTab, {x:shapes.CBeam.ulCornerBlock.shape.size.width + 2,y:0,z:0} );
+
+	addShape( shape, shapes.CBeam.ulCornerBlock.shape, {x:0,y:0,z:0} );
+	cursor.x += shapes.CBeam.ulCornerBlock.shape.size.width;
+	cursor.y += shapes.CBeam.ulCornerBlock.shape.size.height;
+	addShape( shape, shapes.CBeam.vBarExtension.shape, {x:0,y:0,z:cursor.y}, consts.top_hbar_height + consts.swell_pad*2 );
+
+	
+	cursor.y += consts.top_hbar_height + consts.swell_pad*2;
+	addShape( shape, shapes.CBeam.vBarFork.shape, {x:0,y:0,z:cursor.y} );
+	addShape( shape, shapes.statementParts.forkBegin.shape, {x:shapes.CBeam.vBarExtension.shape.size.width,y:0,z:cursor.y}, consts.top_hbar_height + consts.swell_pad*2 );
+	addShape( shape, shapes.expressorParts.rightTab, {x:shapes.CBeam.vBarExtension.shape.size.width + shapes.statementParts.forkBegin.shape.size.width,y:0,z:cursor.y}, consts.top_hbar_height + consts.swell_pad*2 );
+	cursor.y += shapes.CBeam.vBarFork.shape.size.height;
+	addShape( shape, shapes.CBeam.vBarExtension.shape, {x:0,y:0,z:cursor.y}, consts.top_hbar_height + consts.swell_pad*2 );
+	cursor.y += consts.top_hbar_height + consts.swell_pad*2;
+
+	addShape( shape, shapes.CBeam.vBarFork.shape, {x:0,y:0,z:cursor.y} );
+	addShape( shape, shapes.statementParts.forkBegin.shape, {x:shapes.CBeam.vBarExtension.shape.size.width,y:0,z:cursor.y}, consts.top_hbar_height + consts.swell_pad*2 );
+	addShape( shape, shapes.expressorParts.rightTab, {x:shapes.CBeam.vBarExtension.shape.size.width + shapes.statementParts.forkBegin.shape.size.width,y:0,z:cursor.y}, consts.top_hbar_height + consts.swell_pad*2 );
+	cursor.y += shapes.CBeam.vBarFork.shape.size.height;
+
+	addShape( shape, shapes.CBeam.vBarExtension.shape, {x:0,y:0,z:cursor.y}, consts.top_hbar_height + consts.swell_pad*2 );
+	cursor.y += consts.top_hbar_height + consts.swell_pad*2;
+	
+
+	addShape( shape, shapes.CBeam.lowerBarCommand.shape, {x:0,y:0,z:cursor.y } );
+	addShape( shape, shapes.CBeam.hBarBottomExtension.shape, {x:shapes.CBeam.lowerBarCommand.shape.size.width,y:0,z:cursor.y }, 2 );
+	addShape( shape, shapes.CBeam.lowerBarEnd.shape, {x:shapes.CBeam.lowerBarCommand.shape.size.width + 2,y:0,z:cursor.y } );
+	return shape;		
+}
+
+function makeObjectBlock( ) {
+	// --------- A WHOLE CALLABLE BLOCK -------------
+	var shape = Shape();
+
+	//addShape( shape, shapes.expressorParts.middleConstVar, {x:shapes.CBeam.ulCornerBlock.shape.size.width,y:0,z:0}, 2 );
+	//addShape( shape, shapes.expressorParts.middleVarFill, {x:shapes.CBeam.ulCornerBlock.shape.size.width,y:0,z:0}, 2 );
+	//addShape( shape, shapes.expressorParts.rightVar, {x:shapes.CBeam.ulCornerBlock.shape.size.width + 2,y:0,z:0} );
+
+	var cursor = { x:0, y:0 };
+	addShape( shape, shapes.expressorParts.middleFill, {x:shapes.CBeam.ulCornerOutput.shape.size.width,y:0,z:0}, 2 );
+	addShape( shape, shapes.expressorParts.rightTab, {x:shapes.CBeam.ulCornerOutput.shape.size.width + 2,y:0,z:0} );
+
+	addShape( shape, shapes.CBeam.ulCornerOutput.shape, {x:0,y:0,z:0} );
+	cursor.x += shapes.CBeam.ulCornerOutput.shape.size.width;
+	cursor.y += shapes.CBeam.ulCornerOutput.shape.size.height;
+	addShape( shape, shapes.CBeam.vBarTab.shape, {x:0,y:0,z:cursor.y} );
+	cursor.y += shapes.CBeam.vBarTab.shape.size.height;
+	addShape( shape, shapes.CBeam.vBarTab.shape, {x:0,y:0,z:cursor.y} );
+	cursor.y += shapes.CBeam.vBarTab.shape.size.height;
+	addShape( shape, shapes.CBeam.vBarTab.shape, {x:0,y:0,z:cursor.y} );
+	cursor.y += shapes.CBeam.vBarTab.shape.size.height;
+	addShape( shape, shapes.CBeam.vBarTab.shape, {x:0,y:0,z:cursor.y} );
+	cursor.y += shapes.CBeam.vBarTab.shape.size.height;
+
+
+	addShape( shape, shapes.CBeam.lowerBar.shape, {x:0,y:0,z:cursor.y } );
+	addShape( shape, shapes.CBeam.hBarBottomExtension.shape, {x:shapes.CBeam.lowerBarCommand.shape.size.width,y:0,z:cursor.y }, 2 );
+	addShape( shape, shapes.CBeam.lowerBarEnd.shape, {x:shapes.CBeam.lowerBar.shape.size.width + 2,y:0,z:cursor.y } );
+	return shape;		
+}
+
 
 function makeText( parent, t, color, v )
 {
@@ -389,7 +684,7 @@ function makeText( parent, t, color, v )
 
 	context1.font = "Bold 30px Arial";
 	let metrics = context1.measureText( t );
-	console.log( "width of text is:", metrics.width, t );
+	//console.log( "width of text is:", metrics.width, t );
 	w = canvas1.width = 60;//metrics.width + 20;
 	context1.font = "Bold 30px Arial";
 
@@ -592,6 +887,7 @@ function init() {
 	shapes.expressorMesh = createMesh( shapes.expressorGeometry );
 	
 	shapes.CBeam = composeCBeam();
+	shapes.statementParts = composeStatements();
 		
 	var keys = Object.keys( consts.keywords );
 	var n;

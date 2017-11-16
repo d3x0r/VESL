@@ -53,9 +53,9 @@ verts : [ { x:0        , y:c.peice_depth    , z:0 }, { x:c.swell_pad, y:c.peice_
 	, { x:0        , y:c.peice_depth*1/4, z:c.swell_pad         }, { x:c.swell_pad, y:c.peice_depth*1/4, z:c.swell_pad  }
 	, { x:0        , y:0              , z:0 }, { x:c.swell_pad, y:0              , z:0 }
         ],
-norms : [ { x:0, y : 1, z: -0.2 }
-	, { x:0, y : 0, z: -1 }
-	, { x:0, y : -1, z: -0.2 }
+norms : [ { x:0, y : 1, z: 0.2 }
+	, { x:0, y : 0, z: 1 }
+	, { x:0, y : -1, z: 0.2 }
         ],
 pairs : [ [0,0], [1,0]
 	, [2, 1], [3, 1]

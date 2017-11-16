@@ -47,7 +47,7 @@ const c = {
 
 	top_hbar_height : 0.5,
 	top_hbar_blend_width : 0.5,  // a square on the left/right that merges the normal shading between the center and the edges
-	top_hbar_tab_fill_height : 0.5 - 0.2, // filling the space under the tab... top_har_height - htab_height
+	top_hbar_tab_fill_height : 0, // filling the space under the tab... top_har_height - htab_height
 	bot_hbar_height : 0.2,
 	bot_hbar_blend_width : 0.1,  // a square on the left/right that merges the normal shading between the center and the edges
 	vbar_width : 0.2,
@@ -188,6 +188,9 @@ const c = {
 	deepFreeze : deepFreeze,
 	normalizeNorms : normalizeNorms,
 };
+
+c.top_hbar_tab_fill_height = c.top_hbar_height - c.htab_height; // filling the space under the tab... top_har_height - htab_height
+
 
 function init() {
 	c.keywords['name'].flags = c.lValue | c.rValue | c.nValue;

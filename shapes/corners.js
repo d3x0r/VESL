@@ -87,16 +87,16 @@ verts : [ { x:0, y:c.peice_depth    , z:0 }, { x:c.swell_pad, y:c.peice_depth   
 	, { x:c.swell_pad , y:c.peice_depth*1/4, z:c.swell_pad }
 	, { x:0, y:0              , z:0 } , { x:c.swell_pad, y:0              , z:0 }, { x:0, y:0              , z:c.swell_pad }
         ],
-norms : [ { x:0.2, y : 1, z: 0.2 }, { x:0, y : 1, z: 0.2 }, { x:0.2, y : 1, z: 0 }
+norms : [ { x:0, y : 1, z: 0  }
 	, { x:1, y : 0, z: 1 }
-	, { x:0.2, y : -1, z: 0.2 }, { x:0.2, y : -1, z: 0.2 }, { x:0.2, y : -1, z: 0.2 }
+	, { x:0, y : -1, z: 0 }
         ],
-pairs : [ [0,0] , [1, 1], [2, 2]
-	, [3,3]
-	, [4,3]
-	, [5,4], [6,5], [7,6]
+pairs : [ [0,0] , [1, 0], [2, 0]
+	, [3,1]
+	, [4,1]
+	, [5,2], [6,2], [7,2]
         ],
-faces : [ [ 0, 2, 3 ], [0, 3, 1], [7,8,4],[7,4,9] ],
+faces : [ [ 0, 2, 3 ], [0, 3, 1], [5,6,4],[5,4,7] ],
 scaledVert(n,scale) { return this.verts[n]; }
 },
 inner1:{
@@ -105,16 +105,15 @@ verts : [ { x:0, y:c.peice_depth    , z:c.swell_pad }, { x:0, y:c.peice_depth   
 	, { x:c.swell_pad , y:c.peice_depth*1/4, z:0 }
 	, { x:0, y:0              , z:c.swell_pad } , { x:0, y:0              , z:0 }, { x:c.swell_pad, y:0         , z:c.swell_pad }
         ],
-norms : [ { x:0.2, y : 1, z: 0.2 }
-	, { x:1, y : 0, z: 1 }, { x:1, y : 0, z: 0 }, { x:0, y : 0, z: 1 }
-	, { x:0.2, y : -1, z: 0.2 }
+norms : [ { x:0, y : 1, z: 0 }
+	, { x:1, y : 0, z: -1 }
+	, { x:0, y : -1, z: 0 }
         ],
-pairs : [ [0,0] , [1, 1], [2, 2]
-	, [3,3]
-	, [4,3]
-	, [5,4], [6,5], [7,6]
+pairs : [ [0,0] , [1, 0], [2, 0]
+	, [3,1], [4,1]
+	, [5,2], [6,2], [7,2]
         ],
-faces : [ [ 0, 2, 3 ], [0, 3, 1], [6,9,8],[6,7,9] ],
+faces : [ [ 0, 2, 3 ], [0, 3, 1], [4,7,5],[4,5,6] ],
 scaledVert(n,scale) { return this.verts[n]; }
 },
 inner2:{
