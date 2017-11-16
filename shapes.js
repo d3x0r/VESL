@@ -658,7 +658,7 @@ function makeObjectBlock( ) {
 
 
 	addShape( shape, shapes.CBeam.lowerBar.shape, {x:0,y:0,z:cursor.y } );
-	addShape( shape, shapes.CBeam.hBarBottomExtension.shape, {x:shapes.CBeam.lowerBarCommand.shape.size.width,y:0,z:cursor.y }, 2 );
+	addShape( shape, shapes.CBeam.hBarBottomExtension.shape, {x:shapes.CBeam.lowerBar.shape.size.width,y:0,z:cursor.y }, 2 );
 	addShape( shape, shapes.CBeam.lowerBarEnd.shape, {x:shapes.CBeam.lowerBar.shape.size.width + 2,y:0,z:cursor.y } );
 	return shape;		
 }
