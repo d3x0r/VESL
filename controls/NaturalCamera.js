@@ -299,7 +299,7 @@ function onTouchEnd( e ) {
     this.enable = function() {
 	var inst = document.getElementById( "controlInstruct" );
 	if( inst ) {
-		inst.innerHTML = " A S D W C <space>  to move ... click drag to rotate";
+		inst.innerHTML = " A S D W C, and Space  to move ... click drag to rotate";
 	}
     	scope.domElement.addEventListener( 'contextmenu', ignore, false );
     	scope.domElement.addEventListener( 'mousedown', onMouseDown, false );
