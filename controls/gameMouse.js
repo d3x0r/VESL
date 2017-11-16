@@ -276,6 +276,7 @@ function onTouchCancel(event) {
   }
 
   this.disable = function() {
+	scope.enabled = false;
     scope.domElement.removeEventListener( 'contextmenu', ignore, false );
     scope.domElement.removeEventListener( 'touchstart', onTouchDown, false );
     scope.domElement.removeEventListener( 'touchend', onTouchUp, false );
@@ -291,6 +292,7 @@ function onTouchCancel(event) {
   }
 
   this.enable = function() {
+	scope.enabled = true;
     scope.domElement.addEventListener( 'contextmenu', ignore, false );
     scope.domElement.addEventListener( 'touchstart', onTouchDown, false );
     scope.domElement.addEventListener( 'touchend', onTouchUp, false );
