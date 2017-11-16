@@ -106,16 +106,23 @@ var status_line;
 		
 		document.body.appendChild( renderer.domElement );
 
-		controlNatural = new THREE.NaturalControls( camera, renderer.domElement );
-		controlNatural.disable();
+		if( THREE.NaturalControls ) {
+			controlNatural = new THREE.NaturalControls( camera, renderer.domElement );
+			controlNatural.disable();
+		}
 
-		controlOrbit = new THREE.OrbitControls( camera, renderer.domElement );
-		controlOrbit.enable();
+		if( THREE.OrbitControls ) {
+			controlOrbit = new THREE.OrbitControls( camera, renderer.domElement );
+			controlOrbit.disable();
+		}
 
-		controlGame = new THREE.GameMouse( camera, renderer.domElement );
-		controlGame.enable();
+		if( THREE.GameMouse ) {
+			controlGame = new THREE.GameMouse( camera, renderer.domElement );
+			controlGame.disable();
+		}
 
 		controls = controlOrbit;
+		controls.enable();
 
 	}
 
