@@ -1,6 +1,6 @@
 
 
-	var app = ["node_modules/three/build/three.js",'vesl.js','controls/orbit_controls.js','controls/NaturalCamera.js',"controls/gameMouse.js"]
+	var app = ["node_modules/three/build/three.js",'vesl.js','']
 	var start = 'windowLoaded();'
 	function R(n) {
 		var script = document.createElement( "script" );
@@ -16,9 +16,13 @@
 	}
 	function addN( n ) {
 		if( n < app.length ) {
-                	let s = R(app[n]);
+			let s;
+			if( app[n] ) 
+				s = R(app[n]);
+			else
+				RIL( start );
                 	if( n == ( app.length-1 ) )
-                        	s.onload = windowLoaded;
+                        	;//windowLoaded();
                         else
                         	s.onload = ()=>{ addN( n+1 ) };
                 }

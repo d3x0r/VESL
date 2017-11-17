@@ -227,7 +227,9 @@ THREE.NaturalControls = function ( object, domElement ) {
 
 var touches = [];
 
-TouchList.prototype.forEach = function(c){ for( var n = 0; n < this.length; n++ ) c(this[n]); }
+if( TouchList )
+	TouchList.prototype.forEach = function(c){ for( var n = 0; n < this.length; n++ ) c(this[n]); }
+
 
 function touchUpdate() {
   if( touches.length == 1 ){
@@ -238,7 +240,6 @@ function touchUpdate() {
       t.new = false;
     }
     else {
-
 	    rotateEnd.set( t.x, t.y );
       		rotateDelta.subVectors( rotateEnd, rotateStart );
 

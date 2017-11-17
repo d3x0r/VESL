@@ -4,6 +4,22 @@
 //	THREE = window.THREE;
 //	console.log( "Set window.THREE to ", window.THREE );
 //}
+
+if( typeof VESL === "undefined" ){
+    this.VESL = {};
+//	var Voxelarium;
+}
+
+VESL= { VERSION : "0.0.1",
+  Settings : {
+     VR : false,
+     AltSpace : false,
+      use_basic_material : true,
+      use_vive : false,
+  }
+};
+
+
 require( "./three.js/personalFill.js" );
 
 const shapes = require( "./shapes.js" );
@@ -12,7 +28,8 @@ const keyboard = require( "./keyboard.js" );
 const setup = require( "./three.setup.js" );
 window.windowLoaded = ()=>{ 
 	console.log( "ONLOAD"+ document.getElementById( "controls1" ) ); 
-	let scene = setup(window,document); 
+
+	let scene = setup( (navigator.getVRDisplays !== undefined) ); 
 	loadSomeShapes( scene );
 };
 
