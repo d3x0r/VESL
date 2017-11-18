@@ -178,6 +178,7 @@ var status_line;
 				render = fallbackRender;
 				renderer.animate( render );
 				scene.remove( user );
+				scene.add( camera );
 				document.body.removeChild( button );
 			} );
 			document.body.appendChild( button );
