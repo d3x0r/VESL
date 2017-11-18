@@ -12,7 +12,7 @@ if( VR ) {
   //if( AltSpace )
   //  require( './three.js/js/controls/AltSpaceControls.js' );
   //else
-    require( './three.js/js/controls/VRControls.js' );
+  //  require( './three.js/js/controls/VRControls.js' );
 //  require( './three.js/js/effects/VREffect.js' );
 //  require( './three.js/js/effects/StereoEffect.js' );
 
@@ -36,14 +36,16 @@ var controlOrbit;
 var controlGame;
 var controls;
 
-var controller1;
-var controller2;
+var user;
 //var effect; // the actual thing to render for VR?
+
+var render; // callback for animate.
 
 	var scene;
 	var scene2;
 	var scene3;
 	var camera, renderer;
+	var space; // the actual space objects are in.
 	var light;
 	var geometry, material, mesh = [];
 	var frame_target = [];
@@ -98,15 +100,29 @@ var status_line;
 		document.getElementById( "controls3").onclick = setControls3;
 
 		scene = new THREE.Scene();
+		space = new THREE.Group();
+		scene.add( space );
 		scene2 = new THREE.Scene();
 		scene3 = new THREE.Scene();
 
+		var user = new THREE.Group();
+		user.position.set( 0, 0, 0 );
+		scene.add( user );
+
+
+
+		if( VR )
+			//space.scale.set( 0.0254, 0.0254, 0.0254 );  // make 1 an inch
+			space.scale.set( 0.0254*4, 0.0254*4, 0.0254*4 );  // make 1 an inch
+
 		camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.001, 10000 );
+		user.add( camera );
 
-		camera.matrixAutoUpdate = false;
-		camera.position.z = 5;
-		camera.matrixWorldNeedsUpdate = true;
-
+		if( !VR ){
+			camera.matrixAutoUpdate = false;
+			camera.position.z = 5;
+			camera.matrixWorldNeedsUpdate = true;
+		}
 		 // for phong hello world test....
  		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
  		light.position.set( 0, -100, 100 );
@@ -131,7 +147,7 @@ var status_line;
 		renderer = new THREE.WebGLRenderer();
 		renderer.setPixelRatio( window.devicePixelRatio );
 		renderer.setSize( window.innerWidth, window.innerHeight );
-
+		renderer.vr.enabled = VR;
 		//if ( !renderer.extensions.get('WEBGL_depth_texture') ) {
 		//          supportsExtension = false;
 //			console.log( "depth texture not available" );
@@ -164,6 +180,7 @@ var status_line;
 			function handleController( controller ) {
 				// update controller object from VR input (gamepad)
 				controller.update();
+				return;
 
 				var pivot = controller.getObjectByName( 'pivot' );
 
@@ -197,6 +214,9 @@ var status_line;
 			}
 
 
+			var controller1;
+			var controller2;
+
 			function setupViveControls( scene ) {
 
 					// update camera poosition from VR inputs...
@@ -212,32 +232,32 @@ var status_line;
 				//controls = new THREE.VRControls( camera );
 				//controls.standing = true;
 
-				scene.add( new THREE.HemisphereLight( 0x888877, 0x777788 ) );
+				//scene.add( new THREE.HemisphereLight( 0x888877, 0x777788 ) );
 
 				var headLight = new THREE.DirectionalLight( 0xffffff );
-				headLight.position.set( 0, 6, 0 );
-				headLight.castShadow = true;
+				headLight.position.set( 0, -0.02, 0 );
+				//headLight.castShadow = true;
 				headLight.shadow.camera.top = 2;
 				headLight.shadow.camera.bottom = -2;
 				headLight.shadow.camera.right = 2;
 				headLight.shadow.camera.left = -2;
 				headLight.shadow.mapSize.set( 4096, 4096 );
-				scene.add( headLight );
+				//camera.add( headLight );
 
 				// controllers
-				var controller1 = new VESL.ViveController( 0 );
-				controller1.standingMatrix = controls.getStandingMatrix();
+				controller1 = new VESL.ViveController( 0 );
+				controller1.standingMatrix = renderer.vr.getStandingMatrix();
 				controller1.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller1.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				controller1.userData.altspace = { collider: { enabled: false } };
-				scene.add( controller1 );
+				user.add( controller1 );
 
-				var controller2 = new VESL.ViveController( 1 );
-				controller2.standingMatrix = controls.getStandingMatrix();
+				controller2 = new VESL.ViveController( 1 );
+				controller2.standingMatrix = renderer.vr.getStandingMatrix();
 				controller2.userData.points = [ new THREE.Vector3(), new THREE.Vector3() ];
 				controller2.userData.matrices = [ new THREE.Matrix4(), new THREE.Matrix4() ];
 				controller2.userData.altspace = { collider: { enabled: false } };
-				scene.add( controller2 );
+				user.add( controller2 );
 
 				var loader = new THREE.OBJLoader();
 				loader.setPath( 'models/obj/vive-controller/' );
@@ -268,11 +288,53 @@ var status_line;
 			}
 			setupViveControls( scene );
 
+			var _tick;
+			function _render( tick ) {
+				let delta;
+				if( !_tick ) { _tick = tick; return; }
+				else delta = ( tick - _tick ) / 1000;
+				_tick = tick;
+                        
+				//if( controls )
+				//	controls.update(delta);
+                        
+				if( controller1 ) {
+					handleController( controller1 );
+					handleController( controller2 );
+				}
+					//console.log( "tick")
+					//if( frame++ > 10 ) return
+					//if( slow_animate )
+				//		requestAnimationFrame( slowanim );
+				//	else
+				//		requestAnimationFrame( animate );
+					//var unit = Math.PI/2; //worst case visible
+					//renderer.clear();
+					//console.log( "camera matrix:", JSON.stringify( camera.matrix ) );
+				renderer.render( scene, camera );
+
+			}
+			render = _render;
+
 		}
 		else {
 			controls = controlNatural;
 			if( controls )
 				controls.enable();
+
+			function _render( tick ) {
+				let delta;
+				if( !_tick ) { _tick = tick; return; }
+				else delta = ( tick - _tick ) / 1000;
+				_tick = tick;
+                        
+				if( controls )
+					controls.update(delta);
+                        
+				renderer.render( scene, camera );
+
+			}
+			render = _render;
 		}
 
 	}
@@ -290,31 +352,11 @@ function beginAnimate()  {
 	renderer.animate( render );
 }
 
-function render() {
-	var delta = clock.getDelta();
-	if( controls )
-		controls.update(delta);
 
-	if( controller1 ) {
-		handleController( controller1 );
-		handleController( controller2 );
-	}
-		//console.log( "tick")
-		//if( frame++ > 10 ) return
-		//if( slow_animate )
-	//		requestAnimationFrame( slowanim );
-	//	else
-	//		requestAnimationFrame( animate );
-		//var unit = Math.PI/2; //worst case visible
-		//renderer.clear();
-		//console.log( "camera matrix:", JSON.stringify( camera.matrix ) );
-	renderer.render( scene, camera );
-
-}
 
 
 init();
 beginAnimate();
 
-return scene;
+return space;
 }
