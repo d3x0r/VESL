@@ -25,8 +25,6 @@ if( VR ) {
 }
 
 if( !VR ) {
-  require( "./controls/orbit_controls.js" )
-  require( "./controls/NaturalCamera.js" )
   //require( "./controls/gameMouse.js" )
 
 }
@@ -72,23 +70,23 @@ var screen = { width:window.innerWidth, height:window.innerHeight };
 
 
 function setControls1() {
-	controls.disable();
+	controls && controls.disable();
 	camera.matrixAutoUpdate = false;
 	controls = controlNatural;
-	controls.enable(camera);
+	controls && controls.enable(camera);
 }
 function setControls2() {
-	controls.disable();
+	controls && controls.disable();
 	camera.matrixAutoUpdate = false;  // current mode doesn't auto update
 	controls = controlOrbit;
-	controls.enable(camera);
+	controls && controls.enable(camera);
 }
 
 function setControls3() {
-	controls.disable();
+	controls && controls.disable();
 	camera.matrixAutoUpdate = false;  // current mode doesn't auto update
 	controls = controlGame;
-	controls.enable(camera);
+	controls && controls.enable(camera);
 }
 
 
@@ -157,8 +155,27 @@ var status_line;
 
 
 		document.body.appendChild( renderer.domElement );
-		if ( typeof WEBVR !== "undefined" )
-			document.body.appendChild( WEBVR.createButton( renderer ) )
+		if ( typeof WEBVR !== "undefined" ) {
+			var button = WEBVR.createButton( renderer, ()=>{
+				require( "./controls/orbit_controls.js" )
+				require( "./controls/NaturalCamera.js" )
+				if( THREE.NaturalControls ) {
+					controlNatural = new THREE.NaturalControls( camera, renderer.domElement );
+					controlNatural.disable();
+				}
+		                
+				if( THREE.OrbitControls ) {
+					controlOrbit = new THREE.OrbitControls( camera, renderer.domElement );
+					controlOrbit.disable();
+				}
+		                
+				if( THREE.GameMouse ) {
+					controlGame = new THREE.GameMouse( camera, renderer.domElement );
+					controlGame.disable();
+				}
+			} );
+			document.body.appendChild( button );
+		}
 
 		if( THREE.NaturalControls ) {
 			controlNatural = new THREE.NaturalControls( camera, renderer.domElement );

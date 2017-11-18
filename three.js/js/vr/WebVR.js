@@ -7,7 +7,7 @@
 
 var WEBVR = {
 
-	createButton: function ( renderer ) {
+	createButton: function ( renderer, fail ) {
 
 		function showEnterVR( display ) {
 
@@ -48,7 +48,7 @@ var WEBVR = {
 			button.onclick = null;
 
 			renderer.vr.setDevice( null );
-
+                        fail && fail();
 		}
 
 		function stylizeElement( element ) {
@@ -121,7 +121,7 @@ var WEBVR = {
 			message.style.textDecoration = 'none';
 
 			stylizeElement( message );
-
+                        fail && fail();
 			return message;
 
 		}
