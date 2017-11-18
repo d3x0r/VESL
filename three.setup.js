@@ -26,6 +26,8 @@ if( VR ) {
 
 if( !VR ) {
   //require( "./controls/gameMouse.js" )
+	require( "./controls/orbit_controls.js" )
+	require( "./controls/NaturalCamera.js" )
 
 }
 
