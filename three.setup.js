@@ -173,8 +173,12 @@ var status_line;
 					controlGame = new THREE.GameMouse( camera, renderer.domElement );
 					controlGame.disable();
 				}
+
+				space.scale.set( 1,1,1 );  // make 1 an inch
 				render = fallbackRender;
 				renderer.animate( render );
+				scene.remove( user );
+				document.body.removeChild( button );
 			} );
 			document.body.appendChild( button );
 		}
