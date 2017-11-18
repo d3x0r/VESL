@@ -346,6 +346,7 @@ var status_line;
 
 	}
 
+var _tick;
 function fallbackRender( tick ) {
 	let delta;
 	if( !_tick ) { _tick = tick; return; }
