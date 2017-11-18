@@ -173,6 +173,8 @@ var status_line;
 					controlGame = new THREE.GameMouse( camera, renderer.domElement );
 					controlGame.disable();
 				}
+				render = fallbackRender;
+				renderer.animate( render );
 			} );
 			document.body.appendChild( button );
 		}
@@ -339,25 +341,22 @@ var status_line;
 			if( controls )
 				controls.enable();
 
-			function _render( tick ) {
-				let delta;
-				if( !_tick ) { _tick = tick; return; }
-				else delta = ( tick - _tick ) / 1000;
-				_tick = tick;
-                        
-				if( controls )
-					controls.update(delta);
-                        
-				renderer.render( scene, camera );
-
-			}
-			render = _render;
+			render = fallbackRender;
 		}
 
 	}
 
-function slowanim() {
-	setTimeout( animate, 256 );
+function fallbackRender( tick ) {
+	let delta;
+	if( !_tick ) { _tick = tick; return; }
+	else delta = ( tick - _tick ) / 1000;
+	_tick = tick;
+
+	if( controls )
+		controls.update(delta);
+
+	renderer.render( scene, camera );
+
 }
 
 
