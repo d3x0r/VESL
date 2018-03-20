@@ -5,19 +5,20 @@ VESL is built from JSON as a basis.
 
 ## JSON(6) Syntax
 
-`{ }` contexts : 1) object 2) code definition
+| symbol | comments |
+|---|---|
+|`{ }` |contexts : 1) object 2) code definition|
+|`[]`  | context 1) array |
+|`""` |           constant strings (template string not quite constant?)|
 
-`[]`   context 1) array 
-
-`""`, `''`, `\`\``                      constant strings (template string not quite constant?)
-
-[-,0-9,eE[0-9]*], true, false, null        constants
+|`[-,0-9,eE[0-9]*]`, `true`, `false`, `null`  |      constants|
 
 ## JSON6 Syntax
 
-'', ``                          constant strings (template string not quite constant?)
-
-+, Infinity, NaN,  undefined    constants
+| symbol | comments |
+|---|---|
+`''`, ` `   ` `                   | added other quotes   constant strings (template string not quite constant?)
+`+`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants
 
 //, /* */     comments  
 
