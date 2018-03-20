@@ -10,39 +10,67 @@ VESL is built from JSON as a basis.
 |`{ }` |contexts : 1) object 2) code definition|
 |`[]`  | context 1) array |
 |`""` |           constant strings (template string not quite constant?)|
-
 |`[-,0-9,eE[0-9]*]`, `true`, `false`, `null`  |      constants|
+| `:` | separates fields and values within context of an object |
+| `,` | separates fields within an object and arrays |
+
+With the above, a simple parser that scans for `{`, `[`, `"`, `-`, `0-9` can be built 
+for quick scanning structure of a JSON string.
 
 ## JSON6 Syntax
 
 | symbol | comments |
 |---|---|
-`''`, ` `   ` `                   | added other quotes   constant strings (template string not quite constant?)
-`+`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants
+|`''`, ` `...` `                   | added other quotes   constant strings (template string not quite constant?) |
+|`+`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants |
+|//, /* */    | comments  |
 
-//, /* */     comments  
-
+Very minor addition in the space of handling named constants `true` and `false`, can 
+add handling for other Math values that are meaningful; and allow leading + for numbers.
+Also a very minor pre-scan that enables a pre-scan filter for comments hardly impacts the exsiting parsing.
 
 
 ## Function Extension Additional Syntax
 
-Assignment
+With the above, all static data constructs can be represented, and the only thing it lacks
+is code or function.  That is there's nothing that DOES anything in JSON.  So within the scope of 
+JSON there are a few things that are available to fork from error condition to instead becoming meaningful.
+One is an identifier as defined below in Syntax Definition and ES6; that is words that are not keywords
+that are outside of quotes.  If one of these is found, then a proper name that can be a variable
+can be defined.  A variable then needs to have a value `=`, so really the first new construct to add is 'Assignment'.
 
+Assignment
+    (syntax below)  'identifier ='
+
+The other is definitions for functions.  Functions get a set of zero or more identifiers to later
+reference the passed parameters.  They also have a sequence of expressions to execute.	
+	
 FunctionDeclaration
+    (syntax below)  'identifier() [{} or ()]'
 
 ### Within an object also additionally add 
 
+Additionally, some additional keywords handling within Objects should be added... 
+getters/setters and operator overloads.
+Also the previous FunctionDeclaration should be allowed within the context of an object.
+
+
 GetterDeclaration
+    'get identifier()'
 
 SetterDeclaration
+     'set identifier(value)'
 
 OperatorDeclaration
+      'operator text'(...) ( /* depending on operator, variable arguments */ )
 
 ### Within Function Code Expression
 
 These operator that are valid within an Expression or Code 
 
-/* All Operators, and flow control keywords */
+All Operators, and flow control keywords
+
+```
 + - -(unary) * / % << >> >>> <| |> = := ==(=)  
 ! && || 
 ~ & !& | !| ^ = !+ < !>= <= !> > !<= >= !< 
@@ -50,7 +78,17 @@ These operator that are valid within an Expression or Code
 if switch case default break while for do continue goto(?) stop 
 this holder(?) base caller(?)
 
- ['+']  no data, contains[n] things to add
+```
+
+### Example Syntax
+
+These are some example statements.  Notable things, 'var' is no longer 'required' (not that it is already I guess)
+An expression with comma separators evalutes each expression delimited by the commas in order; this
+is exactly the same behavior as (for example C statements separated by a semicolon instead).  
+The very last expression evaluated is the result of the expression (return value of a function).
+the 'stop' keyword ends execution within an expression; this allows building 'return <value>' constructs.
+Comma and Semi-colon are interchangable
+`{}` and `()` are (semi)interchangable; except where objects are defined.
 
 
 ```
