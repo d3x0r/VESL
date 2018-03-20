@@ -5,11 +5,11 @@ VESL is built from JSON as a basis.
 
 ## JSON(6) Syntax
 
-{ }  contexts : 1) object 2) code definition
+`{ }` contexts : 1) object 2) code definition
 
-[]   context 1) array 
+`[]`   context 1) array 
 
-"", '', ``                      constant strings (template string not quite constant?)
+`""`, `''`, `\`\``                      constant strings (template string not quite constant?)
 
 [-,0-9,eE[0-9]*], true, false, null        constants
 
