@@ -3,7 +3,7 @@
 VESL is built from JSON as a basis.
 
 
-## JSON(6) Syntax
+## JSON Syntax
 
 | symbol | comments |
 |---|---|
@@ -21,9 +21,9 @@ for quick scanning structure of a JSON string.
 
 | symbol | comments |
 |---|---|
-|`''`, ` `...` `                   | added other quotes   constant strings (template string not quite constant?) |
+|`''`, ` &#60;&#60; `                   | added other quotes   constant strings (template string not quite constant?) |
 |`+`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants |
-|//, /* */    | comments  |
+|`//`, `/* */`    | comments  |
 
 Very minor addition in the space of handling named constants `true` and `false`, can 
 add handling for other Math values that are meaningful; and allow leading + for numbers.
@@ -40,13 +40,13 @@ that are outside of quotes.  If one of these is found, then a proper name that c
 can be defined.  A variable then needs to have a value `=`, so really the first new construct to add is 'Assignment'.
 
 Assignment
-    (syntax below)  'identifier ='
+*    (syntax below)  'identifier ='
 
 The other is definitions for functions.  Functions get a set of zero or more identifiers to later
 reference the passed parameters.  They also have a sequence of expressions to execute.	
 	
 FunctionDeclaration
-    (syntax below)  'identifier() [{} or ()]'
+*    (syntax below)  'identifier() [{} or ()]'
 
 ### Within an object also additionally add 
 
@@ -56,13 +56,13 @@ Also the previous FunctionDeclaration should be allowed within the context of an
 
 
 GetterDeclaration
-    'get identifier()'
+*    'get identifier()'
 
 SetterDeclaration
-     'set identifier(value)'
+*     'set identifier(value)'
 
 OperatorDeclaration
-      'operator text'(...) ( /* depending on operator, variable arguments */ )
+*      'operator text'(...) ( /* depending on operator, variable arguments */ )
 
 ### Within Function Code Expression
 
@@ -139,104 +139,104 @@ There is automatic separator Insertion `,` or `;` on newlines, rules to be expan
 
 
 Assignment ::
-	Identifier = Expression	
+*	Identifier = Expression	
 
 FunctionDeclaration ::
-	Identifier ArgumentsExpression CodeExpression
+*	Identifier ArgumentsExpression CodeExpression
 
 FunctionInvocation ::
-	Identifier CallExpression NonExpression
+*	Identifier CallExpression NonExpression
 	
 NonExpression ::
-	Identifier
-	Operator
-	CloseExpression
-	LineTerminatorSequence
+*	Identifier
+*	Operator
+*	CloseExpression
+*	LineTerminatorSequence
 	
 ArgumentsExpression ::
-	( Identifier [ ExprSeparator Identifier ]... )
+*	( Identifier [ ExprSeparator Identifier ]... )
 
 CodeExpression ::
-	Expression
+*	Expression
 	
 CallExpression ::
-	Expression; but all scalar values are passed
+*	Expression; but all scalar values are passed
 	
 Expression :: 
-	( ExpressionToken [ ExprSeparator ExpressionToken ] )
-	{ ExpressionToken [ ExprSeparator ExpressionToken ] }
+*	( ExpressionToken [ ExprSeparator ExpressionToken ] )
+*	{ ExpressionToken [ ExprSeparator ExpressionToken ] }
 
 	
 CloseExpression ::
-	)   // (as matching what the open of the expression was )
-	}
+*	)   // (as matching what the open of the expression was )
+*	}
 	
 ExpressionToken ::
-	Assignment
-	FunctionDeclaration
-	FunctionInvokation
+*	Assignment
+*	FunctionDeclaration
+*	FunctionInvokation
 	
 ExprSeparator ::
-	,
-	;
-	\n if within CodeExpression, but not within a contained Expression
+*	,
+*	;
+*	\n if within CodeExpression, but not within a contained Expression
 	
 Identifier :: 
-	StringLiteral
-	IdentifierName
+*	StringLiteral
+*	IdentifierName
 
 	
 IdentifierName ::
-	IdentifierStart
-	IdentifierName IdentifierPart
+*	IdentifierStart
+*	IdentifierName IdentifierPart
 	
 IdentifierStart ::
-	UnicodeIDStart
-	$
-	_
-	\ UnicodeEscapeSequence
+*	UnicodeIDStart
+*	$
+*	_
+*	\ UnicodeEscapeSequence
 
 IdentifierPart ::
-	UnicodeIDContinue
-	$
-	_
-	\ UnicodeEscapeSequence
-	<ZWNJ>
-	<ZWJ>
+*	UnicodeIDContinue
+*	$
+*	_
+*	\ UnicodeEscapeSequence
+*	<ZWNJ>
+*	<ZWJ>
 	
 UnicodeIDStart ::
-	any Unicode code point with the Unicode property ID_Start
+*	any Unicode code point with the Unicode property ID_Start
 UnicodeIDContinue ::
-	any Unicode code point with the Unicode property ID_Continue
+*	any Unicode code point with the Unicode property ID_Continue
 	
 
 LineTerminatorSequence ::
-	<LF>[lookprior =<CR> ]
-	<CR>  // not [lookahead ≠ <LF>]
-	<LS>
-	<PS>
-	<CR><LF>
+*	<LF>[lookprior =<CR> ]
+*	<CR>  // not [lookahead ≠ <LF>]
+*	<LS>
+*	<PS>
+*	<CR><LF>
 
 PrimitiveValue ::
-	Number (float/int), NaN, Infinity
-	Boolean (true/false)
-	StringLiteral
-	null
-	undefined
+*	Number (float/int), NaN, Infinity
+*	Boolean (true/false)
+*	StringLiteral
+*	null
+*	undefined
 	
 ObjectSpecification ::
-	{ ObjectField [ ExprSeparator ObjectField] }
+*	{ ObjectField [ ExprSeparator ObjectField] }
 	
 	
 ObjectField
-	Identifier ':' PrimitiveValue
-	FunctionDeclaration
-	get FunctionDeclaration
-	set FunctionDeclaration
-	Identifier ':' ObjectSpecification
+*	Identifier ':' PrimitiveValue
+*	FunctionDeclaration
+*	get FunctionDeclaration
+*	set FunctionDeclaration
+*	Identifier ':' ObjectSpecification
 	
 ObjectMerge ::
-	ObjectSpecification : ObjectSpecification
+*	ObjectSpecification : ObjectSpecification
 
 -------------------------------------------------
 
