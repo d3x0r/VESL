@@ -14,7 +14,7 @@ VESL is built from JSON as a basis.
 | `:` | separates fields and values within context of an object |
 | `,` | separates fields within an object and arrays |
 
-With the above, a simple parser that scans for `{`, `[`, `"`, `-`, `0-9` can be built 
+With the above, a simple parser that scans for `{`, `[`, `"`, `-`, `0-9`, [tfn] can be built 
 for quick scanning structure of a JSON string.
 
 ## JSON6 Syntax
@@ -22,12 +22,14 @@ for quick scanning structure of a JSON string.
 | symbol | comments |
 |---|---|
 |`''`, ` &#60;&#60; `                   | added other quotes   constant strings (template string not quite constant?) |
-|`+`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants |
+|`+`, `.`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants |
 |`//`, `/* */`    | comments  |
 
 Very minor addition in the space of handling named constants `true` and `false`, can 
 add handling for other Math values that are meaningful; and allow leading + for numbers.
 Also a very minor pre-scan that enables a pre-scan filter for comments hardly impacts the exsiting parsing.
+
+With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `&#60;`, `[-,+,.,0-9]`, `[INutfn]`, `/` can be built 
 
 
 ## Function Extension Additional Syntax
@@ -48,6 +50,10 @@ reference the passed parameters.  They also have a sequence of expressions to ex
 FunctionDeclaration
 *    (syntax below)  'identifier() [{} or ()]'
 
+With the above, a simple parser that scans for `[{(]`, `[`, `"`, `'`, `&#60;`, `[-,+,0-9]`, `[INutfn]`, `/` can be built 
+For the declaration of a code fragment, ( to ) and { to } are treated as quotes, counting internal opens/closes of the same
+type.  The code string will be parsed later phase.  (If that is standardized, then all paren expressions can be delay parsed)
+
 ### Within an object also additionally add 
 
 Additionally, some additional keywords handling within Objects should be added... 
@@ -56,13 +62,17 @@ Also the previous FunctionDeclaration should be allowed within the context of an
 
 
 GetterDeclaration
-*    'get identifier()'
+*     get Identifier ()'
 
 SetterDeclaration
 *     'set identifier(value)'
 
 OperatorDeclaration
-*      'operator text'(...) ( /* depending on operator, variable arguments */ )
+*     'operator text'(...) ( /* depending on operator, variable arguments */ )
+
+### Variadic support? 
+
+..., expand [...arg]
 
 ### Within Function Code Expression
 
@@ -181,6 +191,26 @@ ExprSeparator ::
 *	;
 *	\n if within CodeExpression, but not within a contained Expression
 	
+
+_*incomplete reference... just you know, strings.*_
+_*continue collecting until the same quote.*_
+StringLiteral ::
+*	" [DoubleStringCharacters]... "
+*	' [SingleStringCharacters]... '
+*	` [SingleTickStringCharacters] ... `
+
+DoubleStringCharacters ::
+*	DoubleStringCharacter DoubleStringCharactersopt
+
+SingleStringCharacters ::
+*	SingleStringCharacter SingleStringCharactersopt
+
+DoubleStringCharacter ::
+*	SourceCharacter but not one of " or \ or LineTerminator
+*	\ EscapeSequence
+*	LineContinuation
+
+
 Identifier :: 
 *	StringLiteral
 *	IdentifierName
@@ -283,29 +313,66 @@ only if left and right operands of an overloaded type are the same object type.
 
 
 ```
-vector(a,b)( { x : a||0, y : b||0
-	, scale(n)( x*=n, y*=n, this )
-	, '=' (v) ( x=v.x, y=v.y, this )
-	, '=' () { this }
-	, '+' (v) { { x:x+v.x, y:y+v.y } }
-	, '-' () { x = -x, y=-y, this }
-	, '-' (v) { Vector( x-v.x, y-v.y ) }
-	, add(v){ x+=v.x,y += v.y, this }
-	, norm(v)(l=length, x/=l, y/=l, this )
-	, get length() { Math.sqrt( x*x+y*y ) }
-	, get scalar(n) { if n=0 x else y }
-} )
+vector(a,b) { _x : a||0, _y : b||0
+	, scale:(n)( x*=n, y*=n, this )
+	, =: (v) ( x=v.x, y=v.y, this )
+	, =: ()  this 
+	, +: (v) { { x:x+v.x, y:y+v.y } }
+	, -: () { x = -x, y=-y, this }
+	, -: (v) { Vector( x-v.x, y-v.y ) }
+	, add:(v){ x+=v.x,y += v.y, this }
+	, norm:(v)( @l=length, x/=l, y/=l, this )
+	, length: get() { Math.sqrt( x*x+y*y ) }
+	, scalar: get(n) { if n=0 x else y }
+	; (whatever expression)
+	; {whatever expression}
+	, meta : add( vector(1,1) )
+	, norm:( this )
+	, [ ...].forEach( thing=> do thing with thing )
+}
 
 // create a vector3 from vector overloading its methods
-vector3()( (vector()) : {
-	z: 0
-	, scale(n) ( base.scale(n), z*=n )
-	, add(v) (base.add(v),z+=v.z )
-	, norm(v)(l=length, x/=l, y/=l, this )
-	, get length() { Math.sqrt( x*x+y*y +z*z) }
-	, get scalar(n) { if n=0 x else if(n=1) y else z }
+vector3(a,b,c)( vector(a,b) : {
+	#z = c||0
+	scale:(n) ( _scale(n), z*=n )
+	add:(v) ( _add(v),z+=v.z )
+	norm:(v)( #l=length, x/=l, y/=l, this )
+	length :get() { Math.sqrt( x*x+y*y +z*z) }
+	scalar :get(n) { if n=0 x else if(n=1) y else z }
 } );
 
 
 	
 ```
+
+------------------------------------------------------------------
+Was implementing this with only partial decomposition; which loses a lot availalbe to the first level....
+
+So what's the symbolic structure of this stuff?
+
+1) a primitive
+2) a name ( exported by prefixing with '.' )
+2a) = 
+2b) :
+2c) := 
+2d) ( 
+2dA)  )
+2dB)  a name )
+2dC)  a name [, another name]... )
+2dD- anything not a comma `,` or a valid Identifer(string)
+2d.1)  
+
+
+2e) ( 
+2eA)  )
+2eB)  an expression )
+2eB1)   [.] a name =
+2eB2)   a name (other operator)
+2eC)  an Expression [, expression]... )
+2eD- anything not a comma `,` or a valid Identifer(string)
+
+
+
+
+a name is also 'a variable reference' is name.name.name.name
+
