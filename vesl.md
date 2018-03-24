@@ -43,11 +43,11 @@ With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `&#60;`, `[-,
 | `[]`       | | frames an array of expressions.  Expressions are seprated by ',' and 'quoted' with (), {}, '', "", &#60;&#60; |
 |   |   |   |
 | `{}`, `()` | | frames expressions which may optionally have a name.                                                   |
-| ';' or `,` | `[]` | seprates elements.  At a high level can gather string and \0 terminate here.              |
+| `;` or `,` | `[]` | seprates elements.  At a high level can gather string and \0 terminate here.              |
 | `]`        | `[]` | ends elements, terminates last expression element and \0 terminate here.                          |
 | `?`        | `{}` or `()` | ternary comparitor; next ':' is actually in expression and not name.     |
 | `:` or `=` | `{}` or `()` | separates a name for the field from the value of the field.              |
-| ';' or `,` | `{}` or `()` | seprates fields/expressions.  If a ':' is not before ',', value is an unnamed expression. |
+| `;` or `,` | `{}` or `()` | seprates fields/expressions.  If a ':' is not before ',', value is an unnamed expression. |
 | `[`        | `{}` or `()` | starts an array    |
 | `(` or `[` | `{}` or `()` | starts a new framed expression with optionally named expressions.   |
 |   |   |   |
@@ -394,26 +394,26 @@ Was implementing this with only partial decomposition; which loses a lot availal
 
 So what's the symbolic structure of this stuff?
 
-1) a primitive
-2) a name ( exported by prefixing with '.' )
-2a) = 
-2b) :
-2c) := 
-2d) ( 
-2dA)  )
-2dB)  a name )
-2dC)  a name [, another name]... )
-2dD- anything not a comma `,` or a valid Identifer(string)
-2d.1)  
+* 1) a primitive
+* 2) a name ( exported by prefixing with '.' )
+* 2a) = 
+* 2b) :
+* 2c) := 
+* 2d) ( 
+* 2dA)  )
+* 2dB)  a name )
+* 2dC)  a name [, another name]... )
+* 2dD- anything not a comma `,` or a valid Identifer(string)
+* 2d.1)  
 
 
-2e) ( 
-2eA)  )
-2eB)  an expression )
-2eB1)   [.] a name =
-2eB2)   a name (other operator)
-2eC)  an Expression [, expression]... )
-2eD- anything not a comma `,` or a valid Identifer(string)
+* 2e) ( 
+* 2eA)  )
+* 2eB)  an expression )
+* 2eB1)   [.] a name =
+* 2eB2)   a name (other operator)
+* 2eC)  an Expression [, expression]... )
+* 2eD- anything not a comma `,` or a valid Identifer(string)
 
 
 
@@ -441,24 +441,26 @@ Functions are lists of expressions that have operators and operations that will 
 
 Functions evaluate their opnodes in parallel with accumulator(s) for the values of the resolved expressions.
 
-1) allocate an accumulator, call expression evaluator.
-2) for each expression, if the expression is named, get the public/private accumulator, init to undefined, 
+  * 1) allocate an accumulator, call expression evaluator.
+  * 2) for each expression, if the expression is named, get the public/private accumulator, init to undefined, 
 
-2a) if expression is a primitive, assign to active accumulator.
-2b) if the expression is an expression, resolve expression with existing accumulator.
+  * 2a) if expression is a primitive, assign to active accumulator.
+  * 2b) if the expression is an expression, resolve expression with existing accumulator.
+  * 2c) if expression[List] is not closed in parenthesis, advance and retain accumulators
+  * 2d) 
 
-if expression node is a function call....
-1) the existing accumulator for the current expression is passed
-2) the expression vector is not resolved to a single scalar, and is mapped to function's argument name definitions.
-3) the context of the function, the function has variables to be scoped...
+  * if expression node is a function call....
+  * 1) the existing accumulator for the current expression is passed
+  * 2) the expression vector is not resolved to a single scalar, and is mapped to function's argument name definitions.
+  * 3) the context of the function, the function has variables to be scoped...
 
-3a) the expression itself.  
-3b) All immediately defined expression containers. ( a: 1, ( b : a ) )
-3c) The expression containing the function definition   
-3c1) ( a: 1, f()( b:a ) )
-3c2) ( a: 1, f()( b:.a ) )
-3c3) ( a: 1, f()( b:.a, c:., c.b*=3 ) )
-3d4) ( a: 1, f:()( b:.a, c:., c.b*=3 ), g = (n)(.*n),f().b,g(5)  )
+  * 3a) the expression itself.  
+  * 3b) All immediately defined expression containers. ( a: 1, ( b : a ) )
+  * 3c) The expression containing the function definition   
+  * 3c 1) ( a: 1, f()( b:a ) )
+  * 3c 2) ( a: 1, f()( b:.a ) )
+  * 3c 3) ( a: 1, f()( b:.a, c:., c.b*=3 ) )
+  * 3d 4) ( a: 1, f:()( b:.a, c:., c.b*=3 ), g = (n)(.*n),f().b,g(5)  )
 
 
 Referencing 'this' ?
@@ -480,6 +482,7 @@ Referencing 'this' ?
 declaration (?) 
 3) 
 
+## UserOperators
 
 ```
 '=' 
@@ -518,3 +521,6 @@ noArgs, noArgs, mul1 3
 
 3 9
 ```
+
+
+-----
