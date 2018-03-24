@@ -1,6 +1,9 @@
 # VESL
 
-VESL is built from JSON as a basis.
+VESL (Visual EcmaScript Language)[README.md]
+
+
+VESL is built from JSON(6) as a basis... so A little history.
 
 
 ## JSON Syntax
@@ -21,6 +24,7 @@ for quick scanning structure of a JSON string.
 
 | symbol | comments |
 |---|---|
+|All JSON Above|   |
 |`''`, ` &#60;&#60; `                   | added other quotes   constant strings (template string not quite constant?) |
 |`+`, `.`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants |
 |`//`, `/* */`    | comments  |
@@ -30,6 +34,45 @@ add handling for other Math values that are meaningful; and allow leading + for 
 Also a very minor pre-scan that enables a pre-scan filter for comments hardly impacts the exsiting parsing.
 
 With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `&#60;`, `[-,+,.,0-9]`, `[INutfn]`, `/` can be built 
+
+
+## VESL Syntax
+
+| symbol | within | comments |
+|---|---|---|
+| `[]`       | | frames an array of expressions.  Expressions are seprated by ',' and 'quoted' with (), {}, '', "", &#60;&#60; |
+|   |   |   |
+| `{}`, `()` | | frames expressions which may optionally have a name.                                                   |
+| ';' or `,` | `[]` | seprates elements.  At a high level can gather string and \0 terminate here.              |
+| `]`        | `[]` | ends elements, terminates last expression element and \0 terminate here.                          |
+| `?`        | `{}` or `()` | ternary comparitor; next ':' is actually in expression and not name.     |
+| `:` or `=` | `{}` or `()` | separates a name for the field from the value of the field.              |
+| ';' or `,` | `{}` or `()` | seprates fields/expressions.  If a ':' is not before ',', value is an unnamed expression. |
+| `[`        | `{}` or `()` | starts an array    |
+| `(` or `[` | `{}` or `()` | starts a new framed expression with optionally named expressions.   |
+|   |   |   |
+| `"` `'` `&#60;` |  | string constant begin |
+| `"` `'` `&#60;` | `[` | string constant begin |
+| `"` `'` `&#60;` | `{` or `(` | string constant begin; break prior token as un-eval, on closoe quote link and begin new un-eval |
+| `"` `'` `&#60;` | `"` `'` `&#60;` | if not prefixed with a '\' close the string constant. |
+| `\\`  | `"` `'` `&#60;` | introduce special character handling escape within string.  If prefixed with an escape, is the \ itself. |
+|   |   |   |
+|`[0[X,x,O,o,B,b]]*[0-9,[a-,A-]]*,eE[0-9]*]` | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
+|   |   |   |
+| (Operator)  |   | (probably just leave for phase 2) syntax break character for later processing?  String = (operator)?  |
+
+
+
+Phase 1 Parsing : parse high level stream of symbols.  Gather into named strings of unknown type. 
+  * ex: arrays contain arrays objects and primitive values. 
+  * a token has contents.  These contents are separated by commas.
+  * A string token does not have contents, it instead has a link to the next token(s).
+Phase 2 Parsing : process expressions for operators and functions.
+  * ex: 
+ 
+Evaluation of expressions.... (see below)
+
+
 
 
 ## Function Extension Additional Syntax
@@ -48,7 +91,7 @@ The other is definitions for functions.  Functions get a set of zero or more ide
 reference the passed parameters.  They also have a sequence of expressions to execute.	
 	
 FunctionDeclaration
-*    (syntax below)  'identifier() [{} or ()]'
+*    (syntax below)  'identifier:() [{} or ()]'
 
 With the above, a simple parser that scans for `[{(]`, `[`, `"`, `'`, `&#60;`, `[-,+,0-9]`, `[INutfn]`, `/` can be built 
 For the declaration of a code fragment, ( to ) and { to } are treated as quotes, counting internal opens/closes of the same
@@ -346,6 +389,7 @@ vector3(a,b,c)( vector(a,b) : {
 ```
 
 ------------------------------------------------------------------
+
 Was implementing this with only partial decomposition; which loses a lot availalbe to the first level....
 
 So what's the symbolic structure of this stuff?
@@ -376,3 +420,101 @@ So what's the symbolic structure of this stuff?
 
 a name is also 'a variable reference' is name.name.name.name
 
+-----------
+
+## Expression List Evaluation
+
+I feel like this is inevitably a chicken and egg definition... There are primitive types, these are grouped into expressions 
+that have names mapping the values or ordered lists (array) which themselves contain just the primvimitves.  
+Number, String, bool, null, undefined.  
+
+Then expressions either result in a single primitive value, or an expression of named primites or ordered list of unnamed 
+primitives. (or lists of those)...
+
+The result of a single expression can be one of, a primitive value, an array, or an expression.  A function is a named expression
+which provides names of symbols for the expression to evaluate with to be later paired with the expression used as calling
+arguments.
+
+An expression may contain an expression list.  Expression lists are expressions.
+
+Functions are lists of expressions that have operators and operations that will be evaluated.  
+
+Functions evaluate their opnodes in parallel with accumulator(s) for the values of the resolved expressions.
+
+1) allocate an accumulator, call expression evaluator.
+2) for each expression, if the expression is named, get the public/private accumulator, init to undefined, 
+
+2a) if expression is a primitive, assign to active accumulator.
+2b) if the expression is an expression, resolve expression with existing accumulator.
+
+if expression node is a function call....
+1) the existing accumulator for the current expression is passed
+2) the expression vector is not resolved to a single scalar, and is mapped to function's argument name definitions.
+3) the context of the function, the function has variables to be scoped...
+
+3a) the expression itself.  
+3b) All immediately defined expression containers. ( a: 1, ( b : a ) )
+3c) The expression containing the function definition   
+3c1) ( a: 1, f()( b:a ) )
+3c2) ( a: 1, f()( b:.a ) )
+3c3) ( a: 1, f()( b:.a, c:., c.b*=3 ) )
+3d4) ( a: 1, f:()( b:.a, c:., c.b*=3 ), g = (n)(.*n),f().b,g(5)  )
+
+
+Referencing 'this' ?
+* a and (.).a are equivalent.   (.) is the current accumulator.
+* .a : a member in `this`.  'this' is actually the accumulator containing the current accumulator.
+* ..a  : `this` containing `this`
+* ...a  : `this` containing `this` containing `this` 
+* ....a  : `this` containing `this` containing `this` containing `this` 
+
+3e) universal common implementations
+* All operators have universal common implementations that are used as a default if operator not found in any previous context.
+
+
+0) for each expression
+
+
+1) operators take the prior accumulator value, and a new value, and apply an operation, updating the accumulator..
+2) functions take the prior accumulator value(!), one value or a vector of anonymous values to be matched with function parameter
+declaration (?) 
+3) 
+
+
+```
+'=' 
+
+------
+test : {
+	noArgs: ( 3 )
+	mul1:a (.*=a)
+	tern:a[,] b (.?a:b)  // ( if . then a else b )
+	mul2:(a[,] b[,] c) (.*=a)
+}
+
+test.noArgs
+1+test.noArgs-3
+test.mul1 5
+4 test.mul1 6
+3 test.mul2(5)
+
+
+
+
+1 3 5
+1, 3, 5
+1; 3; 5
+
+*+/-
+* + / -
+
+>=
+
+noArgs noArgs mul1 3
+noArgs, noArgs, mul1 3
+(noArgs) (noArgs) mul1 3
+
+3 3 * 3
+
+3 9
+```
