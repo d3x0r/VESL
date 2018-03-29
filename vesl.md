@@ -25,7 +25,7 @@ for quick scanning structure of a JSON string.
 | symbol | comments |
 |---|---|
 |All JSON Above|   |
-|`''`, ` &#60;&#60; `                   | added other quotes   constant strings (template string not quite constant?) |
+|`''`, `` ` ` ``                   | added other quotes   constant strings (template string not quite constant?) |
 |`+`, `.`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants |
 |`//`, `/* */`    | comments  |
 
@@ -33,14 +33,14 @@ Very minor addition in the space of handling named constants `true` and `false`,
 add handling for other Math values that are meaningful; and allow leading + for numbers.
 Also a very minor pre-scan that enables a pre-scan filter for comments hardly impacts the exsiting parsing.
 
-With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `&#60;`, `[-,+,.,0-9]`, `[INutfn]`, `/` can be built 
+With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `` ` ``, `[-,+,.,0-9]`, `[INutfn]`, `/` can be built 
 
 
 ## VESL Syntax
 
 | symbol | within | comments |
 |---|---|---|
-| `[]`       | | frames an array of expressions.  Expressions are seprated by ',' and 'quoted' with (), {}, '', "", &#60;&#60; |
+| `[]`       | | frames an array of expressions.  Expressions are seprated by ',' and 'quoted' with (), {}, '', "", \'\' |
 |   |   |   |
 | `{}`, `()` | | frames expressions which may optionally have a name.                                                   |
 | `;` or `,` | `[]` | seprates elements.  At a high level can gather string and \0 terminate here.              |
@@ -51,11 +51,11 @@ With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `&#60;`, `[-,
 | `[`        | `{}` or `()` | starts an array    |
 | `(` or `[` | `{}` or `()` | starts a new framed expression with optionally named expressions.   |
 |   |   |   |
-| `"` `'` `&#60;` |  | string constant begin |
-| `"` `'` `&#60;` | `[` | string constant begin |
-| `"` `'` `&#60;` | `{` or `(` | string constant begin; break prior token as un-eval, on closoe quote link and begin new un-eval |
-| `"` `'` `&#60;` | `"` `'` `&#60;` | if not prefixed with a '\' close the string constant. |
-| `\\`  | `"` `'` `&#60;` | introduce special character handling escape within string.  If prefixed with an escape, is the \ itself. |
+| `"` `'` `\`` |  | string constant begin |
+| `"` `'` `\`` | `[` | string constant begin |
+| `"` `'` `\`` | `{` or `(` | string constant begin; break prior token as un-eval, on closoe quote link and begin new un-eval |
+| `"` `'` `\`` | `"` `'` `\`` | if not prefixed with a '\' close the string constant. |
+| `\\`  | `"` `'` `\`` | introduce special character handling escape within string.  If prefixed with an escape, is the \ itself. |
 |   |   |   |
 |`[0[X,x,O,o,B,b]]*[0-9,[a-,A-]]*,eE[0-9]*]` | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
 |   |   |   |
@@ -93,7 +93,7 @@ reference the passed parameters.  They also have a sequence of expressions to ex
 FunctionDeclaration
 *    (syntax below)  'identifier:() [{} or ()]'
 
-With the above, a simple parser that scans for `[{(]`, `[`, `"`, `'`, `&#60;`, `[-,+,0-9]`, `[INutfn]`, `/` can be built 
+With the above, a simple parser that scans for `[{(]`, `[`, `"`, `'`, `\``, `[-,+,0-9]`, `[INutfn]`, `/` can be built 
 For the declaration of a code fragment, ( to ) and { to } are treated as quotes, counting internal opens/closes of the same
 type.  The code string will be parsed later phase.  (If that is standardized, then all paren expressions can be delay parsed)
 

@@ -30,7 +30,7 @@ const shapes = {
 function Shape(name) {
 	return {
 		verts: [], norms:[], pairs:[], faces:[],
-		size : { width:0, height:0 },
+		size : { width:0, height:0, depth:consts.peice_depth },
 		label: { pos:new THREE.Vector3(), size:{ width:0, height:0 } },
 		resize : null,
 		scaledVert(n,scale) { return this.verts[n]; }

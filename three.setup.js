@@ -31,6 +31,9 @@ if( !VR ) {
 
 }
 
+const physics = require( "./oimo_physics.js" );
+
+
 var controlNatural;
 var controlOrbit;
 var controlGame;
@@ -363,6 +366,7 @@ function fallbackRender( tick ) {
 	if( controls )
 		controls.update(delta);
 
+	physics.update( delta );
 	renderer.render( scene, camera );
 
 }
