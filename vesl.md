@@ -484,21 +484,56 @@ declaration (?)
 
 ## UserOperators
 
+Functions receive a special parmeter '.' which is the current value of the expression accumluator.
+In the case of `1+3*6/2-1` an accumulator is created and inialized to empty; a constant is found, and
+the accumulator is set to that value.  The next token is an operator(function call) which will be 
+passed the next token as an argument; if the token is a value.  It then applies the current accumulator `./*1*/ + 3`, 
+`./*4*/ * 6`, `./*24*/ / 2`, `./*12*/-1` 
+
+* 1) accumulator is a empty, expression is constant
+* 1a) accumulator becomes expression value
+* 2) accumulator is a value, expression is a constant
+* 2a)  create accumulator within current value ( ex: VALUE_NUMBER contains VALUE_NUMBER, STRING,STRING,OBJECT ); current accumulator is updated to this.
+
+* 2.5) accumulator is empty, expression is an operation, followed by a parenthized value.
+
+* 3) accumuator is empty, expression is an operation, followed by a non-parenthized value
+More on 3? The value evaluates to a single value?  The value does not have any operators in it? 
+* 3.0) get a new accumaultor for the right side value(s)
+* 3.1) if next expression is a value  
+* 3.2) while( next expression is a vaue )
+* 3.3) do NOT evaluate expressions now, pass them instead 
+
+* 3a) if( !. ) throw ...
+* 3b) if( !. ) NaN
+* 3c) don't care about prior
+
 ```
 '=' 
 
 ------
-test : {
-	noArgs: ( 3 )
-	mul1:a (.*=a)
+test : {   // class test
+	noArgs: ( 3 )  // returns 3 After evaulation (could be static compiled to a constant)
+	mul1:a (.*=a)  // 
 	tern:a[,] b (.?a:b)  // ( if . then a else b )
 	mul2:(a[,] b[,] c) (.*=a)
 }
 
-test.noArgs
-1+test.noArgs-3
-test.mul1 5
-4 test.mul1 6
+// calls function with no arguments.
+// (any operator other than ( following this triggers invocation))
+test.noArgs          
+// as in this dense expression, noArgs gets called with no arguments.
+// argument NULL
+1+test.noArgs-3      
+// as in this dense expression, noArgs gets called with no arguments.
+// argument value_type can be VALUE_EXPRESSION
+1+test.noArgs()-3    
+// a function called with 1 argument.  The argument value_type would be VALUE_NUMBER
+9 test.mul1 5        
+// another example
+4 test.mul1 6       
+// calling this way resolves all of the expression parts in the parenthesis
+// each expression part is kept as a member of the accumulator created for '('.
 3 test.mul2(5)
 
 
@@ -520,7 +555,40 @@ noArgs, noArgs, mul1 3
 3 3 * 3
 
 3 9
+
+N F N F N 
+N F N N
+N F (N N) N N
+N F(N) F F F N 
+
+N F N OF N
+F N OF N OF N
+
+
+
 ```
 
 
 -----
+
+
+expression contains[0] is right.  Some (most) operators could deal with a list of contains.
+
+* 1) have an accumulator.
+* 1) accumulator string is the previous opcode
+* 1) if node is a value, set accumulator to value.
+* 1) if node is an expression `()`, get an accumulator, evaluate expression.
+* 1) if the node is an operation, use existing accumulator, (build arguments)
+* 1) 
+
+Some operations need accumulators to communicate; these should be resolvable at expression parsing time.
+
+
+'get an accumulator' 
+accumulator text might be '('
+'+'
+'if'
+
+
+if() [then] ()  else ()
+
