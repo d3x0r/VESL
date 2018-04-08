@@ -397,24 +397,24 @@ So what's the symbolic structure of this stuff?
 
 * 1) a primitive
 * 2) a name ( exported by prefixing with '.' )
-* 2a) = 
-* 2b) :
-* 2c) := 
-* 2d) ( 
-* 2dA)  )
-* 2dB)  a name )
-* 2dC)  a name [, another name]... )
-* 2dD- anything not a comma `,` or a valid Identifer(string)
-* 2d.1)  
+  * 2a) = 
+  * 2b) :
+  * 2c) := 
+  * 2d) ( 
+    * 2dA)  )
+    * 2dB)  a name )
+    * 2dC)  a name [, another name]... )
+    * 2dD- anything not a comma `,` or a valid Identifer(string)
+      * 2d.1)  
 
 
-* 2e) ( 
-* 2eA)  )
-* 2eB)  an expression )
-* 2eB1)   [.] a name =
-* 2eB2)   a name (other operator)
-* 2eC)  an Expression [, expression]... )
-* 2eD- anything not a comma `,` or a valid Identifer(string)
+    * 2e) ( 
+      * 2eA)  )
+      * 2eB)  an expression )
+        * 2eB1)   [.] a name =
+        * 2eB2)   a name (other operator)
+      * 2eC)  an Expression [, expression]... )
+      * 2eD- anything not a comma `,` or a valid Identifer(string)
 
 
 
