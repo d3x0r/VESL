@@ -91,7 +91,7 @@ The other is definitions for functions.  Functions get a set of zero or more ide
 reference the passed parameters.  They also have a sequence of expressions to execute.	
 	
 FunctionDeclaration
-*    (syntax below)  'identifier:() [{} or ()]'
+*    (syntax below)  '( [argument name map...] ) [{ or (] [ ObjectField [, ObjectFIeld]... ] [) or }] '
 
 With the above, a simple parser that scans for `[{(]`, `[`, `"`, `'`, `\``, `[-,+,0-9]`, `[INutfn]`, `/` can be built 
 For the declaration of a code fragment, ( to ) and { to } are treated as quotes, counting internal opens/closes of the same
@@ -105,10 +105,10 @@ Also the previous FunctionDeclaration should be allowed within the context of an
 
 
 GetterDeclaration
-*     `get Identifier ()`
+*     `<identifier>:get (... index operator args...) ( /*result expression */ )`
 
 SetterDeclaration
-*     `set identifier(value)`
+*     `<identifier>:set (value) (expression)`
 
 OperatorDeclaration
 *     `'operator text' : (...) ( /* depending on operator, variable arguments */ )`
@@ -195,16 +195,17 @@ Assignment ::
 *	Identifier = Expression	
 
 FunctionDeclaration ::
-*	Identifier ArgumentsExpression CodeExpression
+*	ArgumentsExpression CodeExpression
 
 FunctionInvocation ::
-*	Identifier CallExpression NonExpression
+*	Identifier CallExpression [NonExpression terminator]
 	
 NonExpression ::
 *	Identifier
 *	Operator
 *	CloseExpression
 *	LineTerminatorSequence
+*	ExprSeparator
 	
 ArgumentsExpression ::
 *	( Identifier [ ExprSeparator Identifier ]... )
@@ -302,11 +303,11 @@ ObjectSpecification ::
 	
 	
 ObjectField
-*	Identifier ':' PrimitiveValue
-*	FunctionDeclaration
-*	get FunctionDeclaration
-*	set FunctionDeclaration
-*	Identifier ':' ObjectSpecification
+*	[Identifier ':'] PrimitiveValue
+*	[Identifier ':'] FunctionDeclaration
+*	Identifier ':' get FunctionDeclaration
+*	Identifier ':' set FunctionDeclaration
+*	[Identifier ':'] ObjectSpecification
 	
 ObjectMerge ::
 *	ObjectSpecification : ObjectSpecification
@@ -444,23 +445,23 @@ Functions evaluate their opnodes in parallel with accumulator(s) for the values 
   * 1) allocate an accumulator, call expression evaluator.
   * 2) for each expression, if the expression is named, get the public/private accumulator, init to undefined, 
 
-  * 2a) if expression is a primitive, assign to active accumulator.
-  * 2b) if the expression is an expression, resolve expression with existing accumulator.
-  * 2c) if expression[List] is not closed in parenthesis, advance and retain accumulators
-  * 2d) 
+    * 2a) if expression is a primitive, assign to active accumulator.
+    * 2b) if the expression is an expression, resolve expression with existing accumulator.
+    * 2c) if expression[List] is not closed in parenthesis, advance and retain accumulators
+    * 2d) 
 
   * if expression node is a function call....
   * 1) the existing accumulator for the current expression is passed
   * 2) the expression vector is not resolved to a single scalar, and is mapped to function's argument name definitions.
   * 3) the context of the function, the function has variables to be scoped...
 
-  * 3a) the expression itself.  
-  * 3b) All immediately defined expression containers. ( a: 1, ( b : a ) )
-  * 3c) The expression containing the function definition   
-  * 3c 1) ( a: 1, f()( b:a ) )
-  * 3c 2) ( a: 1, f()( b:.a ) )
-  * 3c 3) ( a: 1, f()( b:.a, c:., c.b*=3 ) )
-  * 3d 4) ( a: 1, f:()( b:.a, c:., c.b*=3 ), g = (n)(.*n),f().b,g(5)  )
+    * 3a) the expression itself.  
+    * 3b) All immediately defined expression containers. ( a: 1, ( b : a ) )
+    * 3c) The expression containing the function definition   
+      * 3c 1) ( a: 1, f()( b:a ) )
+      * 3c 2) ( a: 1, f()( b:.a ) )
+      * 3c 3) ( a: 1, f()( b:.a, c:., c.b*=3 ) )
+      * 3d 4) ( a: 1, f:()( b:.a, c:., c.b*=3 ), g = (n)(.*n),f().b,g(5)  )
 
 
 Referencing 'this' ?
@@ -491,22 +492,22 @@ passed the next token as an argument; if the token is a value.  It then applies 
 `./*4*/ * 6`, `./*24*/ / 2`, `./*12*/-1` 
 
 * 1) accumulator is a empty, expression is constant
-* 1a) accumulator becomes expression value
+  * 1a) accumulator becomes expression value
 * 2) accumulator is a value, expression is a constant
-* 2a)  create accumulator within current value ( ex: VALUE_NUMBER contains VALUE_NUMBER, STRING,STRING,OBJECT ); current accumulator is updated to this.
+  * 2a)  create accumulator within current value ( ex: VALUE_NUMBER contains VALUE_NUMBER, STRING,STRING,OBJECT ); current accumulator is updated to this.
 
-* 2.5) accumulator is empty, expression is an operation, followed by a parenthized value.
+  * 2.5) accumulator is empty, expression is an operation, followed by a parenthized value.
 
 * 3) accumuator is empty, expression is an operation, followed by a non-parenthized value
 More on 3? The value evaluates to a single value?  The value does not have any operators in it? 
-* 3.0) get a new accumaultor for the right side value(s)
-* 3.1) if next expression is a value  
-* 3.2) while( next expression is a vaue )
-* 3.3) do NOT evaluate expressions now, pass them instead 
+  * 3.0) get a new accumaultor for the right side value(s)
+  * 3.1) if next expression is a value  
+  * 3.2) while( next expression is a vaue )
+  * 3.3) do NOT evaluate expressions now, pass them instead 
 
-* 3a) if( !. ) throw ...
-* 3b) if( !. ) NaN
-* 3c) don't care about prior
+  * 3a) if( !. ) throw ...
+  * 3b) if( !. ) NaN
+  * 3c) don't care about prior
 
 ```
 '=' 
