@@ -55,7 +55,7 @@ With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `` ` ``, `[-,
 | `"` `'` `\`` | `[` | string constant begin |
 | `"` `'` `\`` | `{` or `(` | string constant begin; break prior token as un-eval, on closoe quote link and begin new un-eval |
 | `"` `'` `\`` | `"` `'` `\`` | if not prefixed with a '\' close the string constant. |
-| `\\`  | `"` `'` `\`` | introduce special character handling escape within string.  If prefixed with an escape, is the \ itself. |
+| `\\`  | `"` `'` `` ` `` | introduce special character handling escape within string.  If prefixed with an escape, is the \ itself. |
 |   |   |   |
 |`[0[X,x,O,o,B,b]]*[0-9,[a-,A-]]*,eE[0-9]*]` | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
 |   |   |   |
@@ -105,13 +105,13 @@ Also the previous FunctionDeclaration should be allowed within the context of an
 
 
 GetterDeclaration
-*     get Identifier ()'
+*     `get Identifier ()`
 
 SetterDeclaration
-*     'set identifier(value)'
+*     `set identifier(value)`
 
 OperatorDeclaration
-*     'operator text'(...) ( /* depending on operator, variable arguments */ )
+*     `'operator text' : (...) ( /* depending on operator, variable arguments */ )`
 
 ### Variadic support? 
 
@@ -332,7 +332,7 @@ vector()( { x : 0, y : 0
 	, add(v){ x+=v.x, y += v.y, this }
 	, norm(v)(l=length, x/=l, y/=l, this )
 	, get length() { Math.sqrt( x*x+y*y ) }
-	, get scalar(n) { if n=0 x else y }
+	, get scalar(n) { if n==0 x else y }
 } )
 
 // create a vector3 from vector overloading its methods
@@ -342,7 +342,7 @@ vector3()( (vector()) : {
 	, add(v) (base.add(v),z+=v.z )
 	, norm(v)(l=length, x/=l, y/=l, this )
 	, get length() { Math.sqrt( x*x+y*y +z*z) }
-	, get scalar(n) { if n=0 x else if(n=1) y else z }
+	, get scalar(n) { if n==0 x else if(n==1) y else z }
 } );
 
 
@@ -366,7 +366,7 @@ vector(a,b) { _x : a||0, _y : b||0
 	, add:(v){ x+=v.x,y += v.y, this }
 	, norm:(v)( @l=length, x/=l, y/=l, this )
 	, length: get() { Math.sqrt( x*x+y*y ) }
-	, scalar: get(n) { if n=0 x else y }
+	, scalar: get(n) { if n==0 x else y }
 	; (whatever expression)
 	; {whatever expression}
 	, meta : add( vector(1,1) )
@@ -381,7 +381,7 @@ vector3(a,b,c)( vector(a,b) : {
 	add:(v) ( _add(v),z+=v.z )
 	norm:(v)( #l=length, x/=l, y/=l, this )
 	length :get() { Math.sqrt( x*x+y*y +z*z) }
-	scalar :get(n) { if n=0 x else if(n=1) y else z }
+	scalar :get(n) { if n==0 x else if(n==1) y else z }
 } );
 
 
@@ -466,9 +466,9 @@ Functions evaluate their opnodes in parallel with accumulator(s) for the values 
 Referencing 'this' ?
 * a and (.).a are equivalent.   (.) is the current accumulator.
 * .a : a member in `this`.  'this' is actually the accumulator containing the current accumulator.
-* ..a  : `this` containing `this`
-* ...a  : `this` containing `this` containing `this` 
-* ....a  : `this` containing `this` containing `this` containing `this` 
+* (.).a  : `this` containing `this`
+* (.).(.).a  : `this` containing `this` containing `this` 
+* (.).(.).(.).a  : `this` containing `this` containing `this` containing `this` 
 
 3e) universal common implementations
 * All operators have universal common implementations that are used as a default if operator not found in any previous context.
