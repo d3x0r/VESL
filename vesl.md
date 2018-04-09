@@ -323,27 +323,27 @@ which is a method by that name from the original object before overridden
 with this name.  (Virtual function overload)
 
 
-
+# Inheritance Model
 
 Some more complex methods, like how does a code bit in a function react?
 
 ```
 vector()( { x : 0, y : 0
-	, scale(n)( x*=n,y*=n,this )
-	, add(v){ x+=v.x, y += v.y, this }
-	, norm(v)(l=length, x/=l, y/=l, this )
-	, get length() { Math.sqrt( x*x+y*y ) }
-	, get scalar(n) { if n==0 x else y }
+	, scale:(n)( x*=n,y*=n,this )
+	, add:(v){ x+=v.x, y += v.y, this }
+	, norm:(v)(l=length, x/=l, y/=l, this )
+	, length:get() { Math.sqrt( x*x+y*y ) }
+	, scalar:get(n) { if n==0 x else y }
 } )
 
 // create a vector3 from vector overloading its methods
 vector3()( (vector()) : {
 	z: 0
-	, scale(n) ( base.scale(n), z*=n )
-	, add(v) (base.add(v),z+=v.z )
-	, norm(v)(l=length, x/=l, y/=l, this )
-	, get length() { Math.sqrt( x*x+y*y +z*z) }
-	, get scalar(n) { if n==0 x else if(n==1) y else z }
+	, scale:(n) ( base.scale(n), z*=n )
+	, add:(v) (base.add(v),z+=v.z )
+	, norm:(v)(l=length, x/=l, y/=l, this )
+	, length:get() { Math.sqrt( x*x+y*y +z*z) }
+	, scalar:get(n) { if n==0 x else if(n==1) y else z }
 } );
 
 
