@@ -3,37 +3,15 @@
 VESL (Visual EcmaScript Language)[README.md]
 
 
-VESL is built from JSON(6) as a basis... so A little history.
+The changes required to support expressions, the additonal characters required
+to validate/check the state of, this actually diverges significantly from the
+existing JSON parser(s).  The content of 'expressions' or object/array containers, 
+is always placed immedinately into the field/name/tag that preceeds it, (except the
+topmost level).  That is `{"a":{"b":1}}`  there was no additional space to track
+a list of values in a field, `a.b` for instance, and the value 'b' and all it contains
+is actually immediatly on A.  So declaring a function which has an argument name map 
+followed by a code expression lost that they were two separate expressions.
 
-
-## JSON Syntax
-
-| symbol | comments |
-|---|---|
-|`{ }` |contexts : 1) object 2) code definition|
-|`[]`  | context 1) array |
-|`""` |           constant strings (template string not quite constant?)|
-|`[-,0-9,eE[0-9]*]`, `true`, `false`, `null`  |      constants|
-| `:` | separates fields and values within context of an object |
-| `,` | separates fields within an object and arrays |
-
-With the above, a simple parser that scans for `{`, `[`, `"`, `-`, `0-9`, [tfn] can be built 
-for quick scanning structure of a JSON string.
-
-## JSON6 Syntax
-
-| symbol | comments |
-|---|---|
-|All JSON Above|   |
-|`''`, `` ` ` ``                   | added other quotes   constant strings (template string not quite constant?) |
-|`+`, `.`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants |
-|`//`, `/* */`    | comments  |
-
-Very minor addition in the space of handling named constants `true` and `false`, can 
-add handling for other Math values that are meaningful; and allow leading + for numbers.
-Also a very minor pre-scan that enables a pre-scan filter for comments hardly impacts the exsiting parsing.
-
-With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `` ` ``, `[-,+,.,0-9]`, `[INutfn]`, `/` can be built 
 
 
 ## VESL Syntax
@@ -43,23 +21,70 @@ With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `` ` ``, `[-,
 | `[]`       | | frames an array of expressions.  Expressions are seprated by ',' and 'quoted' with (), {}, '', "", \'\' |
 |   |   |   |
 | `{}`, `()` | | frames expressions which may optionally have a name.                                                   |
-| `;` or `,` | `[]` | seprates elements.  At a high level can gather string and \0 terminate here.              |
+| whitespace `<SP>,<TAB>,<CR>,<NL>,0xFEFF,<;>,<,>`  | `[]` | seprates elements.  Newline, tab, CR, ';' are 'hard' spaces whereas everything else is a 'soft' space.  |
 | `]`        | `[]` | ends elements, terminates last expression element and \0 terminate here.                          |
 | `?`        | `{}` or `()` | ternary comparitor; next ':' is actually in expression and not name.     |
 | `:` or `=` | `{}` or `()` | separates a name for the field from the value of the field.              |
-| `;` or `,` | `{}` or `()` | seprates fields/expressions.  If a ':' is not before ',', value is an unnamed expression. |
+| whitespace `<SP>,<TAB>,<CR>,<NL>,0xFEFF,<;>,<,>`  | `{}` or `()` | seprates fields/expressions.  If a ':' is not before ',', value is an unnamed expression. |
 | `[`        | `{}` or `()` | starts an array    |
 | `(` or `[` | `{}` or `()` | starts a new framed expression with optionally named expressions.   |
 |   |   |   |
 | `"` `'` `\`` |  | string constant begin |
-| `"` `'` `\`` | `[` | string constant begin |
-| `"` `'` `\`` | `{` or `(` | string constant begin; break prior token as un-eval, on closoe quote link and begin new un-eval |
-| `"` `'` `\`` | `"` `'` `\`` | if not prefixed with a '\' close the string constant. |
+| `"` `'` `` ` `` | `[` | string constant begin |
+| `"` `'` `` ` `` | `{` or `(` | string constant begin; break prior token as un-eval, on closoe quote link and begin new un-eval |
+| `"` `'` `` ` `` | `"` `'` `\`` | if not prefixed with a '\' close the string constant. |
 | `\\`  | `"` `'` `` ` `` | introduce special character handling escape within string.  If prefixed with an escape, is the \ itself. |
 |   |   |   |
-|`[0[X,x,O,o,B,b]]*[0-9,[a-,A-]]*,eE[0-9]*]` | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
+|`[0[X,x,O,o,B,b,\.]].[0-9\.,[a-,A-]]*,eE[0-9]*]`  or something like
+ `\d+|\d+\.\d+|0[xX][0-9a-fA-F]+|\d+\.\d+[+-]E\d+`  | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
 |   |   |   |
-| (Operator)  |   | (probably just leave for phase 2) syntax break character for later processing?  String = (operator)?  |
+| (Operator)  |   | Operators are a class of base symbols, plus user defined character sequences that a definitive separators  |
+
+Generally, parenthesis and braces are interchangable, and allow for code styling to separate a code expression(or
+an expression with 'code' in it) from an expression to be evalatuated as code within a code expression.
+
+Within an expression, the first token may be one of ...
+
+| Identifier, String | ':'  | define an acculator (variable label). |
+| Identifier,String | '(' | Invoke a function, the expression contained in the () is invoked |
+| '(' | ')' | (after an accumulator definition) defines a function |
+|   |   | (after a function definition) ?? Invoke the function now also? |
+|   |   | (otherwise) attempt to call previous accumulator as a function passing the current expression as arguments |
+
+
+
+```
+ident : /*... a variable */
+ident( /* ... call function */
+ident :  /*... */ )(  /* ... define function expression */ 
+ident :  /*... */ )(  /* ... */ )( /* ... Illegal? */ 
+
+f( /* ... */ )( /* ... calls result as function */ 
+
+/* . */ the dot value is the current return value.
+/* (.).xxx */ a field member xxx in the return value.
+/* .xxx */  the xxx value in the current context 
+
+/* .xxx: */   define a variable that is private(public? opinions?)
+
+```
+
+### Default Operators
+
+These strings and sets of strings define the set of 'operator's.
+
+```
+	//@#\$_  
+static const char *ops = "=<>+-*/%^~!&|?:.";
+// for each Op above, they may be followed by one of these....
+static const char *op2[] = { /*=*/"=", /*<*/"<=", /*>*/">=", /*+*/"+=", /*-*/"-=", /***/"=", /*/*/"=/*", /*%*/"="
+				, /*^*/"=", /*~*/"=", /*!*/"=><&|", /*&*/"=&", /*|*/"=|", /*?*/NULL, /*:*/NULL, /*.*/NULL };
+// no support (yet) for 3 character operators.
+```
+
+I plan to be able to extend the list of `ops` that can be matched, each of those optionally followed by another character `op2`.
+
+Which can also end up aliasing the above operators into some other character set entirely.
 
 
 
@@ -327,62 +352,122 @@ with this name.  (Virtual function overload)
 
 Some more complex methods, like how does a code bit in a function react?
 
+### Syntax 
+
 ```
-vector()( { x : 0, y : 0
+	FunctionInvocation ':' FunctionDeclaration
+```
+
+The definition of a 'derrives from' code-path is a function invocation, follwed by a colon.  
+That is to say it is not an expression that evaluates to a function invocation.
+
+The result of the function invocation is used as the existing accumlulartor, evalutaing the
+CodeExpression with the acculator set to the same value.  (Or; and probably more accurately, 
+when then function is invoked on the left of the colon, the acculator is set the the current acculator
+of the invoked derrived class.
+
+That a sub-contracted constructor was invoked, this information is retained on a stack of type
+information in the accumulator.  The complete type of this is equal if the entire stack matches.
+
+Any non-builtin type coersion must be done manually.  This is accomplished by having by creating 
+a new object of the specified type with an argument of the original type. 
+
+
+
+```
+Vector:()( { x : 0, y : 0
+	// these would be 'compiled' __prototype methods of Vector()
 	, scale:(n)( x*=n,y*=n,this )
 	, add:(v){ x+=v.x, y += v.y, this }
-	, norm:(v)(l=length, x/=l, y/=l, this )
+	, norm:(v)( l=length, x/=l, y/=l, this )
 	, length:get() { Math.sqrt( x*x+y*y ) }
 	, scalar:get(n) { if n==0 x else y }
 } )
 
 // create a vector3 from vector overloading its methods
-vector3()( (vector()) : {
-	z: 0
-	, scale:(n) ( base.scale(n), z*=n )
-	, add:(v) (base.add(v),z+=v.z )
-	, norm:(v)(l=length, x/=l, y/=l, this )
-	, length:get() { Math.sqrt( x*x+y*y +z*z) }
-	, scalar:get(n) { if n==0 x else if(n==1) y else z }
-} );
+Vector3:()( 
+	// invoke Vector as constructor on 'this'
+	Vector() : {
+		// add a field 'z' to the current accumulator.
+		z: 0
 
+		// these would be 'compiled' __prototype methods of Vector3()
+		, scale:(n) ( base.scale(n), z*=n )
+		, add:(v) (base.add(v),z+=v.z )
+		, norm:(v)(l=length, x/=l, y/=l, this )
+		, length:get() { Math.sqrt( x*x+y*y +z*z) }
+		, scalar:get(n) { if n==0 x else if(n==1) y else z }
+	}
+	// addition class fields can be defined here...
+	// these are more like static fields for the 'class'
+	
+	// contectualy this would be a new acculator returned on '.' as a result of
+	// invoking Vector3()
+	privateField : 123 
+	otherMethod : () ( /* code */ )
+);
 
+myVector = Vector3();
+// create accumulator 'myVector'
+// set accumulator for Vector3 invocation;
+// invoke Vector3
+// set accumulator for vecotr invocation;
+// invoke Vector
+// evalutate code expression after `(vector())`
+
+// evaluate remaing expressions in Vector3(); which can 
+// also define registers/methods... 
+
+// so this would be a shorthand of the above...
+// an invokation of vector() on '.' and then pass to empty expression, 
+// which results with '.' unchanged;
+	Vector() : ;
+	
 	
 ```
 
 ------ Operator Overload?
+
 only if left and right operands of an overloaded type are the same object type.
 (see lua?)
+
+typeof operator needs to result with the accumulator type first, and then what
+native types exist.
 
 
 
 ```
-vector(a,b) { _x : a||0, _y : b||0
-	, scale:(n)( x*=n, y*=n, this )
-	, =: (v) ( x=v.x, y=v.y, this )
-	, =: ()  this 
-	, +: (v) { { x:x+v.x, y:y+v.y } }
-	, -: () { x = -x, y=-y, this }
-	, -: (v) { Vector( x-v.x, y-v.y ) }
-	, add:(v){ x+=v.x,y += v.y, this }
-	, norm:(v)( @l=length, x/=l, y/=l, this )
-	, length: get() { Math.sqrt( x*x+y*y ) }
-	, scalar: get(n) { if n==0 x else y }
-	; (whatever expression)
-	; {whatever expression}
-	, meta : add( vector(1,1) )
-	, norm:( this )
-	, [ ...].forEach( thing=> do thing with thing )
+vector(a,b) { 
+	_x : a||0
+	_y : b||0
+
+	// these get converted to .prototype on this object
+	scale:(n)( x*=n, y*=n, this )
+	=: (v) ( (v)?(._x=v.x, ._y=v.y), .=this )
+	+: (v) { (v)?( (.)._x=x+v.x, (.)._y=y+v.y ) : ( (.)._x+=x, (.)._y+=y ) }
+	-: () { x = -x, y=-y, this }
+	-: (v) { Vector( x-v.x, y-v.y ) }
+	add:(v){ x+=v.x,y += v.y, this }
+	norm:(v)( @l=length, x/=l, y/=l, this )
+	length: get() { Math.sqrt( x*x+y*y ) }
+	scalar: get(n) { if n==0 x else y }
+	(whatever expression)
+	{whatever expression}
+	meta : add( vector(1,1) )
+	norm:()( _x /= length, _y /= length )
+	//[...].forEach( thing=> do thing with thing )
 }
 
 // create a vector3 from vector overloading its methods
-vector3(a,b,c)( vector(a,b) : {
-	#z = c||0
-	scale:(n) ( _scale(n), z*=n )
-	add:(v) ( _add(v),z+=v.z )
-	norm:(v)( #l=length, x/=l, y/=l, this )
-	length :get() { Math.sqrt( x*x+y*y +z*z) }
-	scalar :get(n) { if n==0 x else if(n==1) y else z }
+vector3:(a,b,c)( 
+	vector(a,b) : {
+		#z = c||0
+		scale:(n) ( _scale(n), z*=n )
+		add:(v) ( _add(v),z+=v.z )
+		norm:(v)( #l=length, x/=l, y/=l, this )
+		length :get() { Math.sqrt( x*x+y*y +z*z) }
+		scalar :get(n) { if n==0 x else if(n==1) y else z }
+	}
 } );
 
 
@@ -592,4 +677,47 @@ accumulator text might be '('
 
 
 if() [then] ()  else ()
+
+
+
+# Appendix A
+
+
+This is the existing JSON reference that was mentioend before; mostly
+to analyze what the actual required changes would be; or to identify
+differences.
+
+This resulted in realizing that only ver topmost structure operations
+remain the same, collection of identifiers and operators has to be 
+entirely different.
+
+## JSON Syntax
+
+| symbol | comments |
+|---|---|
+|`{ }` |contexts : 1) object 2) code definition|
+|`[]`  | context 1) array |
+|`""` |           constant strings (template string not quite constant?)|
+|`[-,0-9,eE[0-9]*]`, `true`, `false`, `null`  |      constants|
+| `:` | separates fields and values within context of an object |
+| `,` | separates fields within an object and arrays |
+
+With the above, a simple parser that scans for `{`, `[`, `"`, `-`, `0-9`, [tfn] can be built 
+for quick scanning structure of a JSON string.
+
+## JSON6 Syntax
+
+| symbol | comments |
+|---|---|
+|All JSON Above|   |
+|`''`, `` ` ` ``                   | added other quotes   constant strings (template string not quite constant?) |
+|`+`, `.`, `Infinity`, `NaN`,  `undefined`   | (+leading to numbers added) constants |
+|`//`, `/* */`    | comments  |
+
+Very minor addition in the space of handling named constants `true` and `false`, can 
+add handling for other Math values that are meaningful; and allow leading + for numbers.
+Also a very minor pre-scan that enables a pre-scan filter for comments hardly impacts the exsiting parsing.
+
+With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `` ` ``, `[-,+,.,0-9]`, `[INutfn]`, `/` can be built 
+
 
