@@ -45,6 +45,8 @@ an expression with 'code' in it) from an expression to be evalatuated as code wi
 
 Within an expression, the first token may be one of ...
 
+|token type | after token | context description
+|---|---|---|
 | Identifier, String | ':'  | define an acculator (variable label). |
 | Identifier,String | '(' | Invoke a function, the expression contained in the () is invoked |
 | '(' | ')' | (after an accumulator definition) defines a function |
