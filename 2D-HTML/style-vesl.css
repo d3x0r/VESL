@@ -1,0 +1,186 @@
+
+.veslTokenBlock {
+	position:absolute;
+	height:100%;
+	width:100%;
+	display:table;
+}
+
+
+.veslTokenRow {
+	position:absolute;
+	height:100%;
+	display:table-row;
+}
+
+.veslTokenMiddleStack {
+	display:table-cell;
+}
+
+.veslTokenMiddleStackTable {
+	display:table;
+}
+
+
+.veslTokenLeftOut {
+	display:table-cell;
+	background-color:green;	
+	height:100%;
+	width:0.25em;
+	position:relative;
+  clip-path: 
+    polygon(
+      80% 6px,
+      100% 6px,
+      100% 100%,
+      80% 100%,
+      80% 34px,
+      0% 28px,
+      0% 22px,
+      80% 16px
+    );
+
+}
+
+.veslTokenLeftStop {
+	display:table-cell;
+	height:100%;
+	width:8px;
+	position:relative;
+	border-left:2px clear solid;
+	 background-color:green;
+
+  clip-path: 
+    polygon(
+      0% 0%,
+      100% 0%,
+      100% 100%,
+      0% 100%,
+      0% 34px,
+      100% 28px,
+      100% 24px,
+      0% 16px
+    );
+
+}
+
+
+.veslTokenLeftIn {
+	display:table-cell;
+	/*border:2px black solid;*/
+	height:100%;
+	width:8px;
+	/*border-top-right-radius:50%;
+	border-bottom-right-radius:50%;*/
+	/*right:-0.35em;*/
+	position:relative;
+	border-left:2px clear solid;
+	 background-color:green;
+
+  clip-path: 
+    polygon(
+      0% 0%,
+      100% 0%,
+      100% 100%,
+      0% 100%,
+      0% 34px,
+      100% 28px,
+      100% 24px,
+      0% 16px
+    );
+
+}
+
+
+.veslTokenTopOut {
+	background-color:green;	
+	height:8px;
+	width:100%;
+	display:block;
+	position:relative;
+  clip-path: 
+    polygon(
+       0px 8px,
+       0px 6px,
+      16px 6px,
+      22px 0%,
+      28px 0%,
+      34px 6px,
+      100% 6px,
+      100% 8px
+    );
+
+}
+
+
+.veslTokenMiddle {
+	/*border:2px black solid;*/
+	background-color:blue;
+	display:block;
+	padding-left:0.5em;
+	padding-right:0.5em;
+}
+
+
+.veslTokenBottomIn {
+	background-color:green;	
+	height:8px;
+	width:100%;
+	display:block;
+	position:relative;
+	/*bottom:8px;*/
+  clip-path: 
+    polygon(
+      16px 100%,
+      0px 100%,
+      0px 0%,
+      100% 0%,
+      100% 100%,
+      34px 100%,
+      28px 20%,
+      22px 20%
+    );
+
+}
+
+
+
+
+.veslTokenRightIn {
+	background-color:green;	
+	height:100%;
+	width:0.25em;
+	display:table-cell;
+	position:relative;
+
+  clip-path: 
+    polygon(
+      100% 6px,
+      0% 6px,
+      0% 100%,
+      100% 100%,
+      100% 34px,
+      20% 28px,
+      20% 22px,
+      100% 16px
+    );
+
+}
+
+.veslTokenRightOut {
+	background-color:green;	
+	display:table-cell;
+	height:100%;
+	width:0.25em;
+	position:relative;
+
+  clip-path: 
+    polygon(
+      0% 34px,
+      100% 28px,
+      100% 22px,
+      0% 16px
+    );
+
+}
+
