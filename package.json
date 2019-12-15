@@ -8,9 +8,14 @@
   },
   "author": "d3x0r",
   "license": "ISC",
-  "window":{
-    "width":1024,
-    "height":768
+  "window": {
+    "width": 1024,
+    "height": 768
   },
-  "chromium-args": "--mixed-context"
+  "chromium-args": "--mixed-context",
+  "dependencies": {
+    "oimo": "^1.0.9",
+    "sack.vfs": "^0",
+    "three": "^0.95.0"
+  }
 }

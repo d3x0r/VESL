@@ -1,6 +1,8 @@
 
 
-	var app = ["node_modules/three/build/three.js",'vesl.js','']
+	var app = ["node_modules/three/build/three.js"
+		, "node_modules/three/examples/js/exporters/OBJExporter.js"
+		, 'vesl.js','']
 	var start = 'windowLoaded();'
 	function R(n) {
 		var script = document.createElement( "script" );

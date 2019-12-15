@@ -33,7 +33,7 @@ followed by a code expression lost that they were two separate expressions.
 | `"` `'` `` ` `` | `"` `'` `\`` | if not prefixed with a '\' close the string constant. |
 | `\\`  | `"` `'` `` ` `` | introduce special character handling escape within string.  If prefixed with an escape, is the \ itself. |
 |   |   |   |
-|`[0[X,x,O,o,B,b,\.]].[0-9\.,[a-,A-]]*,eE[0-9]*]`  or something like `\d+|\d+\.\d+|0[xX][0-9a-fA-F]+|\d+\.\d+[+-]E\d+`  | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
+|`[0[X,x,O,o,B,b,\.]].[0-9\.,[a-,A-]]*,eE[0-9]*]`  or something like `\d+\|\d+\.\d+\|0[xX][0-9a-fA-F]+|\d+\.\d+[+-]E\d+`  | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
 |   |   |   |
 | (Operator)  |   | Operators are a class of base symbols, plus user defined character sequences that a definitive separators  |
 
