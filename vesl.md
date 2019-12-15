@@ -12,8 +12,6 @@ a list of values in a field, `a.b` for instance, and the value 'b' and all it co
 is actually immediatly on A.  So declaring a function which has an argument name map 
 followed by a code expression lost that they were two separate expressions.
 
-
-
 ## VESL Syntax
 
 | symbol | within | comments |
@@ -21,7 +19,7 @@ followed by a code expression lost that they were two separate expressions.
 | `[]`       | | frames an array of expressions.  Expressions are seprated by ',' and 'quoted' with (), {}, '', "", \'\' |
 |   |   |   |
 | `{}`, `()` | | frames expressions which may optionally have a name.                                                   |
-| whitespace `<SP>,<TAB>,<CR>,<NL>,0xFEFF,<;>,<,>`  | `[]` | seprates elements.  Newline, tab, CR, ';' are 'hard' spaces whereas everything else is a 'soft' space.  |
+| whitespace `<SP>,<TAB>,<CR>,<NL>,0xFEFF,<;>,<,>,#2028,#2029`  | `[]` | seprates elements.  #2029, Newline, tab, CR, ';' are 'hard' spaces whereas everything else is a 'soft' space.  |
 | `]`        | `[]` | ends elements, terminates last expression element and \0 terminate here.                          |
 | `?`        | `{}` or `()` | ternary comparitor; next ':' is actually in expression and not name.     |
 | `:` or `=` | `{}` or `()` | separates a name for the field from the value of the field.              |
@@ -35,8 +33,7 @@ followed by a code expression lost that they were two separate expressions.
 | `"` `'` `` ` `` | `"` `'` `\`` | if not prefixed with a '\' close the string constant. |
 | `\\`  | `"` `'` `` ` `` | introduce special character handling escape within string.  If prefixed with an escape, is the \ itself. |
 |   |   |   |
-|`[0[X,x,O,o,B,b,\.]].[0-9\.,[a-,A-]]*,eE[0-9]*]`  or something like
- `\d+|\d+\.\d+|0[xX][0-9a-fA-F]+|\d+\.\d+[+-]E\d+`  | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
+|`[0[X,x,O,o,B,b,\.]].[0-9\.,[a-,A-]]*,eE[0-9]*]`  or something like `\d+|\d+\.\d+|0[xX][0-9a-fA-F]+|\d+\.\d+[+-]E\d+`  | ANY  |  A number; sometimes is float (with . and/or E).  Leave +/- operator as un-eval to be processed later. |
 |   |   |   |
 | (Operator)  |   | Operators are a class of base symbols, plus user defined character sequences that a definitive separators  |
 
@@ -79,8 +76,24 @@ These strings and sets of strings define the set of 'operator's.
 	//@#\$_  
 static const char *ops = "=<>+-*/%^~!&|?:.";
 // for each Op above, they may be followed by one of these....
-static const char *op2[] = { /*=*/"=", /*<*/"<=", /*>*/">=", /*+*/"+=", /*-*/"-=", /***/"=", /*/*/"=/*", /*%*/"="
-				, /*^*/"=", /*~*/"=", /*!*/"=><&|", /*&*/"=&", /*|*/"=|", /*?*/NULL, /*:*/NULL, /*.*/NULL };
+static const char *op2[] = { 
+	/*=*/  "==", 
+	/*<*/  "<=", 
+	/*>*/  ">=",   /* >> >= */
+	/*+*/  "+=",   /* ++ += */
+	/*-*/  "-=", 
+	/***/  "=", 
+	/*/*/  "=", 
+	/*%*/  "=",    /* ^= */
+	/*^*/  "=",     /* ^=  */
+	/*~*/  "=",     /* ~=  */
+	/*!*/  "=><&|", /* != !> !< !& !| */
+	/*&*/  "=&",    /* &= &&  */
+	/*|*/  "=|",    /* |= ||  */
+	/*?*/  NULL,    /* no combinations */
+	/*:*/  NULL,    /* no combinations */
+	/*.*/  NULL     /* no combinations */
+        };
 // no support (yet) for 3 character operators.
 ```
 
@@ -722,4 +735,92 @@ Also a very minor pre-scan that enables a pre-scan filter for comments hardly im
 
 With the above, a simple parser that scans for `{`, `[`, `"`, `'`, `` ` ``, `[-,+,.,0-9]`, `[INutfn]`, `/` can be built 
 
+
+-----
+
+# Appendix B (not authoritative )
+
+THis is some musings about symbols used in programs and programming. 
+
+Anything new is of course, new, and will suck... BUT 
+
+```
+
+These are structure characters of the base JSON
+{} [] : ,
+
+` ' " 
+
+These are standard 'operator symbols' with other common meanings.
+
+! % ^ & * ( ) - + = ~ < > | 
+
+These are symbols used in sepraration (also part of the above baser structure)
+, ; \
+
+These are symbols, which are used, in JS as identifier characters
+$ _
+
+THese are probably also identifier characters in JS.
+@ # 
+
+f #= (n) {
+    @ = n==2 ? 1: n*f(n-1);
+}
+
+// what is the top level 'accumulator'
+@=f(5);
+
+@ = n*f(n-1);
+
+f(n) /* ; */  /* , */
+{ }
+
+```
+
+
+
+```
+
+JS emittted code for accumulator
+
+function2 = (arg1) { @ = 5 * arg; }    function function2( at, arg1 ) { at['@'] = 5; }
+
+{ @ = user; @.age = computeAge( @ ); } 
+  
+  
+function2(3)      function2( {'@':undefined}, arg1 )
+
+a = function(3)    var Λ; function2( Λ = {'@':undefined}, arg1 ); a = Λ['@'];
+
+functionName = (arg1,arg2){  @ = 3;  t = @;  @ = @ * arg1 + arg2 + t*t  }
+
+function1 = (arg1) { @ = function2( arg1 ) * 3 }  
+function1 = (arg1) { @ = arg1 * function1( arg1 ) * 3 }  
+
+function1 = (arg1) { if arg1<2 @=1; else @ = function1( arg1-1 ) }  
+
+
+function functionName ( at, arg1, arg2 ) {at['@'] = 3; } 
+
+	// return 3;
+	at['@'] = 3;
+
+	//return function2( arg1 );
+	function2( at, arg1 );
+
+	//var t = function2( arg1 )
+	t = function2( {'@':undefined}, arg1 );
+}
+
+// could just do simple tail-call results.
+// JS target isn't multi-threaded, hard to argue that the meta result could be returned 
+// but then that thing that's the object to update could just be passed as a paramter
+// and not on the @ state.
+// 
+
+function function2( at, arg1 ) { at['@'] = 5; }
+{
+   return at;
+}
 
