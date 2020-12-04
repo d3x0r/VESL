@@ -1,11 +1,46 @@
 
 import {popups} from "./popups.mjs";
 import {JSOX} from "./jsox.mjs";
+import  "./blockly/blockly_compressed.js"
+import "./blockly/blocks_compressed.js"
+import  "./blockly/en.js"
+
 
 var tools = popups.create( "Tools" );
 var code = popups.create( "Code" );
 code.divFrame.style.minWidth = 640;
 code.divFrame.style.minHeight = 480;
+
+createBlocklyInterface();
+
+function createBlocklyInterface() {
+  const Blockly = globalThis.Blockly;
+  var blockly = popups.create( "Blocks" );
+  const toolDiv = document.createElement( "xml" );
+  blockly.appendChild( toolDiv );
+  toolDiv.style.backgroundColor = "rgb(48,48,48)";
+  const blockDiv = document.createElement( "div" );
+  blockly.appendChild( blockDiv );
+  blockDiv.id = "blockDiv";
+  blockDiv.style.width = "640px";
+  blockDiv.style.height = "480px";
+
+   const  xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+//	toolDiv.innerHTML = this.responseText;
+	finishAdding(this.responseText);
+    }
+  };
+  xmlhttp.open("GET", "toolbox.xml", true);
+  xmlhttp.send();
+
+function finishAdding(aa){
+	const demoWorkspace = globalThis.Blockly.inject("blockDiv",
+        	{media: './blockly/media/',
+		pathToMedia:"./blockly/media",
+        	 toolbox:aa });
+
 
 			code.divContent.addEventListener( "dragover", (evt)=>{
 				evt.preventDefault();
@@ -23,18 +58,28 @@ code.divFrame.style.minHeight = 480;
 					}
 				} ).write( objType );
 			})
+}
+
+}
 
 
 
-
-var codeList = popups.list( { parentItem:null, parent:code.divContent }, (m)=>JSON.stringify(m) );
+var codeList = popups.list( { parentItem:null, parent:code.divContent }, (m)=>m.name );
 //codeList.enableDrop( "Instruction", {}, (item)=>{
 //	console.log( "Dropped?", item );
 //} );
-var toolList = popups.list( { parentItem:null, parent:tools.divContent }, (m)=>JSON.stringify(m) );
+var toolList = popups.list( { parentItem:null, parent:tools.divContent }, (m)=>m.name );
 
 var op;
-var addItem = toolList.push( op = {name:"Add", op:"+" }, (m)=>JSON.stringify(m) );
+var addItem = toolList.push( op = {name:"Add", op:"+" }, (m)=>m.name );
+toolList.enableDrag( "Instruction", addItem, "name" );
+toolList.enableOpen(addItem);
+
+addItem = toolList.push( op = {name:"Sub", op:"-" }, (m)=>m.name );
+toolList.enableDrag( "Instruction", addItem, "name" );
+toolList.enableOpen(addItem);
+
+addItem = toolList.push( op = {name:"Mul", op:"*" }, (m)=>m.name );
 toolList.enableDrag( "Instruction", addItem, "name" );
 toolList.enableOpen(addItem);
 
