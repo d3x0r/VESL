@@ -3,6 +3,7 @@ import {popups} from "./popups.mjs";
 import {JSOX} from "./jsox.mjs";
 import  "./blockly/blockly_compressed.js"
 import "./blockly/blocks_compressed.js"
+import "./blockly/javascript_compressed.js"
 import  "./blockly/en.js"
 
 
