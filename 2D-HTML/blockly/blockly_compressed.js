@@ -7,9 +7,9 @@
   } else if (typeof exports === 'object') { // Node.js
     module.exports = factory();
   } else { // Browser
-    globalThis.Blockly = factory();
+    root.Blockly = factory();
   }
-}(this, function() {
+}(globalThis, function() {
   'use strict';var Blockly={constants:{},LINE_MODE_MULTIPLIER:40,PAGE_MODE_MULTIPLIER:125,DRAG_RADIUS:5,FLYOUT_DRAG_RADIUS:10,SNAP_RADIUS:28};Blockly.CONNECTING_SNAP_RADIUS=Blockly.SNAP_RADIUS;Blockly.CURRENT_CONNECTION_PREFERENCE=8;Blockly.BUMP_DELAY=250;Blockly.BUMP_RANDOMNESS=10;Blockly.COLLAPSE_CHARS=30;Blockly.LONGPRESS=750;Blockly.SOUND_LIMIT=100;Blockly.DRAG_STACK=!0;Blockly.HSV_SATURATION=.45;Blockly.HSV_VALUE=.65;Blockly.SPRITE={width:96,height:124,url:"sprites.png"};Blockly.INPUT_VALUE=1;
 Blockly.OUTPUT_VALUE=2;Blockly.NEXT_STATEMENT=3;Blockly.PREVIOUS_STATEMENT=4;Blockly.DUMMY_INPUT=5;Blockly.ALIGN_LEFT=-1;Blockly.ALIGN_CENTRE=0;Blockly.ALIGN_RIGHT=1;Blockly.DRAG_NONE=0;Blockly.DRAG_STICKY=1;Blockly.DRAG_BEGIN=1;Blockly.DRAG_FREE=2;Blockly.OPPOSITE_TYPE=[];Blockly.OPPOSITE_TYPE[Blockly.INPUT_VALUE]=Blockly.OUTPUT_VALUE;Blockly.OPPOSITE_TYPE[Blockly.OUTPUT_VALUE]=Blockly.INPUT_VALUE;Blockly.OPPOSITE_TYPE[Blockly.NEXT_STATEMENT]=Blockly.PREVIOUS_STATEMENT;
 Blockly.OPPOSITE_TYPE[Blockly.PREVIOUS_STATEMENT]=Blockly.NEXT_STATEMENT;Blockly.TOOLBOX_AT_TOP=0;Blockly.TOOLBOX_AT_BOTTOM=1;Blockly.TOOLBOX_AT_LEFT=2;Blockly.TOOLBOX_AT_RIGHT=3;Blockly.DELETE_AREA_NONE=null;Blockly.DELETE_AREA_TRASH=1;Blockly.DELETE_AREA_TOOLBOX=2;Blockly.VARIABLE_CATEGORY_NAME="VARIABLE";Blockly.VARIABLE_DYNAMIC_CATEGORY_NAME="VARIABLE_DYNAMIC";Blockly.PROCEDURE_CATEGORY_NAME="PROCEDURE";Blockly.RENAME_VARIABLE_ID="RENAME_VARIABLE_ID";Blockly.DELETE_VARIABLE_ID="DELETE_VARIABLE_ID";Blockly.registry={};Blockly.registry.typeMap_={};Blockly.registry.DEFAULT="default";Blockly.registry.Type=function(a){this.name_=a};Blockly.registry.Type.prototype.toString=function(){return this.name_};Blockly.registry.Type.CONNECTION_CHECKER=new Blockly.registry.Type("connectionChecker");Blockly.registry.Type.EVENT=new Blockly.registry.Type("event");Blockly.registry.Type.FIELD=new Blockly.registry.Type("field");Blockly.registry.Type.RENDERER=new Blockly.registry.Type("renderer");
