@@ -27,6 +27,8 @@ const shapes = {
 	defs : blockdef.defs,
 	instance : blockdef.instance,
 	layoutBlock : layout.layoutBlock,
+	bounds : layout.bounds,
+	callFor : require( "./layout/signature.js" ).callFor,
 	tileBlock : tiler.tileBlock,
 	buildBlock : buildBlock,
 	makeBlockObject : makeBlockObject,

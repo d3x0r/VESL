@@ -109,14 +109,18 @@ function loadSomeShapes(scene) {
 	// Whole blocks built from descriptions (see layout/README.md). Each
 	// block is its own Object3D; plugged-in values and hanging statements
 	// are child objects placed where their connectors line up.
+	// They go along the bottom of the board; the keypad and keyboard sit
+	// above the loose test pieces.
+	const { bounds } = require( "./layout/layout.js" );
 	p.x = -10;
-	p.z += 1;
+	p.z = 4;
 	const examples = Object.values( require( "./layout/samples.js" ).samples() );
 	for( const inst of examples ) {
 		o = shapes.makeBlockObject( inst );
 		scene.add( o );
-		o.position.copy( p );
-		p.x += o.userData.block.w + 2;
+		const b = bounds( o.userData.block );   // plugged values overhang the block itself
+		o.position.set( p.x - b.x0, p.y, p.z );
+		p.x += ( b.x1 - b.x0 ) + 1.5;
 	}
 
 
@@ -174,7 +178,7 @@ function loadSomeShapes(scene) {
 
 
 	if(1) {
-	var p = new THREE.Vector3( -6, 0, 3 );
+	var p = new THREE.Vector3( -6, 0, -12 );
 	var n;
 	//for( n = 0; n < 50; n++ ) {
 	var keypad = keyboard.composeKeypad();

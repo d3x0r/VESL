@@ -58,6 +58,15 @@ instance( 'class', { fields:{ name:'Point' }, sections:{
 } } )
 ```
 
+### Calls from signatures (`signature.js`)
+
+`callFor( fn )`, `callFor( 'name', [ 'a', 'b' ] )` or `callFor( 'name', jsdocText )`
+builds a call block whose argument rows are already named after the
+function's parameters, with optional ones marked. Parameter names come from
+the function's source or from `@param` tags, so the block asks for what the
+function actually takes instead of offering anonymous slots. `'apply'` as the
+third argument builds the value form.
+
 ## 2. Layout (`layout.js`)
 
 `layoutBlock( instance )` walks the rows and produces rectangles:
@@ -75,7 +84,10 @@ so on up the tree. Nothing is spliced: the block is simply laid out again from
 its description.
 
 A tall value plugged into a slot pushes the rows below it down, the same way
-a long expression wraps onto following lines. `metrics.liftValues = true`
+a long expression wraps onto following lines. For `if`/`while`/`function`
+the body is framed by the header above, the bar on the left and the plugged
+condition on the right: it starts flush under the header, and the rows after
+it clear whichever of the two is taller. `metrics.liftValues = true`
 instead chains along the third axis: the child gets `lift = 1` and sits one
 piece thickness above its parent, leaving the parent's rows alone.
 

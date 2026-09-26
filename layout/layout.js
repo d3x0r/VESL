@@ -113,15 +113,21 @@ function layoutBlock( inst ) {
 		header.input.childNode = child;
 		if( !metrics.liftValues ) {
 			headerChildH = child.stackH;
-			if( !node.compact ) y = Math.max( y, child.stackH );   // the body starts below the plugged value
+			// with no body under the header, the next rows start below the
+			// plugged value; with one, the body shares that space (below)
+			if( !node.compact && !hfork ) y = Math.max( y, child.stackH );
 		}
 	}
 
 	// ---- header fork body --------------------------------------------------
+	// The body is framed by the header above, the bar on the left and the
+	// header's plugged value on the right: it starts flush under the header,
+	// and the rows after it clear whichever of the two is taller.
 	if( hfork ) {
 		const entry = inst.sections[hfork.name][0];
 		const body = layoutStatements( entry.statements, node, m.barW + pad, y );
-		const row = { type:'headerfork', section:hfork, entry, y, h: body.h + m.forkGap, x:0, w:m.barW, body };
+		const h = Math.max( body.h + m.forkGap, headerChildH - m.rowH );
+		const row = { type:'headerfork', section:hfork, entry, y, h, x:0, w:m.barW, body };
 		node.rows.push( row );
 		y += row.h;
 	}

@@ -117,13 +117,13 @@ define( 'apply', {
 // inline slots. `and`/`or` take any number of operands.
 define( 'and', {
 	left:'value',
-	header:[ label( 'and' ) ],
+	header:[ label( 'all of' ) ],
 	sections:[ section( 'operands', 'input', [ input( 'value' ) ], { min:2 } ) ],
 } );
 
 define( 'or', {
 	left:'value',
-	header:[ label( 'or' ) ],
+	header:[ label( 'any of' ) ],
 	sections:[ section( 'operands', 'input', [ input( 'value' ) ], { min:2 } ) ],
 } );
 

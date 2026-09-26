@@ -33,10 +33,11 @@ scene.add( blocks );
 let x = 0, maxH = 0;
 for( const inst of Object.values( samples() ) ) {
 	const o = shapes.makeBlockObject( inst );
-	o.position.set( x, 0, 0 );
+	const b = shapes.bounds( o.userData.block );   // plugged values overhang the block itself
+	o.position.set( x - b.x0, 0, 0 );
 	blocks.add( o );
-	x += o.userData.block.w + 1.5;
-	maxH = Math.max( maxH, o.userData.block.h );
+	x += ( b.x1 - b.x0 ) + 1.5;
+	maxH = Math.max( maxH, b.y1 );
 }
 blocks.position.set( -x/2, 0, -maxH/2 );
 

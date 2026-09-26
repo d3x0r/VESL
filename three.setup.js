@@ -127,9 +127,9 @@ var status_line;
 			// roughly on x -12..10, z -4..6); the controls drive the matrix
 			// directly from here on
 			camera.matrixAutoUpdate = false;
-			camera.position.set( -1, 10, 6 );
+			camera.position.set( 3, 17, 15 );
 			camera.updateMatrix();   // lookAt reads the eye from the matrix when auto update is off
-			camera.lookAt( -1, 0, 1 );
+			camera.lookAt( 3, 0, 3 );
 			camera.updateMatrix();
 			camera.matrixWorldNeedsUpdate = true;
 		}

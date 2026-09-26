@@ -187,6 +187,39 @@ test( "fills never cover a value slot cavity", ()=>{
 	}
 } );
 
+test( "a header-fork body is framed by the header, the bar and the condition", ()=> inPlane( ()=>{
+	const cond = instance( 'and', { sections:{ operands:[ { inputs:{ value: value( 'a' ) } }, { inputs:{ value: value( 'b' ) } }, { inputs:{ value: value( 'c' ) } } ] } } );
+	const iff = layoutBlock( instance( 'if', { inputs:{ condition: cond }, sections:{ then:[ { statements:[ call( 'go' ) ] } ] } } ) );
+	const body = iff.rows[1];
+	assert.equal( body.type, 'headerfork' );
+	near( body.y, metrics.rowH, "the body starts flush under the header" );
+	const go = iff.children.find( c => c.via.name === 'then' );
+	near( go.y, metrics.rowH, "and so does its first statement" );
+	const condH = layoutBlock( cond ).h;
+	near( body.y + body.h, condH, "the rows after it clear the condition" );
+	// a short condition changes nothing
+	const plain = layoutBlock( instance( 'if', { inputs:{ condition: value( 'x' ) }, sections:{ then:[ { statements:[ call( 'go' ) ] } ] } } ) );
+	near( plain.rows[1].h, plain.rows[1].body.h + metrics.forkGap );
+} ) );
+
+test( "call blocks can be built from a function's parameters", ()=>{
+	const { callFor, paramsFromJSDoc } = require( "../layout/signature.js" );
+	function area( w, h = 1, ...more ) { return w * h; }
+	const a = callFor( area );
+	assert.equal( a.fields.callee, 'area' );
+	assert.deepEqual( a.params.map( p => p.name ), [ 'w', 'h', 'more' ] );
+	assert.deepEqual( a.params.map( p => !!p.optional ), [ false, true, true ] );
+	const b = callFor( ( x, y ) => x + y, undefined, 'apply' );
+	assert.deepEqual( b.params.map( p => p.name ), [ 'x', 'y' ] );
+	assert.equal( b.def.kind, 'apply' );
+	const doc = paramsFromJSDoc( "/** @param {string} name  @param {number} [count=1]  @param {Object} opts  @param {boolean} opts.deep */" );
+	assert.deepEqual( doc.map( p => p.name ), [ 'name', 'count', 'opts' ] );
+	assert.deepEqual( doc.map( p => p.optional ), [ false, true, false ] );
+	const c = callFor( 'go', [ 'dx', 'dy' ] );
+	const rows = layoutBlock( c ).rows.filter( r => r.type === 'input' && !r.ghost );
+	assert.deepEqual( rows.map( r => r.cells[0].text ), [ 'dx', 'dy' ] );
+} );
+
 test( "svg renders", ()=>{
 	const svg = render( layoutBlock( instance( 'if' ) ) );
 	assert( svg.startsWith( "<svg" ) && svg.includes( "if" ) );
