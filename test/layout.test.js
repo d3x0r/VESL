@@ -84,12 +84,14 @@ test( "an empty fork still leaves room for one statement", ()=>{
 	near( body.h, metrics.rowH + metrics.htabH + metrics.forkGap );
 } );
 
-function inPlane( fn ) {
-	const was = metrics.liftValues; metrics.liftValues = false;
+function withLift( lift, fn ) {
+	const was = metrics.liftValues; metrics.liftValues = lift;
 	try { fn(); } finally { metrics.liftValues = was; }
 }
+const inPlane = ( fn )=> withLift( false, fn );
+const lifted = ( fn )=> withLift( true, fn );
 
-test( "a value plugged into a slot floats a layer above and leaves the rows alone", ()=>{
+test( "with liftValues, a plugged value floats a layer above and leaves the rows alone", ()=> lifted( ()=>{
 	const obj = instance( 'object', { sections:{ fields:[ { fields:{ key:'p' } }, { fields:{ key:'q' } } ] } } );
 	const flat = layoutBlock( instance( 'class', { sections:{ fields:[ { fields:{ key:'a' } }, { fields:{ key:'b' } } ] } } ) );
 	const deep = layoutBlock( instance( 'class', { sections:{ fields:[ { fields:{ key:'a' }, inputs:{ value:obj } }, { fields:{ key:'b' } } ] } } ) );
@@ -97,7 +99,7 @@ test( "a value plugged into a slot floats a layer above and leaves the rows alon
 	assert.equal( deep.children[0].lift, 1 );
 	const ret = layoutBlock( instance( 'return', { inputs:{ value:obj } } ) );
 	near( ret.stackH, ret.h, "nothing overhangs in the plane" );
-} );
+} ) );
 
 test( "a tall value plugged into a field pushes the rows below it down (in-plane mode)", ()=> inPlane( ()=>{
 	const flat = instance( 'class', { sections:{ fields:[ { fields:{ key:'a' } }, { fields:{ key:'b' } } ] } } );

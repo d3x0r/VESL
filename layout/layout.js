@@ -25,10 +25,11 @@ const metrics = {
 	textPad : 0.10,                                    // padding either side of a text cell
 	textH   : consts.top_hbar_height - 2*( consts.inset*2 + consts.inset_pad ),
 	minFill : 0.5,                                     // header/stub never thinner than this
-	// Where a value plugged into a slot goes. true: it floats one layer above
-	// the board (child.lift = 1) and rows below are not disturbed. false: it
-	// sits in the board plane and pushes the rows below it down.
-	liftValues : true,
+	// Where a value plugged into a slot goes. false: it sits in the board
+	// plane and pushes the rows below it down (like wrapping a long
+	// expression onto following lines). true: it floats one layer above the
+	// board (child.lift = 1) and the rows below are not disturbed.
+	liftValues : false,
 	liftHeight : consts.peice_depth * 1.25,            // 3D height of one layer
 };
 

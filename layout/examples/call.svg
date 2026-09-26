@@ -16,7 +16,6 @@
 <text x="35" y="93.9" font-size="30" fill="#111" font-style="italic">a</text>
 <text x="35" y="148.9" font-size="30" fill="#111" font-style="italic" opacity="0.4">arg</text>
 </g>
-<rect x="90.99999999999999" y="61.00000000000001" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="85" y="55.00000000000001" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="75" y="57.50000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>

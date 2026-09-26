@@ -11,7 +11,6 @@
 <text x="35" y="38.900000000000006" font-size="30" fill="#111">function</text>
 <text x="215" y="38.900000000000006" font-size="30" fill="#111" font-style="italic">area</text>
 </g>
-<rect x="321" y="6" width="127.49999999999999" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="315" y="0" width="127.49999999999999" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="305" y="2.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
@@ -27,7 +26,6 @@
 <rect x="52.5" y="110.00000000000001" width="100" height="15" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
 <text x="160" y="93.9" font-size="30" fill="#111">while</text>
 </g>
-<rect x="286.00000000000006" y="61.00000000000001" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="280" y="55.00000000000001" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="270" y="57.50000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
@@ -50,7 +48,6 @@
 <rect x="267.5" y="317.49999999999994" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
 <text x="137.5" y="353.9" font-size="30" fill="#111">return</text>
 </g>
-<rect x="283.5" y="320.99999999999994" width="147.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="277.5" y="314.99999999999994" width="147.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="267.5" y="317.49999999999994" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>

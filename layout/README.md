@@ -74,10 +74,10 @@ grows that fork row; the rows below move down; the parent's height grows, and
 so on up the tree. Nothing is spliced: the block is simply laid out again from
 its description.
 
-Values plugged into slots chain along the third axis: the child gets
-`lift = 1` and sits one piece thickness above its parent, so a tall
-expression never pushes the parent's rows apart. `metrics.liftValues = false`
-switches to in-plane layout, where a tall value pushes the rows below it down.
+A tall value plugged into a slot pushes the rows below it down, the same way
+a long expression wraps onto following lines. `metrics.liftValues = true`
+instead chains along the third axis: the child gets `lift = 1` and sits one
+piece thickness above its parent, leaving the parent's rows alone.
 
 Every section that can still take an entry ends with a **ghost row**: an
 empty entry laid out like the others, tiled into `shape.ghost` and drawn

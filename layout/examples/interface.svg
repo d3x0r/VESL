@@ -27,13 +27,11 @@
 <text x="35" y="203.9" font-size="30" fill="#111" font-style="italic">scale</text>
 <text x="35" y="258.90000000000003" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
 </g>
-<rect x="181" y="61.00000000000001" width="167.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="175" y="55.00000000000001" width="167.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="165" y="57.50000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <text x="210" y="93.9" font-size="30" fill="#111" font-style="italic">number</text>
 </g>
-<rect x="161" y="171.00000000000003" width="287.50000000000006" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="155" y="165" width="287.50000000000006" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="145" y="167.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>

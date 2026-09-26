@@ -1,47 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="575" height="1595" viewBox="0 0 575 1595" font-family="sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="575" height="2005" viewBox="0 0 575 2005" font-family="sans-serif">
 <rect width="100%" height="100%" fill="#f4f4f0"/>
 <g transform="translate(40.0,30.0)">
 <g class="block class">
 <rect x="0" y="0" width="437.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="0" y="55.00000000000001" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="25" y="55.00000000000001" width="92.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="110.00000000000001" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="110.00000000000001" width="25" height="260" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="25" y="110.00000000000001" width="172.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="165" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="165" width="132.50000000000003" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
-<rect x="0" y="220.00000000000003" width="25" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="235" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="235" width="355" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="375" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="375" width="254.99999999999997" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="515" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="515" width="195.00000000000003" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
-<rect x="0" y="655.0000000000001" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="655.0000000000001" width="285" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="795.0000000000001" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="795.0000000000001" width="265" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
-<rect x="0" y="935.0000000000001" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="935.0000000000001" width="295" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="1075.0000000000002" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="1075.0000000000002" width="275" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
-<rect x="0" y="1215.0000000000002" width="25" height="140.00000000000009" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="1215.0000000000002" width="335" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="1355.0000000000002" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="1355.0000000000002" width="335" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
-<rect x="0" y="1495.0000000000002" width="437.5" height="25" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="370" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="370" width="132.50000000000003" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
+<rect x="0" y="425" width="25" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="440.00000000000006" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="440.00000000000006" width="355" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="580.0000000000001" width="25" height="345.00000000000006" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="580.0000000000001" width="254.99999999999997" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="925.0000000000002" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="925.0000000000002" width="195.00000000000003" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
+<rect x="0" y="1065.0000000000002" width="25" height="140.00000000000009" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="1065.0000000000002" width="285" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="1205.0000000000002" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="1205.0000000000002" width="265" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
+<rect x="0" y="1345.0000000000002" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="1345.0000000000002" width="295" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="1485.0000000000002" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="1485.0000000000002" width="275" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
+<rect x="0" y="1625.0000000000005" width="25" height="140.00000000000009" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="1625.0000000000005" width="335" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="1765.0000000000005" width="25" height="140" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="1765.0000000000005" width="335" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
+<rect x="0" y="1905.0000000000005" width="437.5" height="25" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="-10" y="2.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="425" y="2.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
 <rect x="105" y="57.50000000000001" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
 <rect x="185" y="112.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
-<rect x="367.5" y="237.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
-<rect x="27.500000000000004" y="290.00000000000006" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="267.5" y="377.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
-<rect x="27.500000000000004" y="430" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="27.500000000000004" y="710" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="307.5" y="937.5000000000002" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
-<rect x="27.500000000000004" y="990.0000000000002" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="347.5" y="1217.5000000000002" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
-<rect x="27.500000000000004" y="1270.0000000000002" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="367.5" y="442.50000000000006" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
+<rect x="27.500000000000004" y="495" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="267.5" y="582.5000000000001" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
+<rect x="27.500000000000004" y="635" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="27.500000000000004" y="1120.0000000000002" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="307.5" y="1347.5000000000002" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
+<rect x="27.500000000000004" y="1400.0000000000005" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="347.5" y="1627.5000000000002" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
+<rect x="27.500000000000004" y="1680.0000000000005" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <text x="35" y="38.900000000000006" font-size="30" fill="#111">class</text>
 <text x="155" y="38.900000000000006" font-size="30" fill="#111" font-style="italic">Point</text>
 <text x="275" y="38.900000000000006" font-size="30" fill="#111">extends</text>
@@ -49,31 +49,29 @@
 <text x="75" y="93.9" font-size="30" fill="#111">=</text>
 <text x="35" y="148.9" font-size="30" fill="#111" font-style="italic">style</text>
 <text x="155" y="148.9" font-size="30" fill="#111">=</text>
-<text x="35" y="203.9" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
-<text x="115.00000000000001" y="203.9" font-size="30" fill="#111" opacity="0.4">=</text>
-<text x="137.5" y="273.9" font-size="30" fill="#111">constructor</text>
-<text x="137.5" y="413.90000000000003" font-size="30" fill="#111" font-style="italic">length</text>
-<text x="137.5" y="553.9000000000001" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
-<text x="137.5" y="693.9000000000001" font-size="30" fill="#111">get</text>
-<text x="217.50000000000003" y="693.9000000000001" font-size="30" fill="#111" font-style="italic">norm</text>
-<text x="137.5" y="833.9000000000002" font-size="30" fill="#111" opacity="0.4">get</text>
-<text x="217.50000000000003" y="833.9000000000002" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
-<text x="137.5" y="973.9000000000002" font-size="30" fill="#111">set</text>
-<text x="217.50000000000003" y="973.9000000000002" font-size="30" fill="#111" font-style="italic">norm</text>
-<text x="137.5" y="1113.9000000000003" font-size="30" fill="#111" opacity="0.4">set</text>
-<text x="217.50000000000003" y="1113.9000000000003" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
-<text x="137.5" y="1253.9000000000003" font-size="30" fill="#111">operator</text>
-<text x="317.5" y="1253.9000000000003" font-size="30" fill="#111" font-style="italic">+</text>
-<text x="137.5" y="1393.9000000000003" font-size="30" fill="#111" opacity="0.4">operator</text>
-<text x="317.5" y="1393.9000000000003" font-size="30" fill="#111" font-style="italic" opacity="0.4">+</text>
+<text x="35" y="408.90000000000003" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
+<text x="115.00000000000001" y="408.90000000000003" font-size="30" fill="#111" opacity="0.4">=</text>
+<text x="137.5" y="478.90000000000003" font-size="30" fill="#111">constructor</text>
+<text x="137.5" y="618.9000000000001" font-size="30" fill="#111" font-style="italic">length</text>
+<text x="137.5" y="963.9000000000003" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
+<text x="137.5" y="1103.9000000000003" font-size="30" fill="#111">get</text>
+<text x="217.50000000000003" y="1103.9000000000003" font-size="30" fill="#111" font-style="italic">norm</text>
+<text x="137.5" y="1243.9000000000003" font-size="30" fill="#111" opacity="0.4">get</text>
+<text x="217.50000000000003" y="1243.9000000000003" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
+<text x="137.5" y="1383.9000000000003" font-size="30" fill="#111">set</text>
+<text x="217.50000000000003" y="1383.9000000000003" font-size="30" fill="#111" font-style="italic">norm</text>
+<text x="137.5" y="1523.9000000000005" font-size="30" fill="#111" opacity="0.4">set</text>
+<text x="217.50000000000003" y="1523.9000000000005" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
+<text x="137.5" y="1663.9000000000003" font-size="30" fill="#111">operator</text>
+<text x="317.5" y="1663.9000000000003" font-size="30" fill="#111" font-style="italic">+</text>
+<text x="137.5" y="1803.9000000000005" font-size="30" fill="#111" opacity="0.4">operator</text>
+<text x="317.5" y="1803.9000000000005" font-size="30" fill="#111" font-style="italic" opacity="0.4">+</text>
 </g>
-<rect x="121.00000000000001" y="61.00000000000001" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="115.00000000000001" y="55.00000000000001" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="105" y="57.50000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <text x="150" y="93.9" font-size="30" fill="#111" font-style="italic">0</text>
 </g>
-<rect x="201.00000000000003" y="116.00000000000001" width="157.5" height="260" fill="rgba(0,0,0,0.25)"/>
 <g class="block object">
 <rect x="195.00000000000003" y="110.00000000000001" width="157.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="195.00000000000003" y="165" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
@@ -92,91 +90,83 @@
 <text x="230.00000000000003" y="258.90000000000003" font-size="30" fill="#111" font-style="italic">size</text>
 <text x="230.00000000000003" y="313.90000000000003" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
 </g>
-<rect x="356" y="171.00000000000003" width="107.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="350" y="165" width="107.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="340" y="167.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <text x="385" y="203.9" font-size="30" fill="#111" font-style="italic">red</text>
 </g>
-<rect x="383.50000000000006" y="241" width="127.49999999999999" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
-<rect x="377.50000000000006" y="235" width="127.49999999999999" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="367.5" y="237.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<text x="412.5" y="273.9" font-size="30" fill="#111" font-style="italic">x, y</text>
+<rect x="377.50000000000006" y="440.00000000000006" width="127.49999999999999" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="367.5" y="442.50000000000006" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="412.5" y="478.90000000000003" font-size="30" fill="#111" font-style="italic">x, y</text>
 </g>
 <g class="block assign">
-<rect x="25" y="290.00000000000006" width="295" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
-<rect x="27.500000000000004" y="290.00000000000006" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
-<rect x="27.500000000000004" y="345" width="100" height="15" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
-<rect x="307.5" y="292.5" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
-<text x="137.5" y="328.90000000000003" font-size="30" fill="#111" font-style="italic">this.x</text>
-<text x="277.5" y="328.90000000000003" font-size="30" fill="#111">=</text>
+<rect x="25" y="495" width="295" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="27.500000000000004" y="495" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<rect x="27.500000000000004" y="550" width="100" height="15" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="307.5" y="497.50000000000006" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<text x="137.5" y="533.9000000000001" font-size="30" fill="#111" font-style="italic">this.x</text>
+<text x="277.5" y="533.9000000000001" font-size="30" fill="#111">=</text>
 </g>
-<rect x="323.5" y="296.00000000000006" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
-<rect x="317.5" y="290.00000000000006" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="307.5" y="292.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<text x="352.5" y="328.90000000000003" font-size="30" fill="#111" font-style="italic">x</text>
+<rect x="317.5" y="495" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="307.5" y="497.50000000000006" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="352.5" y="533.9000000000001" font-size="30" fill="#111" font-style="italic">x</text>
 </g>
 <g class="block return">
-<rect x="25" y="430" width="254.99999999999997" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
-<rect x="27.500000000000004" y="430" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
-<rect x="267.5" y="432.5" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
-<text x="137.5" y="468.9" font-size="30" fill="#111">return</text>
+<rect x="25" y="635" width="254.99999999999997" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="27.500000000000004" y="635" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<rect x="267.5" y="637.5000000000001" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<text x="137.5" y="673.9000000000001" font-size="30" fill="#111">return</text>
 </g>
-<rect x="283.5" y="435.99999999999994" width="147.5" height="260" fill="rgba(0,0,0,0.25)"/>
 <g class="block apply">
-<rect x="277.5" y="430" width="147.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="277.5" y="484.99999999999994" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="302.5" y="484.99999999999994" width="62.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="277.5" y="540" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="302.5" y="540" width="62.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="277.5" y="595" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="302.5" y="595" width="92.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
-<rect x="277.5" y="650" width="25" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="277.5" y="665" width="147.5" height="25" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="267.5" y="432.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="352.5" y="487.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
-<rect x="352.5" y="542.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
-<text x="312.5" y="468.9" font-size="30" fill="#111" font-style="italic">hypot</text>
-<text x="312.5" y="523.9" font-size="30" fill="#111" font-style="italic">a</text>
-<text x="312.5" y="578.9" font-size="30" fill="#111" font-style="italic">b</text>
-<text x="312.5" y="633.9000000000001" font-size="30" fill="#111" font-style="italic" opacity="0.4">arg</text>
+<rect x="277.5" y="635" width="147.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="277.5" y="690" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="302.5" y="690" width="62.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="277.5" y="745.0000000000001" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="302.5" y="745.0000000000001" width="62.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="277.5" y="800" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="302.5" y="800" width="92.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
+<rect x="277.5" y="855.0000000000001" width="25" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="277.5" y="870.0000000000001" width="147.5" height="25" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="267.5" y="637.5000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="352.5" y="692.5000000000001" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
+<rect x="352.5" y="747.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
+<text x="312.5" y="673.9000000000001" font-size="30" fill="#111" font-style="italic">hypot</text>
+<text x="312.5" y="728.9000000000001" font-size="30" fill="#111" font-style="italic">a</text>
+<text x="312.5" y="783.9000000000001" font-size="30" fill="#111" font-style="italic">b</text>
+<text x="312.5" y="838.9000000000001" font-size="30" fill="#111" font-style="italic" opacity="0.4">arg</text>
 </g>
-<rect x="368.5" y="490.99999999999994" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
-<rect x="362.5" y="484.99999999999994" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="352.5" y="487.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<text x="397.5" y="523.9" font-size="30" fill="#111" font-style="italic">1</text>
+<rect x="362.5" y="690" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="352.5" y="692.5000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="397.5" y="728.9000000000001" font-size="30" fill="#111" font-style="italic">1</text>
 </g>
-<rect x="368.5" y="546" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
-<rect x="362.5" y="540" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="352.5" y="542.5000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<text x="397.5" y="578.9000000000001" font-size="30" fill="#111" font-style="italic">1</text>
+<rect x="362.5" y="745.0000000000001" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="352.5" y="747.5000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="397.5" y="783.9000000000001" font-size="30" fill="#111" font-style="italic">1</text>
 </g>
 <g class="block return">
-<rect x="25" y="710" width="254.99999999999997" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
-<rect x="27.500000000000004" y="710" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
-<rect x="267.5" y="712.5000000000001" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
-<text x="137.5" y="748.9000000000001" font-size="30" fill="#111">return</text>
+<rect x="25" y="1120.0000000000002" width="254.99999999999997" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="27.500000000000004" y="1120.0000000000002" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<rect x="267.5" y="1122.5000000000002" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<text x="137.5" y="1158.9000000000003" font-size="30" fill="#111">return</text>
 </g>
-<rect x="323.50000000000006" y="941.0000000000002" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
-<rect x="317.5" y="935.0000000000001" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="307.5" y="937.5000000000002" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<text x="352.50000000000006" y="973.9000000000002" font-size="30" fill="#111" font-style="italic">v</text>
+<rect x="317.5" y="1345.0000000000002" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="307.5" y="1347.5000000000002" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="352.50000000000006" y="1383.9000000000003" font-size="30" fill="#111" font-style="italic">v</text>
 </g>
-<rect x="363.5" y="1221.0000000000002" width="147.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
-<rect x="357.5" y="1215.0000000000002" width="147.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="347.5" y="1217.5000000000002" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<text x="392.5" y="1253.9000000000003" font-size="30" fill="#111" font-style="italic">other</text>
+<rect x="357.5" y="1625.0000000000005" width="147.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="347.5" y="1627.5000000000002" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="392.5" y="1663.9000000000003" font-size="30" fill="#111" font-style="italic">other</text>
 </g>
 <g class="block return">
-<rect x="25" y="1270.0000000000002" width="254.99999999999997" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
-<rect x="27.500000000000004" y="1270.0000000000002" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
-<rect x="267.5" y="1272.5000000000002" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
-<text x="137.5" y="1308.9000000000003" font-size="30" fill="#111">return</text>
+<rect x="25" y="1680.0000000000005" width="254.99999999999997" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="27.500000000000004" y="1680.0000000000005" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<rect x="267.5" y="1682.5000000000002" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<text x="137.5" y="1718.9000000000003" font-size="30" fill="#111">return</text>
 </g>
 </g></svg>

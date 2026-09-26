@@ -33,13 +33,11 @@
 <text x="137.5" y="1313.9" font-size="30" fill="#111">case</text>
 <text x="137.5" y="1548.9" font-size="30" fill="#111" opacity="0.4">case</text>
 </g>
-<rect x="281.00000000000006" y="6" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="275.00000000000006" y="0" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="265.00000000000006" y="2.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <text x="310.00000000000006" y="38.900000000000006" font-size="30" fill="#111" font-style="italic">x</text>
 </g>
-<rect x="243.5" y="76" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="237.5" y="70" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="227.5" y="72.50000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
@@ -60,7 +58,6 @@
 <text x="60" y="218.9" font-size="30" fill="#111" font-style="italic">msg</text>
 <text x="60" y="273.9" font-size="30" fill="#111" font-style="italic" opacity="0.4">arg</text>
 </g>
-<rect x="146.00000000000003" y="186" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="140" y="180" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="130" y="182.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
@@ -77,13 +74,11 @@
 <text x="160" y="368.9" font-size="30" fill="#111" font-style="italic">beep</text>
 <text x="60" y="423.9" font-size="30" fill="#111" font-style="italic" opacity="0.4">arg</text>
 </g>
-<rect x="243.5" y="516" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="237.5" y="510.00000000000006" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="227.5" y="512.5000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <text x="272.5" y="548.9000000000001" font-size="30" fill="#111" font-style="italic">2</text>
 </g>
-<rect x="243.5" y="656" width="77.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="237.5" y="650" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="227.5" y="652.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
@@ -105,7 +100,6 @@
 <text x="162.5" y="978.9" font-size="30" fill="#111" opacity="0.4">else if</text>
 <text x="162.5" y="1118.9" font-size="30" fill="#111" opacity="0.4">else</text>
 </g>
-<rect x="328.5" y="711" width="87.50000000000001" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="322.5" y="705" width="87.50000000000001" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="312.5" y="707.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
