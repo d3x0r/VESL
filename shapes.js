@@ -172,8 +172,12 @@ function makeText( parent, t, color, v )
 	texture1.minFilter = THREE.LinearFilter;
 	texture1.colorSpace = THREE.SRGBColorSpace;
 
+	// a decal over the top face: the polygon offset keeps it from
+	// z-fighting with the surface it sits a hair above
 	let material1 = new THREE.MeshBasicMaterial( {map: texture1
 		, transparent:true
+		, depthWrite:false
+		, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-2
 		} );
 
 	var mesh1 = new THREE.Mesh(

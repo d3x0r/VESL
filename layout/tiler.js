@@ -16,6 +16,20 @@ const { consts, tween, hbar_swell, vbar_swell, corner, slot, Shape, addShape } =
 const EPS = 1e-6;
 const pad = metrics.pad;
 
+// how far the corner normals of a fill lean toward its centre
+const DISH = 0.12;
+function dishFill( w, h ) {
+	const y = consts.peice_depth;
+	const n = ( x, z )=>{ const l = Math.hypot( x, 1, z ); return { x:x/l, y:1/l, z:z/l }; };
+	return {
+		verts : [ { x:0, y, z:0 }, { x:w, y, z:0 }, { x:0, y, z:h }, { x:w, y, z:h }, { x:w/2, y, z:h/2 } ],
+		norms : [ n( DISH, DISH ), n( -DISH, DISH ), n( DISH, -DISH ), n( -DISH, -DISH ), { x:0, y:1, z:0 } ],
+		pairs : [ [0,0], [1,1], [2,2], [3,3], [4,4] ],
+		faces : [ [0,4,1], [1,4,3], [3,4,2], [2,4,0] ],
+		scaledVert( i ) { return this.verts[i]; },
+	};
+}
+
 function Tiler( shape ) {
 	this.shape = shape;
 }
@@ -30,9 +44,13 @@ Tiler.prototype = {
 		if( z1 - z0 > EPS ) this.at( vbar_swell[kind], x, z0, z1 - z0 );
 	},
 	corner( name, x, z ) { this.at( corner[name], x, z ); },
-	fill( x0, z0, x1, z1 ) {              // top and bottom faces of an interior rectangle
+	// Top and bottom faces of an interior rectangle. The top is a fan of
+	// four triangles around a centre vertex, with the corner normals leaning
+	// inward, so the surface reads as a slight dish (like the keyboard keys)
+	// and has no diagonal seam.
+	fill( x0, z0, x1, z1 ) {
 		if( x1 - x0 <= EPS || z1 - z0 <= EPS ) return;
-		this.at( tween.key_fill, x0, z0, x1 - x0, z1 - z0 );
+		this.at( dishFill( x1 - x0, z1 - z0 ), x0, z0 );
 		this.at( tween.key_bottom, x0, z0, x1 - x0, z1 - z0 );
 	},
 	// bottom edge of a region between x0 and x1 at z, optionally carrying a
