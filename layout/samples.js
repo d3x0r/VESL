@@ -36,6 +36,12 @@ function samples() {
 			properties:[ { fields:{ key:'area' }, inputs:{ type: value( 'number' ) } } ],
 			methods:[ { fields:{ key:'scale' }, inputs:{ signature: value( '(k) => Shape' ) } } ],
 		} } ),
+		'if-and': instance( 'if', {
+			inputs:{ condition: instance( 'and', { sections:{ operands:[
+				{ inputs:{ value: instance( 'compare', { fields:{ op:'<' }, sections:{ operands:[ { inputs:{ value: value( 'a' ) } }, { inputs:{ value: value( 'b' ) } } ] } } ) } },
+				{ inputs:{ value: instance( 'not', { inputs:{ operand: value( 'done' ) } } ) } },
+			] } } ) },
+			sections:{ then:[ { statements:[ call( 'go' ) ] } ], 'else':[ { statements:[ call( 'stop' ) ] } ] } } ),
 		'function': instance( 'function', { fields:{ name:'area' }, inputs:{ params: value( 'w, h' ) },
 			sections:{ body:[ { statements:[
 				instance( 'while', { inputs:{ condition: value( 'n' ) }, sections:{ body:[ { statements:[ call( 'step' ) ] } ] } } ),

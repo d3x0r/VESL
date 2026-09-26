@@ -112,6 +112,33 @@ define( 'apply', {
 	sections:[ section( 'args', 'input', [ name( 'key', 'arg' ), input( 'value' ) ] ) ],
 } );
 
+// Operators are single blocks holding their operands as rows, so an
+// expression is one line with values plugged in, never a nested tree of
+// inline slots. `and`/`or` take any number of operands.
+define( 'and', {
+	left:'value',
+	header:[ label( 'and' ) ],
+	sections:[ section( 'operands', 'input', [ input( 'value' ) ], { min:2 } ) ],
+} );
+
+define( 'or', {
+	left:'value',
+	header:[ label( 'or' ) ],
+	sections:[ section( 'operands', 'input', [ input( 'value' ) ], { min:2 } ) ],
+} );
+
+define( 'not', {
+	left:'value',
+	header:[ label( 'not' ), input( 'operand' ) ],
+} );
+
+// a < b, a == b ...: the operator is a name cell so it can be swapped
+define( 'compare', {
+	left:'value',
+	header:[ name( 'op', '<' ) ],
+	sections:[ section( 'operands', 'input', [ input( 'value' ) ], { min:2, max:2 } ) ],
+} );
+
 define( 'unary', {
 	left:'value',
 	header:[ name( 'op', '!' ), input( 'operand' ) ],

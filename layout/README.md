@@ -43,7 +43,9 @@ A first section that is a single mandatory body with nothing but statements
 from a tab under the header, blockly style, instead of a separate fork row.
 
 Kinds defined so far: `call assign if while for switch return` (statements)
-and `value apply unary function object array struct interface class` (values).
+and `value apply and or not compare unary function object array struct interface class`
+(values). Operators hold their operands as rows, so an expression is one
+line with values plugged into it rather than a tree of inline slots.
 `class` has sections for fields, constructor, methods, getters, setters and
 operator overloads, which is what the VESL syntax document asks for.
 

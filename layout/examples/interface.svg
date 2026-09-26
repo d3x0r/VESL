@@ -28,6 +28,6 @@
 <g class="block value">
 <rect x="155" y="110.00000000000001" width="287.50000000000006" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="145" y="112.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<text x="190" y="148.9" font-size="30" fill="#111" font-style="italic">(k) => Shape</text>
+<text x="190" y="148.9" font-size="30" fill="#111" font-style="italic">(k) =&gt; Shape</text>
 </g>
 </g></svg>

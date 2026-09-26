@@ -446,5 +446,5 @@
 <text x="162" y="112.68" font-size="36.480000000000004" font-family="sans-serif" fill="#000">:</text>
 <text x="42" y="178.68" font-size="36.480000000000004" font-family="sans-serif" fill="#000">scale</text>
 <text x="252" y="112.68" font-size="36.480000000000004" font-family="sans-serif" fill="#000">number</text>
-<text x="228" y="178.68" font-size="36.480000000000004" font-family="sans-serif" fill="#000">(k) => Shape</text>
+<text x="228" y="178.68" font-size="36.480000000000004" font-family="sans-serif" fill="#000">(k) =&gt; Shape</text>
 </g></svg>

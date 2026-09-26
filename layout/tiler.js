@@ -181,8 +181,9 @@ function shapeToSVG( shape, opts ) {
 		const c = ( 60 + 180*d ) | 0;
 		out.push( `<polygon points="${ps.map( p=>( p.x*S ).toFixed(1)+','+( p.z*S ).toFixed(1) ).join(' ')}" fill="rgb(${c},${(c*0.85)|0},${(c*0.4)|0})" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>` );
 	}
+	const esc = ( t )=> String( t ).replace( /&/g, '&amp;' ).replace( /</g, '&lt;' ).replace( />/g, '&gt;' );
 	for( const l of shape.labels || [] )
-		out.push( `<text x="${l.pos.x*S}" y="${(l.pos.z + l.size.height*0.8)*S}" font-size="${l.size.height*0.8*S}" font-family="sans-serif" fill="#000">${l.text}</text>` );
+		out.push( `<text x="${l.pos.x*S}" y="${(l.pos.z + l.size.height*0.8)*S}" font-size="${l.size.height*0.8*S}" font-family="sans-serif" fill="#000">${esc( l.text )}</text>` );
 	out.push( `</g></svg>` );
 	return out.join( "\n" );
 }

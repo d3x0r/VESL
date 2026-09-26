@@ -8,7 +8,7 @@ const palette = {
 	value     : [ '#e0a03a', '#c2862a' ],
 };
 
-function esc( s ) { return String( s ).replace( /&/g, '&amp;' ).replace( /</g, '&lt;' ); }
+function esc( s ) { return String( s ).replace( /&/g, '&amp;' ).replace( /</g, '&lt;' ).replace( />/g, '&gt;' ); }
 
 function render( root, opts ) {
 	opts = opts || {};
