@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="405" viewBox="0 0 512 405" font-family="sans-serif">
+<rect width="100%" height="100%" fill="#f4f4f0"/>
+<g transform="translate(40.0,30.0)">
+<g class="block function">
+<rect x="0" y="0" width="317.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="55.00000000000001" width="25" height="250" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="305" width="317.5" height="25" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="-10" y="2.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="305" y="2.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
+<rect x="27.500000000000004" y="55.00000000000001" width="100" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="35" y="38.900000000000006" font-size="30" fill="#111">function</text>
+<text x="215" y="38.900000000000006" font-size="30" fill="#111" font-style="italic">area</text>
+</g>
+<g class="block value">
+<rect x="315" y="0" width="127.49999999999999" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="305" y="2.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="350" y="38.900000000000006" font-size="30" fill="#111" font-style="italic">w, h</text>
+</g>
+<g class="block while">
+<rect x="25" y="55.00000000000001" width="257.5" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="25" y="110.00000000000001" width="25" height="85.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="25" y="195.00000000000003" width="257.5" height="25" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="27.500000000000004" y="55.00000000000001" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<rect x="27.500000000000004" y="220.00000000000003" width="100" height="15" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="270" y="57.50000000000001" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<rect x="52.5" y="110.00000000000001" width="100" height="15" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<text x="160" y="93.9" font-size="30" fill="#111">while</text>
+</g>
+<g class="block value">
+<rect x="280" y="55.00000000000001" width="77.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="270" y="57.50000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="315.00000000000006" y="93.9" font-size="30" fill="#111" font-style="italic">n</text>
+</g>
+<g class="block call">
+<rect x="50" y="110.00000000000001" width="227.5" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="52.5" y="110.00000000000001" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<rect x="52.5" y="165" width="100" height="15" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<text x="185" y="148.9" font-size="30" fill="#111" font-style="italic">step</text>
+</g>
+<g class="block return">
+<rect x="25" y="220.00000000000003" width="254.99999999999997" height="55.00000000000001" fill="#4c8dd6" stroke="#3b74b5" stroke-width="1"/>
+<rect x="27.500000000000004" y="220.00000000000003" width="100" height="15" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<rect x="267.5" y="222.5" width="10" height="50" fill="#f4f4f0" stroke="#3b74b5" stroke-width="1"/>
+<text x="137.5" y="258.90000000000003" font-size="30" fill="#111">return</text>
+</g>
+<g class="block value">
+<rect x="277.5" y="220.00000000000003" width="147.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="267.5" y="222.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="312.5" y="258.90000000000003" font-size="30" fill="#111" font-style="italic">w * h</text>
+</g>
+</g></svg>

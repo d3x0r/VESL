@@ -4,7 +4,8 @@
   "description": "Visual ECMA Script Language",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/layout.test.js",
+    "examples": "node layout/examples.js"
   },
   "author": "d3x0r",
   "license": "ISC",

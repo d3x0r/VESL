@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- Quick look at the description-built blocks in three.js, without the
+     VR/physics setup of index.html. Serve the repo over http and open this.
+     Drag to orbit, wheel to zoom. -->
+<html>
+<head><meta charset="utf-8"><title>VESL block preview</title>
+<style>body{margin:0;background:#202428;overflow:hidden}#hint{position:absolute;left:8px;top:8px;color:#ccc;font:13px sans-serif}</style>
+</head>
+<body>
+<div id="hint">drag: orbit &middot; wheel: zoom &middot; #dist=6&amp;theta=0&amp;phi=0.9&amp;x=1&amp;z=2 sets the view</div>
+<script src="require.js"></script>
+<script src="node_modules/three/build/three.js"></script>
+<script>
+window.previewReady = false;
+window.previewErrors = [];
+window.addEventListener( "error", e => window.previewErrors.push( String( e.message || e ) ) );
+require.paths = [ "./" ];
+const shapes = require( "./shapes.js" );
+const { samples } = require( "./layout/samples.js" );
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color( 0x202428 );
+scene.add( new THREE.AmbientLight( 0xffffff, 0.35 ) );
+const sun = new THREE.DirectionalLight( 0xffffff, 0.9 ); sun.position.set( -3, 10, -4 ); scene.add( sun );
+const fill = new THREE.DirectionalLight( 0xffffff, 0.3 ); fill.position.set( 4, 6, 6 ); scene.add( fill );
+
+const blocks = new THREE.Group();
+scene.add( blocks );
+let x = 0, maxH = 0;
+for( const inst of Object.values( samples() ) ) {
+	const o = shapes.makeBlockObject( inst );
+	o.position.set( x, 0, 0 );
+	blocks.add( o );
+	x += o.userData.block.w + 1.5;
+	maxH = Math.max( maxH, o.userData.block.h );
+}
+blocks.position.set( -x/2, 0, -maxH/2 );
+
+const renderer = new THREE.WebGLRenderer( { antialias:true } );
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+const camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.01, 1000 );
+const orbit = { theta:-0.35, phi:1.05, dist: Math.max( x, maxH ) * 1.1, target:new THREE.Vector3( 0, 0, 0 ) };
+function place() {
+	camera.position.set(
+		orbit.target.x + orbit.dist * Math.sin( orbit.phi ) * Math.sin( orbit.theta ),
+		orbit.target.y + orbit.dist * Math.cos( orbit.phi ),
+		orbit.target.z + orbit.dist * Math.sin( orbit.phi ) * Math.cos( orbit.theta ) );
+	camera.lookAt( orbit.target );
+}
+let drag = null;
+renderer.domElement.addEventListener( "mousedown", e => drag = { x:e.clientX, y:e.clientY } );
+window.addEventListener( "mouseup", () => drag = null );
+window.addEventListener( "mousemove", e => {
+	if( !drag ) return;
+	orbit.theta -= ( e.clientX - drag.x ) * 0.005;
+	orbit.phi = Math.min( 1.55, Math.max( 0.05, orbit.phi - ( e.clientY - drag.y ) * 0.005 ) );
+	drag = { x:e.clientX, y:e.clientY };
+} );
+renderer.domElement.addEventListener( "wheel", e => { orbit.dist *= e.deltaY > 0 ? 1.1 : 0.9; e.preventDefault(); }, { passive:false } );
+window.addEventListener( "resize", () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize( window.innerWidth, window.innerHeight ); } );
+window.previewView = ( o ) => Object.assign( orbit, o );
+// #dist=6&theta=0&phi=0.9&x=1&z=2 sets the view (handy for screenshots)
+for( const [ k, v ] of new URLSearchParams( location.hash.slice( 1 ) ) ) {
+	if( k === 'x' || k === 'z' ) orbit.target[k] = parseFloat( v );
+	else if( k in orbit ) orbit[k] = parseFloat( v );
+}
+( function frame() { place(); renderer.render( scene, camera ); window.previewReady = true; requestAnimationFrame( frame ); } )();
+</script>
+</body>
+</html>

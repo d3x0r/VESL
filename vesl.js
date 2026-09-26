@@ -106,28 +106,18 @@ function loadSomeShapes(scene) {
 	o.add( shapes.CBeam.vBarExtension.mesh  )
 	p.x += 2;
 
-	var shape = shapes.makeCallBlock();
+	// Whole blocks built from descriptions (see layout/README.md). Each
+	// block is its own Object3D; plugged-in values and hanging statements
+	// are child objects placed where their connectors line up.
 	p.x = -10;
 	p.z += 1;
-	o = new THREE.Object3D();
-	scene.add( o );
-	o.position.copy( p );	
-	o.add( shapes.createMesh( shapes.createGeometry( shape ) )  );
-	p.x += 4;
-
-	var shape = shapes.makeSwitchBlock();
-	o = new THREE.Object3D();
-	scene.add( o );
-	o.position.copy( p );	
-	o.add( shapes.createMesh( shapes.createGeometry( shape ) )  );
-	p.x = 2;
-
-	var shape = shapes.makeObjectBlock();
-	o = new THREE.Object3D();
-	scene.add( o );
-	o.position.copy( p );	
-	o.add( shapes.createMesh( shapes.createGeometry( shape ) )  );
-	p.x += 4;
+	const examples = Object.values( require( "./layout/samples.js" ).samples() );
+	for( const inst of examples ) {
+		o = shapes.makeBlockObject( inst );
+		scene.add( o );
+		o.position.copy( p );
+		p.x += o.userData.block.w + 2;
+	}
 
 
 	//let mesh;
