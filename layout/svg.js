@@ -23,20 +23,23 @@ function render( root, opts ) {
 
 	walk( root, ( n, ox, oy )=>{
 		const m = metrics;
+		// a lifted value casts a little shadow so the layering reads in 2D
+		if( n.lift ) out.push( `<rect x="${(ox+0.06)*S}" y="${(oy+0.06)*S}" width="${n.w*S}" height="${n.h*S}" fill="rgba(0,0,0,0.25)"/>` );
 		const kind = n.def.left === 'value' ? 'value' : 'statement';
 		const fill = palette[kind][0], edge = palette[kind][1];
-		const r = ( x, y, w, h, f )=> out.push( `<rect x="${(ox+x)*S}" y="${(oy+y)*S}" width="${w*S}" height="${h*S}" fill="${f||fill}" stroke="${edge}" stroke-width="1"/>` );
+		const r = ( x, y, w, h, f, ghost )=> out.push( `<rect x="${(ox+x)*S}" y="${(oy+y)*S}" width="${w*S}" height="${h*S}" fill="${f||fill}" stroke="${edge}" stroke-width="1"${ghost ? ' opacity="0.35" stroke-dasharray="4 3"' : ''}/>` );
 		out.push( `<g class="block ${n.kind}">` );
 		for( const row of n.rows ) {
 			if( row.type === 'header' ) r( 0, row.y, row.w, row.h );
 			else if( row.type === 'footer' ) r( 0, row.y, row.w, row.h );
 			else if( row.type === 'input' || row.type === 'fork' ) {
 				r( 0, row.y, m.barW, row.h );
-				r( m.barW, row.y, row.stubW, m.rowH );
+				r( m.barW, row.y, row.stubW, m.rowH, null, row.ghost );
 			}
 			else r( 0, row.y, m.barW, row.h );   // spacer / headerfork
 		}
 		for( const c of n.connectors ) {
+			if( c.ghost ) continue;
 			const carve = '#f4f4f0';
 			if( c.dir === 'statement' && c.type === 'slot' ) r( c.x, c.y, m.htabW, m.htabH, carve );
 			if( c.dir === 'statement' && c.type === 'tab' )  r( c.x, c.y, m.htabW, m.htabH );
@@ -45,7 +48,7 @@ function render( root, opts ) {
 		}
 		for( const l of n.labels ) {
 			const italic = l.cell.type === 'name' ? ' font-style="italic"' : '';
-			out.push( `<text x="${(ox+l.x)*S}" y="${(oy+l.y+l.h*0.8)*S}" font-size="${(l.h*0.8*S).toFixed(0)}" fill="#111"${italic}>${esc(l.text)}</text>` );
+			out.push( `<text x="${(ox+l.x)*S}" y="${(oy+l.y+l.h*0.8)*S}" font-size="${(l.h*0.8*S).toFixed(0)}" fill="#111"${italic}${l.ghost ? ' opacity="0.4"' : ''}>${esc(l.text)}</text>` );
 		}
 		out.push( `</g>` );
 	} );

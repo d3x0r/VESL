@@ -24,8 +24,10 @@ function name( field, hint )      { return { type:'name', field, hint: hint || f
 function input( slot )            { return { type:'input', slot }; }
 function statements( slot )       { return { type:'statements', slot }; }
 
+// opts: min/max entry counts; ghost:false turns off the empty "add one"
+// row that a section shows while it can still take entries.
 function section( name, kind, cells, opts ) {
-	return Object.assign( { name, kind, cells, min:0, max:Infinity }, opts );
+	return Object.assign( { name, kind, cells, min:0, max:Infinity, ghost:true }, opts );
 }
 
 const defs = {};
@@ -86,10 +88,8 @@ define( 'for', {
 define( 'switch', {
 	top:'statement', bottom:'statement',
 	header:[ label( 'switch' ), input( 'discriminant' ) ],
-	sections:[
-		section( 'cases', 'fork', [ label( 'case' ), input( 'value' ), statements( 'body' ) ] ),
-		section( 'default', 'fork', [ label( 'default' ), statements( 'body' ) ], { max:1 } ),
-	],
+	// a case with nothing plugged into its value slot is the default case
+	sections:[ section( 'cases', 'fork', [ label( 'case' ), input( 'value' ), statements( 'body' ) ] ) ],
 } );
 
 define( 'return', {

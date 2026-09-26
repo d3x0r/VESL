@@ -71,8 +71,20 @@ instance( 'class', { fields:{ name:'Point' }, sections:{
 
 Expansion is what this pass exists for. A statement inserted into a case body
 grows that fork row; the rows below move down; the parent's height grows, and
-so on up the tree. A tall value plugged into a field does the same sideways.
-Nothing is spliced: the block is simply laid out again from its description.
+so on up the tree. Nothing is spliced: the block is simply laid out again from
+its description.
+
+Values plugged into slots chain along the third axis: the child gets
+`lift = 1` and sits one piece thickness above its parent, so a tall
+expression never pushes the parent's rows apart. `metrics.liftValues = false`
+switches to in-plane layout, where a tall value pushes the rows below it down.
+
+Every section that can still take an entry ends with a **ghost row**: an
+empty entry laid out like the others, tiled into `shape.ghost` and drawn
+translucent, with its connectors flagged `ghost: true`. Dropping onto a ghost
+connector is how a case is added to a switch or a field to a class. A section
+opts out with `ghost:false`. A switch case with nothing in its value slot is
+the default case.
 
 All metrics derive from `shapes/consts.js` (`metrics` in `layout.js`).
 

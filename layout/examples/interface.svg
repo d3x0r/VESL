@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="588" height="280" viewBox="0 0 588 280" font-family="sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="588" height="390" viewBox="0 0 588 390" font-family="sans-serif">
 <rect width="100%" height="100%" fill="#f4f4f0"/>
 <g transform="translate(40.0,30.0)">
 <g class="block interface">
@@ -6,28 +6,37 @@
 <rect x="0" y="55.00000000000001" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="25" y="55.00000000000001" width="152.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="0" y="110.00000000000001" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="25" y="110.00000000000001" width="132.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="165" width="25" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="0" y="180" width="517.5000000000001" height="25" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="110.00000000000001" width="132.50000000000003" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
+<rect x="0" y="165" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="165" width="132.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="220.00000000000003" width="25" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="25" y="220.00000000000003" width="92.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1" opacity="0.35" stroke-dasharray="4 3"/>
+<rect x="0" y="275" width="25" height="15" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="0" y="290" width="517.5000000000001" height="25" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="-10" y="2.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="505.00000000000006" y="2.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
 <rect x="165" y="57.50000000000001" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
-<rect x="145" y="112.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
+<rect x="145" y="167.5" width="10" height="50" fill="#f4f4f0" stroke="#c2862a" stroke-width="1"/>
 <text x="35" y="38.900000000000006" font-size="30" fill="#111">interface</text>
 <text x="235" y="38.900000000000006" font-size="30" fill="#111" font-style="italic">Shape</text>
 <text x="355" y="38.900000000000006" font-size="30" fill="#111">extends</text>
 <text x="35" y="93.9" font-size="30" fill="#111" font-style="italic">area</text>
 <text x="135" y="93.9" font-size="30" fill="#111">:</text>
-<text x="35" y="148.9" font-size="30" fill="#111" font-style="italic">scale</text>
+<text x="35" y="148.9" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
+<text x="115.00000000000001" y="148.9" font-size="30" fill="#111" opacity="0.4">:</text>
+<text x="35" y="203.9" font-size="30" fill="#111" font-style="italic">scale</text>
+<text x="35" y="258.90000000000003" font-size="30" fill="#111" font-style="italic" opacity="0.4">key</text>
 </g>
+<rect x="181" y="61.00000000000001" width="167.5" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
 <rect x="175" y="55.00000000000001" width="167.5" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <rect x="165" y="57.50000000000001" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
 <text x="210" y="93.9" font-size="30" fill="#111" font-style="italic">number</text>
 </g>
+<rect x="161" y="171.00000000000003" width="287.50000000000006" height="55.00000000000001" fill="rgba(0,0,0,0.25)"/>
 <g class="block value">
-<rect x="155" y="110.00000000000001" width="287.50000000000006" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<rect x="145" y="112.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
-<text x="190" y="148.9" font-size="30" fill="#111" font-style="italic">(k) =&gt; Shape</text>
+<rect x="155" y="165" width="287.50000000000006" height="55.00000000000001" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<rect x="145" y="167.5" width="10" height="50" fill="#e0a03a" stroke="#c2862a" stroke-width="1"/>
+<text x="190" y="203.9" font-size="30" fill="#111" font-style="italic">(k) =&gt; Shape</text>
 </g>
 </g></svg>

@@ -25,6 +25,11 @@ const metrics = {
 	textPad : 0.10,                                    // padding either side of a text cell
 	textH   : consts.top_hbar_height - 2*( consts.inset*2 + consts.inset_pad ),
 	minFill : 0.5,                                     // header/stub never thinner than this
+	// Where a value plugged into a slot goes. true: it floats one layer above
+	// the board (child.lift = 1) and rows below are not disturbed. false: it
+	// sits in the board plane and pushes the rows below it down.
+	liftValues : true,
+	liftHeight : consts.peice_depth * 1.25,            // 3D height of one layer
 };
 
 function measure( text ) {
@@ -100,13 +105,15 @@ function layoutBlock( inst ) {
 	let y = m.rowH;
 	let widest = header.w;
 	// a compact block has nothing hanging off a bar: the header is the block
-	node.compact = !hfork && def.sections.every( s => inst.sections[s.name].length === 0 );
+	node.compact = !hfork && def.sections.every( s => inst.sections[s.name].length === 0 && !( s.ghost && s.max > 0 ) );
 	let headerChildH = 0;
 	if( header.input && header.input.child ) {
 		const child = layoutBlock( header.input.child );
 		header.input.childNode = child;
-		headerChildH = child.stackH;
-		if( !node.compact ) y = Math.max( y, child.stackH );   // the body starts below the plugged value
+		if( !metrics.liftValues ) {
+			headerChildH = child.stackH;
+			if( !node.compact ) y = Math.max( y, child.stackH );   // the body starts below the plugged value
+		}
 	}
 
 	// ---- header fork body --------------------------------------------------
@@ -122,7 +129,12 @@ function layoutBlock( inst ) {
 	let prev = hfork ? 'fork' : 'header';
 	for( const s of def.sections ) {
 		if( s === hfork ) continue;
-		for( const entry of inst.sections[s.name] ) {
+		const entries = inst.sections[s.name].slice();
+		// a ghost row: an empty entry shown faintly while the section can
+		// still take another one; dropping onto it creates the entry
+		if( s.ghost && entries.length < s.max )
+			entries.push( { fields:{}, inputs:{}, statements:[], ghost:true } );
+		for( const entry of entries ) {
 			if( s.kind === 'fork' && prev !== 'fork' ) {
 				node.rows.push( { type:'spacer', y, h:m.rowGap, x:0, w:m.barW } );
 				y += m.rowGap;
@@ -130,6 +142,7 @@ function layoutBlock( inst ) {
 			const row = s.kind === 'input'
 				? layoutInputRow( s, entry, node, y )
 				: layoutForkRow( s, entry, node, y );
+			row.ghost = !!entry.ghost;
 			node.rows.push( row );
 			y += row.h;
 			widest = Math.max( widest, row.w );
@@ -170,11 +183,13 @@ function layoutBlock( inst ) {
 		attachStatements( node, { type:'tab', dir:'statement', name:hfork.name, x:m.barW + pad, y:m.rowH, section:hfork, entry:row.entry }, row.body );
 	}
 	for( const row of node.rows ) {
+		const before = node.connectors.length;
 		if( row.type === 'input' ) addValueSlot( node, row.input, row );
 		if( row.type === 'fork' ) {
 			if( row.input ) addValueSlot( node, row.input, row );
 			attachStatements( node, { type:'tab', dir:'statement', name:row.section.name, x:m.barW + pad, y:row.y + m.rowH, section:row.section, entry:row.entry }, row.body );
 		}
+		if( row.ghost ) for( let i = before; i < node.connectors.length; i++ ) node.connectors[i].ghost = true;
 	}
 
 	// ---- labels ------------------------------------------------------------
@@ -182,7 +197,7 @@ function layoutBlock( inst ) {
 		if( !row.cells ) continue;
 		for( const c of row.cells ) {
 			if( c.type === 'label' || c.type === 'name' )
-				node.labels.push( { text:c.text, x:c.x + m.textPad, y:row.y + ( m.rowH - m.textH )/2, w:c.w - 2*m.textPad, h:m.textH, cell:c } );
+				node.labels.push( { text:c.text, x:c.x + m.textPad, y:row.y + ( m.rowH - m.textH )/2, w:c.w - 2*m.textPad, h:m.textH, cell:c, ghost:!!row.ghost } );
 		}
 	}
 	return node;
@@ -213,7 +228,7 @@ function layoutInputRow( section, entry, node, y ) {
 	if( row.input.child ) {
 		const child = layoutBlock( row.input.child );
 		row.input.childNode = child;
-		row.h = Math.max( row.h, child.stackH );
+		if( !metrics.liftValues ) row.h = Math.max( row.h, child.stackH );
 	}
 	return row;
 }
@@ -245,7 +260,7 @@ function layoutForkRow( section, entry, node, y ) {
 	if( row.input && row.input.child ) {
 		const child = layoutBlock( row.input.child );
 		row.input.childNode = child;
-		h = Math.max( h, child.stackH );
+		if( !metrics.liftValues ) h = Math.max( h, child.stackH );
 	}
 	row.h = h;
 	return row;
@@ -274,9 +289,10 @@ function addValueSlot( node, cell, row ) {
 	if( cell.child ) {
 		const child = cell.childNode || layoutBlock( cell.child );
 		cell.childNode = child;
-		child.x = conn.x + m.vtabW;   // its left tab sits in the slot
+		child.x = conn.x + m.vtabW;   // its left tab sits in (or hovers over) the slot
 		child.y = conn.y - pad;
-		node.children.push( { node:child, x:child.x, y:child.y, via:conn } );
+		child.lift = m.liftValues ? 1 : 0;
+		node.children.push( { node:child, x:child.x, y:child.y, lift:child.lift, via:conn } );
 	}
 }
 
@@ -286,7 +302,7 @@ function attachStatements( node, tab, body ) {
 	for( const child of body.nodes ) {
 		child.x = tab.x - pad;        // its top slot is carved at x = pad
 		child.y = y;
-		node.children.push( { node:child, x:child.x, y:child.y, via:tab } );
+		node.children.push( { node:child, x:child.x, y:child.y, lift:0, via:tab } );
 		y += child.stackH;
 	}
 }

@@ -18,8 +18,8 @@ function samples() {
 					{ inputs:{ value: value( '1' ) }, statements:[ call( 'log', [ 'msg' ] ), call( 'beep' ) ] },
 					{ inputs:{ value: value( '2' ) }, statements:[] },
 					{ inputs:{ value: value( '3' ) }, statements:[ instance( 'if', { inputs:{ condition: value( 'ok' ) }, sections:{ then:[ { statements:[ call( 'go' ) ] } ] } } ) ] },
+					{ statements:[ call( 'other' ) ] },   // no value plugged in: the default case
 				],
-				'default':[ { statements:[ call( 'other' ) ] } ],
 			} } ),
 		'class': instance( 'class', { fields:{ name:'Point' }, sections:{
 			fields:[

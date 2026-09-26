@@ -19,6 +19,7 @@ for( const name in examples ) {
 	const parts = [];
 	walk( node, ( n, ox, oy )=>{
 		const shape = tileBlock( n );
+		if( n.lift ) for( const v of shape.verts ) v.y += n.lift * 0.001;   // lifted values draw on top
 		for( const v of shape.verts ) { v.x += ox; v.z += oy; }
 		for( const l of shape.labels ) { l.pos.x += ox; l.pos.z += oy; }
 		parts.push( shape );

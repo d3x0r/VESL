@@ -50,7 +50,8 @@ test( "a call with arguments grows a row per argument", ()=>{
 	const a = layoutBlock( call( 'f' ) );
 	const b = layoutBlock( call( 'f', [ 'x' ] ) );
 	const c = layoutBlock( call( 'f', [ 'x', 'y' ] ) );
-	assert( a.compact );
+	assert( !a.compact, "a call shows a ghost argument row" );
+	near( b.h - a.h, metrics.rowH, "one more input row" );
 	near( c.h - b.h, metrics.rowH, "one more input row" );
 } );
 
@@ -66,7 +67,7 @@ test( "statements hanging from a fork stack with their own heights", ()=>{
 	near( fork.h, metrics.rowH + kids[0].node.stackH + kids[1].node.stackH + metrics.htabH + metrics.forkGap );
 } );
 
-test( "a compact statement stays one row when a tall value is plugged in, but stacks below it", ()=>{
+test( "a compact statement stays one row when a tall value is plugged in, but stacks below it (in-plane mode)", ()=> inPlane( ()=>{
 	const obj = instance( 'object', { sections:{ fields:[ { fields:{ key:'p' } }, { fields:{ key:'q' } } ] } } );
 	const ret = layoutBlock( instance( 'return', { inputs:{ value:obj } } ) );
 	assert( ret.compact );
@@ -75,7 +76,7 @@ test( "a compact statement stays one row when a tall value is plugged in, but st
 	const fn = layoutBlock( instance( 'function', { sections:{ body:[ { statements:[ instance( 'return', { inputs:{ value:obj } } ), call( 'after' ) ] } ] } } ) );
 	const kids = fn.children.filter( c=>c.via.name === 'body' );
 	near( kids[1].y, kids[0].y + layoutBlock( obj ).h, "next statement starts below the overhanging value" );
-} );
+} ) );
 
 test( "an empty fork still leaves room for one statement", ()=>{
 	const node = layoutBlock( instance( 'while' ) );
@@ -83,8 +84,24 @@ test( "an empty fork still leaves room for one statement", ()=>{
 	near( body.h, metrics.rowH + metrics.htabH + metrics.forkGap );
 } );
 
-test( "a tall value plugged into a field pushes the rows below it down", ()=>{
+function inPlane( fn ) {
+	const was = metrics.liftValues; metrics.liftValues = false;
+	try { fn(); } finally { metrics.liftValues = was; }
+}
+
+test( "a value plugged into a slot floats a layer above and leaves the rows alone", ()=>{
+	const obj = instance( 'object', { sections:{ fields:[ { fields:{ key:'p' } }, { fields:{ key:'q' } } ] } } );
+	const flat = layoutBlock( instance( 'class', { sections:{ fields:[ { fields:{ key:'a' } }, { fields:{ key:'b' } } ] } } ) );
+	const deep = layoutBlock( instance( 'class', { sections:{ fields:[ { fields:{ key:'a' }, inputs:{ value:obj } }, { fields:{ key:'b' } } ] } } ) );
+	near( deep.h, flat.h );
+	assert.equal( deep.children[0].lift, 1 );
+	const ret = layoutBlock( instance( 'return', { inputs:{ value:obj } } ) );
+	near( ret.stackH, ret.h, "nothing overhangs in the plane" );
+} );
+
+test( "a tall value plugged into a field pushes the rows below it down (in-plane mode)", ()=> inPlane( ()=>{
 	const flat = instance( 'class', { sections:{ fields:[ { fields:{ key:'a' } }, { fields:{ key:'b' } } ] } } );
+	// (ghost rows are present in both, so the difference is only the object's height)
 	const obj = instance( 'object', { sections:{ fields:[ { fields:{ key:'p' } }, { fields:{ key:'q' } } ] } } );
 	const deep = instance( 'class', { sections:{ fields:[ { fields:{ key:'a' }, inputs:{ value:obj } }, { fields:{ key:'b' } } ] } } );
 	const f = layoutBlock( flat ), d = layoutBlock( deep );
@@ -94,13 +111,13 @@ test( "a tall value plugged into a field pushes the rows below it down", ()=>{
 	near( rowB.y, metrics.rowH + objH, "field b moved below the object" );
 	const kid = d.children[0];
 	near( kid.x, rowB.x + d.rows[1].input.x + metrics.vtabW, "object's tab sits in the slot" );
-} );
+} ) );
 
-test( "a value plugged into the header pushes the body down", ()=>{
+test( "a value plugged into the header pushes the body down (in-plane mode)", ()=> inPlane( ()=>{
 	const base = instance( 'object', { sections:{ fields:[ { fields:{ key:'p' } }, { fields:{ key:'q' } } ] } } );
 	const c = layoutBlock( instance( 'class', { inputs:{ base }, sections:{ fields:[ { fields:{ key:'a' } } ] } } ) );
 	near( c.rows[1].y, layoutBlock( base ).h );
-} );
+} ) );
 
 test( "the header spans the widest row below it", ()=>{
 	const node = layoutBlock( instance( 'object', { sections:{ fields:[ { fields:{ key:'aVeryLongFieldName' } } ] } } ) );
@@ -111,8 +128,28 @@ test( "the header spans the widest row below it", ()=>{
 	near( node.rows[0].input === null ? 0 : 1, 0 );
 } );
 
+test( "sections that can still grow end with a ghost row", ()=>{
+	const empty = layoutBlock( instance( 'switch' ) );
+	const forks = empty.rows.filter( r=>r.type === 'fork' );
+	assert.equal( forks.length, 1 );
+	assert( forks[0].ghost );
+	assert( empty.connectors.filter( c=>c.ghost ).length >= 2, "ghost slot and ghost tab" );
+	const one = layoutBlock( instance( 'switch', { sections:{ cases:[ { statements:[ call( 'a' ) ] } ] } } ) );
+	const f1 = one.rows.filter( r=>r.type === 'fork' );
+	assert.equal( f1.length, 2 );
+	assert( !f1[0].ghost && f1[1].ghost );
+	// a section at its limit shows no ghost
+	const full = layoutBlock( instance( 'class', { sections:{ constructor:[ { statements:[] } ] } } ) );
+	const ctor = full.rows.filter( r=>r.type === 'fork' && r.section.name === 'constructor' );
+	assert.equal( ctor.length, 1 );
+	assert( !ctor[0].ghost );
+	// ghost stubs are tiled into the separate translucent shape
+	const shape = tileBlock( empty );
+	assert( shape.ghost.faces.length > 0 );
+} );
+
 test( "section limits are enforced", ()=>{
-	assert.throws( ()=> instance( 'switch', { sections:{ 'default':[ {}, {} ] } } ) );
+	assert.throws( ()=> instance( 'class', { sections:{ 'constructor':[ {}, {} ] } } ) );
 	assert.throws( ()=> instance( 'nope' ) );
 } );
 
@@ -132,7 +169,7 @@ test( "fills never cover a value slot cavity", ()=>{
 	const shape = tileBlock( node );
 	const { tween } = require( "../shapes/compose.js" );
 	// key_fill quads are the only 4-vertex top faces at full depth; find their x extents
-	const slots = node.connectors.filter( c=>c.type === 'slot' && c.dir === 'value' );
+	const slots = node.connectors.filter( c=>c.type === 'slot' && c.dir === 'value' && !c.ghost );
 	assert( slots.length === 2 );
 	for( const c of slots ) {
 		const cavity = { x0:c.x, x1:c.x + metrics.vtabW, z0:c.y, z1:c.y + metrics.rowH - 2*metrics.pad };

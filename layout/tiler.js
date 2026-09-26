@@ -68,6 +68,8 @@ function tileBlock( node ) {
 	const m = metrics;
 	const shape = Shape( node.kind );
 	const t = new Tiler( shape );
+	shape.ghost = Shape( node.kind + ' ghost' );   // the faint "add one" stubs, drawn translucent
+	const tg = new Tiler( shape.ghost );
 	const W = node.w, H = node.h, rowH = m.rowH, barW = m.barW;
 	const style = node.corner;
 	const header = node.rows[0];
@@ -117,7 +119,7 @@ function tileBlock( node ) {
 		if( row.type !== 'input' && row.type !== 'fork' ) continue;
 		t.vswell( 'right', barW - pad, rz, row.y );
 		t.corner( 'inner1', barW - pad, row.y );
-		tileStub( t, row );
+		tileStub( row.ghost ? tg : t, row );
 		t.corner( 'inner0', barW - pad, row.y + rowH - pad );
 		rz = row.y + rowH;
 	}
@@ -149,7 +151,7 @@ function tileStub( t, row ) {
 
 function placeLabels( shape, node ) {
 	for( const l of node.labels )
-		shape.labels.push( { text:l.text, cell:l.cell,
+		shape.labels.push( { text:l.text, cell:l.cell, ghost:l.ghost,
 			pos:{ x:l.x, y:consts.peice_depth + consts.inset_depth, z:l.y },
 			size:{ width:l.w, height:l.h } } );
 	if( shape.labels.length ) {
@@ -168,10 +170,18 @@ function shapeToSVG( shape, opts ) {
 	let x0 = Infinity, z0 = Infinity, x1 = -Infinity, z1 = -Infinity;
 	for( const v of shape.verts ) { x0 = Math.min( x0, v.x ); x1 = Math.max( x1, v.x ); z0 = Math.min( z0, v.z ); z1 = Math.max( z1, v.z ); }
 	const mg = 0.1;
-	const out = [ `<svg xmlns="http://www.w3.org/2000/svg" width="${((x1-x0+2*mg)*S)|0}" height="${((z1-z0+2*mg)*S)|0}">`,
-		`<rect width="100%" height="100%" fill="#222"/>`,
-		`<g transform="translate(${(mg-x0)*S},${(mg-z0)*S})">` ];
+	const out = [];
+	if( !opts.inner ) {
+		out.push( `<svg xmlns="http://www.w3.org/2000/svg" width="${((x1-x0+2*mg)*S)|0}" height="${((z1-z0+2*mg)*S)|0}">`,
+			`<rect width="100%" height="100%" fill="#222"/>`,
+			`<g transform="translate(${(mg-x0)*S},${(mg-z0)*S})">` );
+	}
 	const light = { x:-0.3, y:0.85, z:-0.4 };
+	if( shape.ghost && shape.ghost.faces.length ) {
+		out.push( `<g opacity="0.35">` );
+		out.push( shapeToSVG( shape.ghost, { scale:S, inner:true } ) );
+		out.push( `</g>` );
+	}
 	for( const f of shape.faces ) {
 		const ps = f.map( i => shape.verts[shape.pairs[i][0]] );
 		const ns = f.map( i => shape.norms[shape.pairs[i][1]] );
@@ -184,7 +194,7 @@ function shapeToSVG( shape, opts ) {
 	const esc = ( t )=> String( t ).replace( /&/g, '&amp;' ).replace( /</g, '&lt;' ).replace( />/g, '&gt;' );
 	for( const l of shape.labels || [] )
 		out.push( `<text x="${l.pos.x*S}" y="${(l.pos.z + l.size.height*0.8)*S}" font-size="${l.size.height*0.8*S}" font-family="sans-serif" fill="#000">${esc( l.text )}</text>` );
-	out.push( `</g></svg>` );
+	if( !opts.inner ) out.push( `</g></svg>` );
 	return out.join( "\n" );
 }
 

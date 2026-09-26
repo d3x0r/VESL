@@ -65,12 +65,21 @@ function objectFromLayout( node, opts ) {
 	o.userData.block = node;
 	const mesh = createMesh( createGeometry( shape ), opts.material );
 	o.add( mesh );
+	if( shape.ghost && shape.ghost.faces.length ) {
+		if( !shapes.ghostMaterial )
+			shapes.ghostMaterial = new THREE.MeshStandardMaterial( { color: 0xAAAAAA, roughness:0.17, metalness:0.24, transparent:true, opacity:0.3, depthWrite:false } );
+		const ghost = createMesh( createGeometry( shape.ghost ), opts.ghostMaterial || shapes.ghostMaterial );
+		ghost.userData.ghost = true;
+		o.add( ghost );
+	}
 	const color = opts.labelColor || "rgba(0,0,0,1.0)";
+	const ghostColor = opts.ghostLabelColor || "rgba(0,0,0,0.35)";
 	for( const l of shape.labels )
-		makeText( o, l.text, color, l );
+		makeText( o, l.text, l.ghost ? ghostColor : color, l );
 	for( const c of node.children ) {
 		const child = objectFromLayout( c.node, opts );
-		child.position.set( c.x, 0, c.y );   // layout y runs down the piece: that is z here
+		// layout y runs down the piece: that is z here; lifted values sit a layer up
+		child.position.set( c.x, ( c.lift || 0 ) * layout.metrics.liftHeight, c.y );
 		o.add( child );
 	}
 	return o;
