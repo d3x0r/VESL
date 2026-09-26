@@ -90,11 +90,14 @@ function tileBlock( node ) {
 	const slotX = style.topSlot ? pad : undefined;
 	t.topEdge( pad, W - pad, 0, slotX );
 	t.rightEnd( W, pad, rowH - pad, header.endsWithSlot );
+	// the fill stops where the end piece begins: a value slot piece carries
+	// its own top face around the notch
+	const fillEnd = W - ( header.endsWithSlot ? m.slotW : pad );
 	if( style.topSlot ) {
 		t.fill( pad, slotDepth, pad + m.htabW, rowH - pad );
-		t.fill( pad + m.htabW, pad, W - pad, rowH - pad );
+		t.fill( pad + m.htabW, pad, fillEnd, rowH - pad );
 	} else
-		t.fill( pad, pad, W - pad, rowH - pad );
+		t.fill( pad, pad, fillEnd, rowH - pad );
 
 	if( node.compact ) {
 		t.bottomEdge( pad, W - pad, rowH - pad, node.def.bottom === 'statement' ? pad : undefined );
@@ -141,7 +144,7 @@ function tileStub( t, row ) {
 	t.hswell( 'upper', barW, xe - pad, z );
 	t.rightEnd( xe, z + pad, z + rowH - pad, !!row.input );
 	t.bottomEdge( barW, xe - pad, z + rowH - pad, row.type === 'fork' ? barW + pad : undefined );
-	t.fill( barW - pad, z + pad, xe - pad, z + rowH - pad );
+	t.fill( barW - pad, z + pad, xe - ( row.input ? m.slotW : pad ), z + rowH - pad );
 }
 
 function placeLabels( shape, node ) {

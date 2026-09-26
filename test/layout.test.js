@@ -127,6 +127,26 @@ test( "tiled shapes keep every face inside the layout box", ()=>{
 	} );
 } );
 
+test( "fills never cover a value slot cavity", ()=>{
+	const node = layoutBlock( instance( 'interface', { sections:{ properties:[ { fields:{ key:'area' } } ] } } ) );
+	const shape = tileBlock( node );
+	const { tween } = require( "../shapes/compose.js" );
+	// key_fill quads are the only 4-vertex top faces at full depth; find their x extents
+	const slots = node.connectors.filter( c=>c.type === 'slot' && c.dir === 'value' );
+	assert( slots.length === 2 );
+	for( const c of slots ) {
+		const cavity = { x0:c.x, x1:c.x + metrics.vtabW, z0:c.y, z1:c.y + metrics.rowH - 2*metrics.pad };
+		for( const f of shape.faces ) {
+			const ps = f.map( i=>shape.verts[shape.pairs[i][0]] );
+			if( !ps.every( p=>Math.abs( p.y - tween.key_fill.verts[0].y ) < 1e-9 ) ) continue;
+			const cx = ps.reduce( ( a, p )=>a + p.x, 0 ) / 3, cz = ps.reduce( ( a, p )=>a + p.z, 0 ) / 3;
+			const inside = cx > cavity.x0 + 1e-6 && cx < cavity.x1 - 1e-6 && cz > cavity.z0 + 1e-6 && cz < cavity.z1 - 1e-6;
+			const wide = Math.max( ...ps.map( p=>p.x ) ) - Math.min( ...ps.map( p=>p.x ) ) > metrics.vtabW * 2;
+			assert( !( inside && wide ), "a fill face covers the slot at " + c.name );
+		}
+	}
+} );
+
 test( "svg renders", ()=>{
 	const svg = render( layoutBlock( instance( 'if' ) ) );
 	assert( svg.startsWith( "<svg" ) && svg.includes( "if" ) );

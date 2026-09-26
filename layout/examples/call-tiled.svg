@@ -143,8 +143,8 @@
 <polygon points="30.0,132.0 30.0,132.0 102.0,132.0" fill="rgb(60,51,24)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
 <polygon points="30.0,132.0 102.0,132.0 102.0,132.0" fill="rgb(60,51,24)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
 <polygon points="30.0,132.0 30.0,129.0 102.0,132.0" fill="rgb(60,51,24)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
-<polygon points="27.0,69.0 27.0,129.0 102.0,69.0" fill="rgb(199,169,79)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
-<polygon points="27.0,129.0 102.0,129.0 102.0,69.0" fill="rgb(213,181,85)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
+<polygon points="27.0,69.0 27.0,129.0 90.0,69.0" fill="rgb(199,169,79)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
+<polygon points="27.0,129.0 90.0,129.0 90.0,69.0" fill="rgb(213,181,85)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
 <polygon points="27.0,129.0 27.0,132.0 30.0,132.0" fill="rgb(213,181,85)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
 <polygon points="27.0,129.0 30.0,132.0 30.0,129.0" fill="rgb(213,181,85)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
 <polygon points="27.0,132.0 27.0,150.0 30.0,132.0" fill="rgb(213,181,85)" stroke="rgba(0,0,0,0.25)" stroke-width="0.5"/>
