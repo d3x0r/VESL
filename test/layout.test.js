@@ -14,6 +14,14 @@ function test( name, fn ) {
 }
 const near = ( a, b, msg )=> assert( Math.abs( a - b ) < 1e-9, ( msg || '' ) + " expected " + b + " got " + a );
 
+function withLift( lift, fn ) {
+	const was = metrics.liftValues; metrics.liftValues = lift;
+	try { fn(); } finally { metrics.liftValues = was; }
+}
+const inPlane = ( fn )=> withLift( false, fn );
+const lifted = ( fn )=> withLift( true, fn );
+
+
 const call = ( f, args )=> instance( 'call', { fields:{ callee:f }, sections:{ args: ( args || [] ).map( k=>( { fields:{ key:k } } ) ) } } );
 const value = ( t )=> instance( 'value', { fields:{ text:t } } );
 
@@ -83,13 +91,6 @@ test( "an empty fork still leaves room for one statement", ()=>{
 	const body = node.rows.find( r=>r.type === 'headerfork' );
 	near( body.h, metrics.rowH + metrics.htabH + metrics.forkGap );
 } );
-
-function withLift( lift, fn ) {
-	const was = metrics.liftValues; metrics.liftValues = lift;
-	try { fn(); } finally { metrics.liftValues = was; }
-}
-const inPlane = ( fn )=> withLift( false, fn );
-const lifted = ( fn )=> withLift( true, fn );
 
 test( "with liftValues, a plugged value floats a layer above and leaves the rows alone", ()=> lifted( ()=>{
 	const obj = instance( 'object', { sections:{ fields:[ { fields:{ key:'p' } }, { fields:{ key:'q' } } ] } } );
