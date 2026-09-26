@@ -215,7 +215,7 @@ function tilePost( node ) {
 	// footer
 	t.hswell( 'upper', xe, FW - pad, footer.y );
 	t.rightEnd( FW, footer.y + pad, H - pad, false );
-	t.fill( xe - pad, footer.y + pad, FW - pad, H - pad );
+	t.fill( px + pad, footer.y + pad, FW - pad, H - pad );   // the whole foot, under the post too
 	t.hswell( 'lower', px + pad, FW - pad, H - pad );
 
 	placeLabels( shape, node );
