@@ -98,7 +98,7 @@ labels, and child blocks attached where their connectors line up.
 ```
 npm test                 # layout + tiler checks, no browser needed
 npm run examples         # writes layout/examples/*.svg (silhouette and tiled top view)
-python3 -m http.server   # then open preview.html for the three.js view
+<any static server>     # then open preview.html for the three.js view
 ```
 
 `layout/samples.js` holds the sample instances used by the scene, the
