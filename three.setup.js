@@ -120,10 +120,17 @@ var status_line;
 
 		camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.001, 10000 );
 		user.add( camera );
+		VESL.camera = camera;   // handy from the console
 
 		if( !VR ){
+			// start above the board, looking down at it (the blocks sit
+			// roughly on x -12..10, z -4..6); the controls drive the matrix
+			// directly from here on
 			camera.matrixAutoUpdate = false;
-			camera.position.z = 5;
+			camera.position.set( -1, 10, 6 );
+			camera.updateMatrix();   // lookAt reads the eye from the matrix when auto update is off
+			camera.lookAt( -1, 0, 1 );
+			camera.updateMatrix();
 			camera.matrixWorldNeedsUpdate = true;
 		}
 		 // for phong hello world test....
