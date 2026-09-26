@@ -16,7 +16,7 @@
   "chromium-args": "--mixed-context",
   "dependencies": {
     "oimo": "^1.0.9",
-    "sack.vfs": "^0",
+    "sack.vfs": "latest",
     "three": "^0.186.1"
   }
 }
