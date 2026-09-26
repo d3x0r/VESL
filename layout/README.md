@@ -42,6 +42,11 @@ A first section that is a single mandatory body with nothing but statements
 (`if`, `while`, `for`, `function`) merges into the header: the body hangs
 from a tab under the header, blockly style, instead of a separate fork row.
 
+`post:true` on a kind (used by `and`, `or`, `compare`) lays its single input
+section out on a post: the first operand's slot sits on the operator's own
+row, the remaining operands hang from a post that drops from under that
+slot, and the "add another" target is an empty notch in the post.
+
 Kinds defined so far: `call assign if while for switch return` (statements)
 and `value apply and or not compare unary function object array struct interface class`
 (values). Operators hold their operands as rows, so an expression is one

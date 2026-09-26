@@ -30,6 +30,20 @@ function dishFill( w, h ) {
 	};
 }
 
+// A piece mirrored across x (its x range folded back onto [0, width]),
+// for the concave corner on the far side of a post.
+function mirrorX( piece ) {
+	const w = Math.max( ...piece.verts.map( v=>v.x ) );
+	return {
+		verts : piece.verts.map( v=>( { x: w - v.x, y:v.y, z:v.z } ) ),
+		norms : piece.norms.map( n=>( { x:-n.x, y:n.y, z:n.z } ) ),
+		pairs : piece.pairs,
+		faces : piece.faces.map( f=>[ f[0], f[2], f[1] ] ),
+		scaledVert( i ) { return this.verts[i]; },
+	};
+}
+const inner0m = mirrorX( corner.inner0 );
+
 function Tiler( shape ) {
 	this.shape = shape;
 }
@@ -83,6 +97,7 @@ Tiler.prototype = {
 
 // Build one block (not its children) from its layout node.
 function tileBlock( node ) {
+	if( node.post ) return tilePost( node );
 	const m = metrics;
 	const shape = Shape( node.kind );
 	const t = new Tiler( shape );
@@ -149,6 +164,59 @@ function tileBlock( node ) {
 	t.rightEnd( W, footer.y + pad, H - pad, false );
 	t.fill( pad, footer.y + pad, W - pad, H - pad );
 	t.bottomEdge( pad, W - pad, H - pad, footer.tab ? pad : undefined );
+
+	placeLabels( shape, node );
+	return shape;
+}
+
+// A post block: header with the first slot, a post under it with a slot
+// notched into its right side per remaining operand (the ghost is just an
+// empty notch), and a short footer.
+function tilePost( node ) {
+	const m = metrics;
+	const shape = Shape( node.kind );
+	shape.ghost = Shape( node.kind + ' ghost' );
+	const t = new Tiler( shape );
+	const W = node.headerW, H = node.h, rowH = m.rowH;
+	const px = node.post.x, xe = px + node.post.w;   // post left / right
+	const footer = node.rows[node.rows.length - 1];
+	const FW = footer.w;                             // the footer reaches past the slots
+	shape.size.width = node.w; shape.size.height = H; shape.layout = node;
+
+	// header
+	t.corner( 'outer0', 0, 0 );
+	t.corner( 'outer2', 0, rowH - pad );
+	if( node.corner.leftTab ) t.at( slot.vert_tab, -m.vtabW, pad );
+	else t.vswell( 'left', 0, pad, rowH - pad );
+	t.topEdge( pad, W - pad, 0 );
+	t.rightEnd( W, pad, rowH - pad, true );
+	t.fill( pad, pad, W - m.slotW, rowH - pad );
+	// underside: left of the post, then the post's far corner
+	t.hswell( 'lower', pad, px, rowH - pad );
+	t.at( inner0m, px, rowH - pad );
+
+	// post: left edge straight down into the footer; right edge is slots
+	// separated by short swell segments
+	t.vswell( 'left', px, rowH, H - pad );
+	t.corner( 'outer2', px, H - pad );
+	let rz = rowH - pad;                 // right edge continues from the header's slot piece
+	for( const row of node.rows ) {
+		if( row.type !== 'post' ) continue;
+		t.vswell( 'right', xe - pad, rz, row.y + pad );
+		t.fill( xe - m.slotW, rz, xe - pad, row.y + pad );
+		t.at( slot.vert_slot, xe - m.slotW, row.y + pad );
+		rz = row.y + rowH - pad;
+	}
+	t.vswell( 'right', xe - pad, rz, footer.y );
+	t.fill( xe - m.slotW, rz, xe - pad, footer.y + pad );
+	t.fill( px + pad, rowH - pad, xe - m.slotW, footer.y + pad );
+	t.corner( 'inner1', xe - pad, footer.y );
+
+	// footer
+	t.hswell( 'upper', xe, FW - pad, footer.y );
+	t.rightEnd( FW, footer.y + pad, H - pad, false );
+	t.fill( xe - pad, footer.y + pad, FW - pad, H - pad );
+	t.hswell( 'lower', px + pad, FW - pad, H - pad );
 
 	placeLabels( shape, node );
 	return shape;

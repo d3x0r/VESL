@@ -19,6 +19,7 @@ const metrics = {
 	endW    : pad,                                     // width of a plain end piece
 	forkW   : consts.htab_width + pad,                 // the fork stub carrying a statement tab
 	footH   : consts.bot_hbar_height + 2*pad,          // bottom bar row (0.25)
+	postW   : consts.vbar_width + 2*pad + consts.vtab_width,   // a post with slots notched into its right side
 	forkGap : 0.15,                                    // bar shown below a fork body
 	rowGap  : 0.15,                                    // bar shown between header/input rows and a fork row
 	charW   : 0.20,                                    // text width per character
@@ -65,6 +66,7 @@ function headerForkSection( def ) {
 }
 
 function layoutBlock( inst ) {
+	if( inst.def.post ) return layoutPost( inst );
 	const def = inst.def;
 	const m = metrics;
 	const node = { inst, def, kind: def.kind, x:0, y:0, w:0, h:0, rows:[], cells:[], connectors:[], children:[], labels:[] };
@@ -207,6 +209,85 @@ function layoutBlock( inst ) {
 				node.labels.push( { text:c.text, x:c.x + m.textPad, y:row.y + ( m.rowH - m.textH )/2, w:c.w - 2*m.textPad, h:m.textH, cell:c, ghost:!!row.ghost } );
 		}
 	}
+	return node;
+}
+
+// A post block: [tab][ label ][slot: first operand]
+//                            [post][slot]   ... remaining operands
+//                            [post][notch]  ghost (add another)
+//                            [footer      ]
+function layoutPost( inst ) {
+	const def = inst.def;
+	const m = metrics;
+	const section = def.sections[0];
+	const entries = inst.sections[section.name];
+	const node = { inst, def, kind: def.kind, x:0, y:0, w:0, h:0, rows:[], cells:[], connectors:[], children:[], labels:[], compact:false };
+	node.corner = { topSlot:false, leftTab: def.left === 'value', innerTab:false, hasBody:true, w:m.barW };
+
+	// header: labels then the first operand's slot
+	const header = { type:'header', y:0, h:m.rowH, x:0, cells:[], input:null };
+	let x = m.barW;
+	let textW = 0;
+	for( const c of def.header ) {
+		const text = cellText( c, inst.fields );
+		const w = measure( text );
+		header.cells.push( { type:c.type, text, field:c.field, x, y:0, w, h:m.rowH } );
+		x += w; textW += w;
+	}
+	if( textW < m.minFill ) x += m.minFill - textW;
+	const first = entries[0];
+	header.input = { type:'input', slot:section.cells[0].slot, x, y:0, w:m.slotW, h:m.rowH, child: first ? ( first.inputs[section.cells[0].slot] || null ) : null, entry:first };
+	header.cells.push( header.input );
+	x += m.slotW;
+	header.w = x;
+	header.endsWithSlot = true;
+	node.rows.push( header );
+
+	const W = header.w;
+	node.post = { x: W - m.postW, w: m.postW };
+	let y = m.rowH;
+	if( header.input.child ) {
+		const child = layoutBlock( header.input.child );
+		header.input.childNode = child;
+		if( !m.liftValues ) y = Math.max( y, child.stackH );
+	}
+
+	// remaining operands, then a notch to add one
+	const rest = entries.slice( 1 ).map( e => ( { entry:e } ) );
+	if( section.ghost && entries.length < section.max ) rest.push( { entry:{ fields:{}, inputs:{}, statements:[], ghost:true }, ghost:true } );
+	for( const r of rest ) {
+		const row = { type:'post', section, entry:r.entry, ghost:!!r.ghost, y, h:m.rowH, x:node.post.x, w:W, cells:[], input:null };
+		row.input = { type:'input', slot:section.cells[0].slot, x: W - m.slotW, y, w:m.slotW, h:m.rowH, child: r.entry.inputs[section.cells[0].slot] || null, entry:r.entry };
+		row.cells.push( row.input );
+		if( row.input.child ) {
+			const child = layoutBlock( row.input.child );
+			row.input.childNode = child;
+			if( !m.liftValues ) row.h = Math.max( row.h, child.stackH );
+		}
+		node.rows.push( row );
+		y += row.h;
+	}
+	// the footer reaches a little past the slots, as a foot to grab
+	const footer = { type:'footer', y, h:m.footH, x:node.post.x, w:W + m.minFill, tab:false };
+	node.rows.push( footer );
+	y += m.footH;
+
+	node.w = footer.w;
+	node.headerW = W;
+	node.h = y;
+	node.stackH = node.h;
+
+	if( node.corner.leftTab ) node.connectors.push( { type:'tab', dir:'value', name:'left', x:-m.vtabW, y:pad } );
+	addValueSlot( node, header.input, header );
+	for( const row of node.rows ) {
+		if( row.type !== 'post' ) continue;
+		const before = node.connectors.length;
+		addValueSlot( node, row.input, row );
+		if( row.ghost ) for( let i = before; i < node.connectors.length; i++ ) node.connectors[i].ghost = true;
+	}
+	for( const c of header.cells )
+		if( c.type === 'label' || c.type === 'name' )
+			node.labels.push( { text:c.text, x:c.x + m.textPad, y:( m.rowH - m.textH )/2, w:c.w - 2*m.textPad, h:m.textH, cell:c, ghost:false } );
 	return node;
 }
 

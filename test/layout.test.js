@@ -220,6 +220,25 @@ test( "call blocks can be built from a function's parameters", ()=>{
 	assert.deepEqual( rows.map( r => r.cells[0].text ), [ 'dx', 'dy' ] );
 } );
 
+test( "operators lay out on a post: first operand on the row, the rest under it", ()=>{
+	const and = instance( 'and', { sections:{ operands:[ { inputs:{ value: value( 'a' ) } }, { inputs:{ value: value( 'b' ) } }, { inputs:{ value: value( 'c' ) } } ] } } );
+	const node = layoutBlock( and );
+	assert( node.post );
+	const slots = node.connectors.filter( c=>c.type === 'slot' && c.dir === 'value' );
+	assert.equal( slots.length, 4, "three operands plus the notch" );
+	for( const c of slots ) near( c.x, slots[0].x, "every slot lines up under the first" );
+	assert( slots[3].ghost && !slots[2].ghost );
+	near( slots[0].y, metrics.pad, "the first operand is on the operator's row" );
+	assert.equal( node.rows.filter( r=>r.type === 'post' ).length, 3 );
+	const kids = node.children;
+	assert.equal( kids.length, 3 );
+	near( kids[1].y, kids[0].y + metrics.rowH );
+	const shape = tileBlock( node );
+	assert.deepEqual( validate( shape ), [] );
+	assert.equal( shape.ghost.faces.length, 0, "the add target is a notch in the post, not a ghost stub" );
+	for( const v of shape.verts ) assert( v.x >= -metrics.vtabW - 1e-9 && v.x <= node.w + 1e-9 && v.z >= -1e-9 && v.z <= node.h + 1e-9 );
+} );
+
 test( "svg renders", ()=>{
 	const svg = render( layoutBlock( instance( 'if' ) ) );
 	assert( svg.startsWith( "<svg" ) && svg.includes( "if" ) );

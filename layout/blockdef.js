@@ -46,6 +46,11 @@ function define( kind, def ) {
 	}
 	if( def.header.filter( c=>c.type==='input' ).length > 1 )
 		throw new Error( kind + ": header supports at most one input (must be last)" );
+	if( def.post ) {
+		const s0 = def.sections[0];
+		if( def.sections.length !== 1 || s0.kind !== 'input' || s0.cells.length !== 1 || def.header.some( c=>c.type==='input' ) )
+			throw new Error( kind + ": a post block has one input section of bare inputs and no header input" );
+	}
 	defs[kind] = def;
 	return def;
 }
@@ -112,17 +117,19 @@ define( 'apply', {
 	sections:[ section( 'args', 'input', [ name( 'key', 'arg' ), input( 'value' ) ] ) ],
 } );
 
-// Operators are single blocks holding their operands as rows, so an
+// Operators are single blocks holding their operands as a list, so an
 // expression is one line with values plugged in, never a nested tree of
-// inline slots. `and`/`or` take any number of operands.
+// inline slots. `post:true` lays the list out on a post: the first operand
+// sits on the operator's own row, the rest hang from a post dropping from
+// under that slot, and the "add another" target is a notch in the post.
 define( 'and', {
-	left:'value',
+	left:'value', post:true,
 	header:[ label( 'all of' ) ],
 	sections:[ section( 'operands', 'input', [ input( 'value' ) ], { min:2 } ) ],
 } );
 
 define( 'or', {
-	left:'value',
+	left:'value', post:true,
 	header:[ label( 'any of' ) ],
 	sections:[ section( 'operands', 'input', [ input( 'value' ) ], { min:2 } ) ],
 } );
@@ -134,7 +141,7 @@ define( 'not', {
 
 // a < b, a == b ...: the operator is a name cell so it can be swapped
 define( 'compare', {
-	left:'value',
+	left:'value', post:true,
 	header:[ name( 'op', '<' ) ],
 	sections:[ section( 'operands', 'input', [ input( 'value' ) ], { min:2, max:2 } ) ],
 } );

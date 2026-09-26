@@ -30,16 +30,17 @@ function render( root, opts ) {
 		const r = ( x, y, w, h, f, ghost )=> out.push( `<rect x="${(ox+x)*S}" y="${(oy+y)*S}" width="${w*S}" height="${h*S}" fill="${f||fill}" stroke="${edge}" stroke-width="1"${ghost ? ' opacity="0.35" stroke-dasharray="4 3"' : ''}/>` );
 		out.push( `<g class="block ${n.kind}">` );
 		for( const row of n.rows ) {
-			if( row.type === 'header' ) r( 0, row.y, row.w, row.h );
-			else if( row.type === 'footer' ) r( 0, row.y, row.w, row.h );
+			if( row.type === 'header' ) r( 0, row.y, n.headerW || row.w, row.h );
+			else if( row.type === 'footer' ) r( row.x || 0, row.y, row.w - ( row.x || 0 ), row.h );
 			else if( row.type === 'input' || row.type === 'fork' ) {
 				r( 0, row.y, m.barW, row.h );
 				r( m.barW, row.y, row.stubW, m.rowH, null, row.ghost );
 			}
+			else if( row.type === 'post' ) r( n.post.x, row.y, n.post.w, row.h );
 			else r( 0, row.y, m.barW, row.h );   // spacer / headerfork
 		}
 		for( const c of n.connectors ) {
-			if( c.ghost ) continue;
+			if( c.ghost && !n.post ) continue;   // a post's ghost is a real notch
 			const carve = '#f4f4f0';
 			if( c.dir === 'statement' && c.type === 'slot' ) r( c.x, c.y, m.htabW, m.htabH, carve );
 			if( c.dir === 'statement' && c.type === 'tab' )  r( c.x, c.y, m.htabW, m.htabH );
