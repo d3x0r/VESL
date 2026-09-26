@@ -53,10 +53,11 @@ Within an expression, the first token may be one of ...
 
 
 ```
-ident : /*... a variable */
-ident( /* ... call function */
-ident :  /*... */ )(  /* ... define function expression */ 
-ident :  /*... */ )(  /* ... */ )( /* ... Illegal? */ 
+string : /*... a variable */
+string( /* ... */ )  /* call function */ 
+
+string :  (/*arguments... need order, names, label*/   /* ... define function expression */   )
+string :  ( /*... */ )(  /* ... */ )( /* ... Illegal? */ )
 
 f( /* ... */ )( /* ... calls result as function */ 
 
@@ -753,7 +754,7 @@ These are structure characters of the base JSON
 
 These are standard 'operator symbols' with other common meanings.
 
-! % ^ & * ( ) - + = ~ < > | 
+! % ^ & * ( ) - + = ~ < > | ?
 
 These are symbols used in sepraration (also part of the above baser structure)
 , ; \

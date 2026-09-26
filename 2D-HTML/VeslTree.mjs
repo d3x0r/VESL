@@ -164,7 +164,7 @@ function makePeice( parent, opts ) {
 	        
 	        
 			} else {
-				quickDelegate( evt, p.container );
+				//quickDelegate( evt, p.container );
 				console.log( "No Drag?" );
 			}
 		}
