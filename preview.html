@@ -9,8 +9,12 @@
 <body>
 <div id="hint">drag: orbit &middot; wheel: zoom &middot; #dist=6&amp;theta=0&amp;phi=0.9&amp;x=1&amp;z=2 sets the view</div>
 <script src="require.js"></script>
-<script src="node_modules/three/build/three.js"></script>
-<script>
+<script type="importmap">
+{ "imports": { "three": "./node_modules/three/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+window.THREE = Object.assign( {}, THREE );
 window.previewReady = false;
 window.previewErrors = [];
 window.addEventListener( "error", e => window.previewErrors.push( String( e.message || e ) ) );

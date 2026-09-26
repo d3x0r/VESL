@@ -1,8 +1,7 @@
 
 
-	var app = ["node_modules/three/build/three.js"
-		, "node_modules/three/examples/js/exporters/OBJExporter.js"
-		, 'vesl.js','']
+	// three.js itself is imported as an ES module by index.html before this runs
+	var app = [ 'vesl.js','']
 	var start = 'windowLoaded();'
 	function R(n) {
 		var script = document.createElement( "script" );

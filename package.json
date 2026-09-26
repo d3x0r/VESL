@@ -17,6 +17,6 @@
   "dependencies": {
     "oimo": "^1.0.9",
     "sack.vfs": "^0",
-    "three": "^0.95.0"
+    "three": "^0.186.1"
   }
 }

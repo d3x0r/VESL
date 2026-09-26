@@ -159,6 +159,7 @@ function makeText( parent, t, color, v )
 	let texture1 = new THREE.Texture(canvas1)
 	texture1.needsUpdate = true;
 	texture1.minFilter = THREE.LinearFilter;
+	texture1.colorSpace = THREE.SRGBColorSpace;
 
 	let material1 = new THREE.MeshBasicMaterial( {map: texture1
 		, transparent:true
@@ -279,43 +280,39 @@ function makeVarText( parent, color, v, isString )
 	return canvas;
 }
 
+// Rebuild the vertex buffers of a geometry from its (edited) shape.
 function updateGeometry( geometry ) {
-	let verts = geometry.vertices;
-	let srcverts = geometry.shape.verts;
-	for( n = 0; n < verts.length; n++ ) {
-		vertes[n].copy( srcverts[n] );
-	}
-	geometry.verticesNeedUpdate = true;
+	fillGeometry( geometry, geometry.shape );
+	geometry.attributes.position.needsUpdate = true;
+	geometry.attributes.normal.needsUpdate = true;
 	geometry.computeBoundingSphere();
 }
 
+// A shape is a list of verts, a list of norms, pairs [vert, norm] and faces
+// of three pairs. Modern three.js has no indexed vertex+normal pairs, so the
+// faces are unrolled into flat position and normal buffers.
+function fillGeometry( geometry, shape ) {
+	const pairs = shape.pairs;
+	const count = shape.faces.length * 3;
+	const position = new Float32Array( count * 3 );
+	const normal = new Float32Array( count * 3 );
+	let o = 0;
+	for( const face of shape.faces ) {
+		for( let k = 0; k < 3; k++ ) {
+			const pair = pairs[face[k]];
+			const v = shape.verts[pair[0]], n = shape.norms[pair[1]];
+			position[o] = v.x; position[o+1] = v.y; position[o+2] = v.z;
+			normal[o] = n.x; normal[o+1] = n.y; normal[o+2] = n.z;
+			o += 3;
+		}
+	}
+	geometry.setAttribute( 'position', new THREE.BufferAttribute( position, 3 ) );
+	geometry.setAttribute( 'normal', new THREE.BufferAttribute( normal, 3 ) );
+}
+
 function createGeometry( shape ) {
-
-	var color = new THREE.Color( 0xffaa00 ); //optional
-	//var materialIndex = 0; //optional
-
-	var geometry = new THREE.Geometry();
-
-	var n;
-	for( n = 0; n < shape.verts.length; n++ ) {
-		geometry.vertices.push( 
-			new THREE.Vector3().copy( shape.verts[n] )  
-		);
-	}
-
-	//create a new face using vertices 0, 1, 2
-	var pairs = shape.pairs;
-	for( n = 0; n < shape.faces.length; n++ ) {
-		var faces = shape.faces[n];
-		//console.log( "face:" + face );		
-		var face = new THREE.Face3( pairs[faces[0]][0], pairs[faces[1]][0], pairs[faces[2]][0]
-				, [new THREE.Vector3().copy( shape.norms[pairs[faces[0]][1]] )
-				, new THREE.Vector3().copy( shape.norms[pairs[faces[1]][1]] )
-				, new THREE.Vector3().copy( shape.norms[pairs[faces[2]][1]] )
-				 ], color );
-		geometry.faces.push( face );
-	}
-
+	const geometry = new THREE.BufferGeometry();
+	fillGeometry( geometry, shape );
 	geometry.computeBoundingSphere();
 	geometry.shape = shape;
 	return geometry;

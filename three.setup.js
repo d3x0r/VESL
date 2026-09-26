@@ -70,7 +70,7 @@ var screen = { width:window.innerWidth, height:window.innerHeight };
 
 	var counter= 0;
 
-	var clock = new THREE.Clock()
+	// (THREE.Clock is deprecated in r186; nothing here used it)
 
 
 
@@ -127,22 +127,22 @@ var status_line;
 			camera.matrixWorldNeedsUpdate = true;
 		}
 		 // for phong hello world test....
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, Math.PI, 1000, 0 );
  		light.position.set( 0, -100, 100 );
  		scene.add( light );
 
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, Math.PI, 1000, 0 );
  		light.position.set( 0, 100, 100 );
  		scene.add( light );
 
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, Math.PI, 1000, 0 );
  		light.position.set( 0, -100, -100 );
  		scene.add( light );
 
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, Math.PI, 1000, 0 );
  		light.position.set( -500, 500, 1 );
  		scene.add( light );
- 		var light = new THREE.PointLight( 0xffFFFF, 1, 1000 );
+ 		var light = new THREE.PointLight( 0xffFFFF, Math.PI, 1000, 0 );
  		light.position.set( 500, -500, 1 );
  		scene.add( light );
 		/* INIT GOES HERE? */
@@ -150,7 +150,7 @@ var status_line;
 		renderer = new THREE.WebGLRenderer();
 		renderer.setPixelRatio( window.devicePixelRatio );
 		renderer.setSize( window.innerWidth, window.innerHeight );
-		renderer.vr.enabled = VR;
+		renderer.xr.enabled = VR;
 		//if ( !renderer.extensions.get('WEBGL_depth_texture') ) {
 		//          supportsExtension = false;
 //			console.log( "depth texture not available" );
@@ -181,7 +181,7 @@ var status_line;
 
 				space.scale.set( 1,1,1 );  // make 1 an inch
 				render = fallbackRender;
-				renderer.animate( render );
+				renderer.setAnimationLoop( render );
 				scene.remove( user );
 				scene.add( camera );
 				document.body.removeChild( button );
@@ -377,7 +377,7 @@ var nTarget = 60;
 var nTarget2 = 120;
 
 function beginAnimate()  {
-	renderer.animate( render );
+	renderer.setAnimationLoop( render );
 }
 
 

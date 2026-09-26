@@ -17,6 +17,14 @@ literals are described this way alongside `switch`, `if`, `for` and calls.
 See [layout/README.md](layout/README.md); `npm test` runs the layout checks
 and `preview.html` shows the sample blocks in three.js.
 
+## Running
+
+`npm install` fetches three.js (r186 or later). three.js is ES-module only
+now, so `index.html` and `preview.html` import it through an import map and
+expose it as the global `THREE` the rest of the code uses. Serve the folder
+over http and open either page. The WebVR code path under `three.js/js/vr`
+predates WebXR and is not loaded by current browsers.
+
 
 
 
